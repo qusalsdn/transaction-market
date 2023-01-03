@@ -37,6 +37,7 @@ const Home: NextPage = () => {
           Checkout
         </button>
       </div>
+
       <div className=" group overflow-hidden rounded-2xl bg-white shadow-xl">
         <div className="bg-blue-500 p-6 pb-14">
           <span className="text-2xl text-white">Profile</span>
@@ -59,6 +60,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
+
       <div className=" rounded-2xl bg-white p-10 shadow-xl">
         <div className="mb-5 flex items-center justify-between">
           <span>❌</span>
@@ -93,6 +95,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
+
       <form className="flex flex-col space-y-2">
         {/* peer는 바로 뒤 형제 요소에 CSS를 입힐 때 사용한다. 셀렉터에서 ~의 역할이다. */}
         <input type="text" required placeholder="Username" className="peer rounded-lg border border-gray-400 p-1" />
@@ -101,6 +104,24 @@ const Home: NextPage = () => {
         <span className="hidden text-yellow-300 peer-hover:block">Hello</span>
         <input type="submit" value="Login" className="bg-white" />
       </form>
+
+      <div className="flex flex-col space-y-2">
+        <details className="select-none open:bg-indigo-500 open:text-white">
+          <summary className="cursor-pointer select-none">What is my fav. food.</summary>
+          <span>김치</span>
+        </details>
+        <ul className="list-decimal marker:text-teal-200">
+          <li>hi</li>
+          <li>hi</li>
+          <li>hi</li>
+        </ul>
+        <input
+          type="file"
+          className="file:cursor-pointer file:rounded-xl file:border-none file:bg-purple-400
+          file:px-5 file:text-white file:transition-colors file:hover:bg-white file:hover:text-purple-400"
+        />
+        <p className="first-letter:text-7xl first-letter:hover:text-purple-400">Hello World</p>
+      </div>
     </div>
   );
 };
