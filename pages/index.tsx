@@ -37,7 +37,7 @@ const Home: NextPage = () => {
           Checkout
         </button>
       </div>
-      <div className=" overflow-hidden rounded-2xl bg-white shadow-xl">
+      <div className=" group overflow-hidden rounded-2xl bg-white shadow-xl">
         <div className="bg-blue-500 p-6 pb-14">
           <span className="text-2xl text-white">Profile</span>
         </div>
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
               <span className="text-sm text-gray-500">Orders</span>
               <span className="font-bold">340</span>
             </div>
-            <div className="h-24 w-24 rounded-full bg-red-400" />
+            <div className="h-24 w-24 rounded-full bg-slate-400 transition-colors group-hover:bg-red-400" />
             <div className="flex flex-col items-center">
               <span className="text-sm text-gray-500">Spent</span>
               <span className="font-bold">$2,310</span>
@@ -93,6 +93,14 @@ const Home: NextPage = () => {
           </div>
         </div>
       </div>
+      <form className="flex flex-col space-y-2">
+        {/* peer는 바로 뒤 형제 요소에 CSS를 입힐 때 사용한다. 셀렉터에서 ~의 역할이다. */}
+        <input type="text" required placeholder="Username" className="peer rounded-lg border border-gray-400 p-1" />
+        <span className="peer-valid:hidden peer-invalid:text-red-500">This input is invalid</span>
+        <span className="peer-valid:text-teal-300 peer-invalid:hidden">Awesome username</span>
+        <span className="hidden text-yellow-300 peer-hover:block">Hello</span>
+        <input type="submit" value="Login" className="bg-white" />
+      </form>
     </div>
   );
 };
