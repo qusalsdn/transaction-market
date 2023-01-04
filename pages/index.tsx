@@ -3,8 +3,8 @@ import { NextPage } from "next";
 const Home: NextPage = () => {
   return (
     <div
-      className="dark grid min-h-screen gap-10 space-y-5 bg-slate-400 py-20 px-10
-    lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center"
+      className="dark grid min-h-screen gap-10 space-y-5 bg-slate-400 bg-[url('/vercel.svg')] py-20
+    px-10 lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center"
     >
       {/* 일반적으로는 큰 화면에서 작은 화면으로 반응형 화면을 만드는데 Tailwind는 반대로
           작은 화면에서 큰 화면으로 반응형 화면을 만든다. */}
@@ -12,7 +12,8 @@ const Home: NextPage = () => {
         className="flex flex-col justify-between rounded-3xl bg-white p-6 shadow-xl dark:bg-black sm:bg-red-400
       sm:hover:bg-pink-800 md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400"
       >
-        <span className="text-3xl font-bold dark:text-white">Select Item</span>
+        {/* -[]를 이용하면 Tailwind에서 Just In Time Compiler로 인해 제한하는 값만이 아닌 내가 원하는 값(색상, px등)을 적용할 수 있다. */}
+        <span className="text-3xl font-bold text-[#CF2937] dark:text-white">Select Item</span>
         <ul>
           {[1, 2, 3, 4, 5].map((i) => {
             return (
