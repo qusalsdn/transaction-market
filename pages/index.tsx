@@ -3,7 +3,12 @@ import { NextPage } from "next";
 const Home: NextPage = () => {
   return (
     <div className=" min-h-screen flex-col space-y-5 bg-slate-400 py-20 px-10">
-      <div className=" rounded-3xl bg-white p-6 shadow-xl">
+      {/* 일반적으로는 큰 화면에서 작은 화면으로 반응형 화면을 만드는데 Tailwind는 반대로
+          작은 화면에서 큰 화면으로 반응형 화면을 만든다. */}
+      <div
+        className="rounded-3xl bg-white p-6 shadow-xl sm:bg-red-400 sm:hover:bg-pink-800
+      md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400"
+      >
         <span className="text-3xl font-bold">Select Item</span>
         <ul>
           {[1, 2, 3, 4, 5].map((i) => {
@@ -30,9 +35,9 @@ const Home: NextPage = () => {
           <span className="font-semibold">$19</span>
         </div>
         <button
-          className="mx-auto mt-5 w-2/4 rounded-xl bg-blue-500 p-3 text-center
-          text-white transition-colors hover:bg-teal-500 hover:text-black
-          focus:bg-red-500 active:bg-yellow-500"
+          className="mx-auto mt-5 flex w-2/4 justify-center rounded-xl bg-blue-500
+          p-3 text-center text-white transition-colors
+          hover:bg-teal-500 hover:text-black focus:bg-red-500 active:bg-yellow-500"
         >
           Checkout
         </button>
