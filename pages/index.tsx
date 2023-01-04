@@ -2,11 +2,14 @@ import { NextPage } from "next";
 
 const Home: NextPage = () => {
   return (
-    <div className=" min-h-screen flex-col space-y-5 bg-slate-400 py-20 px-10">
+    <div
+      className="grid min-h-screen gap-10 space-y-5 bg-slate-400 py-20 px-10 lg:grid-cols-2
+    xl:grid-cols-3 xl:place-content-center"
+    >
       {/* 일반적으로는 큰 화면에서 작은 화면으로 반응형 화면을 만드는데 Tailwind는 반대로
           작은 화면에서 큰 화면으로 반응형 화면을 만든다. */}
       <div
-        className="rounded-3xl bg-white p-6 shadow-xl sm:bg-red-400 sm:hover:bg-pink-800
+        className="flex flex-col justify-between rounded-3xl bg-white p-6 shadow-xl sm:bg-red-400 sm:hover:bg-pink-800
       md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400"
       >
         <span className="text-3xl font-bold">Select Item</span>
@@ -44,7 +47,8 @@ const Home: NextPage = () => {
       </div>
 
       <div className=" group overflow-hidden rounded-2xl bg-white shadow-xl">
-        <div className="bg-blue-500 p-6 pb-14">
+        {/* portrait:bg-indigo-400(세로모드) landscape:bg-teal-400(가로모드) */}
+        <div className="p-6 pb-14 xl:pb-40 portrait:bg-indigo-400 landscape:bg-teal-400">
           <span className="text-2xl text-white">Profile</span>
         </div>
         <div className="relative -top-5 rounded-3xl bg-white p-6">
@@ -66,7 +70,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      <div className=" rounded-2xl bg-white p-10 shadow-xl">
+      <div className=" rounded-2xl bg-white p-10 shadow-xl lg:col-span-2 xl:col-span-1">
         <div className="mb-5 flex items-center justify-between">
           <span>❌</span>
           <div className="space-x-3">
@@ -101,16 +105,16 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      <form className="flex flex-col space-y-2">
-        {/* peer는 바로 뒤 형제 요소에 CSS를 입힐 때 사용한다. 셀렉터에서 ~의 역할이다. */}
+      {/* peer는 바로 뒤 형제 요소에 CSS를 입힐 때 사용한다. 셀렉터에서 ~의 역할이다. */}
+      {/* <form className="flex flex-col space-y-2">
         <input type="text" required placeholder="Username" className="peer rounded-lg border border-gray-400 p-1" />
         <span className="peer-valid:hidden peer-invalid:text-red-500">This input is invalid</span>
         <span className="peer-valid:text-teal-300 peer-invalid:hidden">Awesome username</span>
         <span className="hidden text-yellow-300 peer-hover:block">Hello</span>
         <input type="submit" value="Login" className="bg-white" />
-      </form>
+      </form> */}
 
-      <div className="flex flex-col space-y-2">
+      {/* <div className="flex flex-col space-y-2 lg:col-span-2">
         <details className="select-none open:bg-indigo-500 open:text-white">
           <summary className="cursor-pointer select-none">What is my fav. food.</summary>
           <span>김치</span>
@@ -126,7 +130,7 @@ const Home: NextPage = () => {
           file:px-5 file:text-white file:transition-colors file:hover:bg-white file:hover:text-purple-400"
         />
         <p className="first-letter:text-7xl first-letter:hover:text-purple-400">Hello World</p>
-      </div>
+      </div> */}
     </div>
   );
 };
