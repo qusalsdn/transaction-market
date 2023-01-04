@@ -3,23 +3,23 @@ import { NextPage } from "next";
 const Home: NextPage = () => {
   return (
     <div
-      className="grid min-h-screen gap-10 space-y-5 bg-slate-400 py-20 px-10 lg:grid-cols-2
-    xl:grid-cols-3 xl:place-content-center"
+      className="dark grid min-h-screen gap-10 space-y-5 bg-slate-400 py-20 px-10
+    lg:grid-cols-2 xl:grid-cols-3 xl:place-content-center"
     >
       {/* 일반적으로는 큰 화면에서 작은 화면으로 반응형 화면을 만드는데 Tailwind는 반대로
           작은 화면에서 큰 화면으로 반응형 화면을 만든다. */}
       <div
-        className="flex flex-col justify-between rounded-3xl bg-white p-6 shadow-xl sm:bg-red-400 sm:hover:bg-pink-800
-      md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400"
+        className="flex flex-col justify-between rounded-3xl bg-white p-6 shadow-xl dark:bg-black sm:bg-red-400
+      sm:hover:bg-pink-800 md:bg-teal-400 lg:bg-indigo-400 xl:bg-yellow-400"
       >
-        <span className="text-3xl font-bold">Select Item</span>
+        <span className="text-3xl font-bold dark:text-white">Select Item</span>
         <ul>
           {[1, 2, 3, 4, 5].map((i) => {
             return (
               // odd:bg-blue-400(홀수) even:bg-yellow-400(짝수)
               <div key={i} className="my-2 flex justify-between odd:bg-blue-400 even:bg-yellow-400">
-                <span className="text-gray-500">Grey Chair</span>
-                <span className="font-semibold">$19</span>
+                <span className="text-gray-500 dark:text-gray-100">Grey Chair</span>
+                <span className="font-semibold dark:text-white">$19</span>
               </div>
             );
           })}
@@ -40,7 +40,8 @@ const Home: NextPage = () => {
         <button
           className="mx-auto mt-5 flex w-2/4 justify-center rounded-xl bg-blue-500
           p-3 text-center text-white transition-colors
-          hover:bg-teal-500 hover:text-black focus:bg-red-500 active:bg-yellow-500"
+          hover:bg-teal-500 hover:text-black focus:bg-red-500 active:bg-yellow-500
+          dark:border dark:border-white dark:bg-black dark:hover:bg-white dark:hover:text-black"
         >
           Checkout
         </button>
