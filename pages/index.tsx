@@ -58,7 +58,6 @@ const Home: NextPage = () => {
         className="fixed bottom-24 right-5 rounded-full bg-orange-400 p-4 text-white shadow-xl
          transition-colors hover:bg-orange-500"
       >
-        {" "}
         <svg
           className="h-6 w-6"
           xmlns="http://www.w3.org/2000/svg"
