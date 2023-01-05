@@ -8,5 +8,6 @@ module.exports = {
   // darkMode를 class로 변경하면 수동으로 다크모드를 적용할 수 있다.
   // 부모요소 className에 dark가 있으면 자식요소들은 dark Modifiers를 이용해 다크모드를 적용할 수 있다.
   darkMode: "media", // class
-  plugins: [],
+  // @tailwindcss/forms은 Tailwind에서 기본적으로 제공하는 form 스타일이다.
+  plugins: [require("@tailwindcss/forms")],
 };
