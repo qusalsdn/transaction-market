@@ -28,9 +28,9 @@ const ItemDetail: NextPage = () => {
           <div className="flex items-center justify-between space-x-2">
             {/* flex-1을 적용하면 다른 형제 요소바다 flex가 강해진다. flex-1을 적용하면 줄어드는 걸 방지할 수 있다. */}
             <button
-              className="flex-1 rounded-md bg-orange-400 py-3 text-white transition-colors
-             hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400
-              focus:ring-offset-2"
+              className="flex-1 rounded-md bg-orange-400 py-3 font-bold text-white
+             transition-colors hover:bg-orange-500 focus:outline-none focus:ring-2
+              focus:ring-orange-400 focus:ring-offset-2"
             >
               Talk to seller
             </button>
