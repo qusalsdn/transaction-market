@@ -35,8 +35,8 @@ const ItemDetail: NextPage = () => {
               Talk to seller
             </button>
             <button
-              className="flex items-center justify-center rounded-md p-3
-             text-red-400 transition-colors hover:bg-gray-100 hover:text-red-500"
+              className="flex items-center justify-center rounded-md p-3 text-red-400 transition-colors
+               hover:bg-gray-100 hover:text-red-500"
             >
               <svg
                 className="h-6 w-6 "

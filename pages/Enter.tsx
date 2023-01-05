@@ -37,7 +37,7 @@ export default function Enter() {
         </div>
 
         <form className="mt-8 flex flex-col">
-          <label className="text-sm font-bold text-gray-700">
+          <label htmlFor="input" className="text-sm font-bold text-gray-700">
             {method === "email" ? "Email address" : null}
             {method === "phone" ? "Phone number" : null}
           </label>
@@ -46,10 +46,11 @@ export default function Enter() {
             {/* appearance-none은 input이 갖고 있을지도 모른는 기본 스타일을 리셋해준다. */}
             {method === "email" ? (
               <input
+                id="input"
                 type="email"
                 className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2
-                 placeholder-gray-400 focus:border-orange-400 focus:shadow-md
-                  focus:outline-none focus:ring-orange-400"
+                 placeholder-gray-400 focus:border-orange-400 focus:shadow-md focus:outline-none
+                  focus:ring-orange-400"
                 required
               />
             ) : null}
@@ -63,10 +64,11 @@ export default function Enter() {
                   +82
                 </span>
                 <input
+                  id="input"
                   type="number"
-                  className="w-full appearance-none rounded-md rounded-l-none border border-gray-300 px-3
-                 py-2 placeholder-gray-400 focus:border-orange-400
-                  focus:shadow-md focus:outline-none focus:ring-orange-400"
+                  className="w-full appearance-none rounded-md rounded-l-none border border-gray-300
+                   px-3 py-2 placeholder-gray-400 focus:border-orange-400 focus:shadow-md
+                    focus:outline-none focus:ring-orange-400"
                   required
                 />
               </div>
@@ -75,8 +77,8 @@ export default function Enter() {
           <button
             className="focus mt-6 rounded-md border
            border-transparent bg-orange-400 py-2 px-4 font-bold text-white shadow-md
-            hover:bg-orange-500 focus:outline-none focus:ring-2
-             focus:ring-orange-400 focus:ring-offset-2"
+            hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400
+             focus:ring-offset-2"
           >
             {method === "email" ? "Get login link" : null}
             {method === "phone" ? "Get one-time password" : null}

@@ -55,8 +55,8 @@ const Home: NextPage = () => {
       ))}
 
       <button
-        className="fixed bottom-24 right-5 rounded-full bg-orange-400 p-4
-       text-white shadow-xl transition-colors hover:bg-orange-500"
+        className="fixed bottom-24 right-5 rounded-full bg-orange-400 p-4 text-white shadow-xl
+         transition-colors hover:bg-orange-500"
       >
         {" "}
         <svg
