@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Upload: NextPage = () => {
   return (
-    <div className="px-4 py-16">
+    <div className="px-4 py-10">
       <div>
         {/* input 태그를 label 태그 안에 넣으면 input을 숨길 수 있다. */}
         <label
@@ -37,8 +37,8 @@ const Upload: NextPage = () => {
           <input
             id="price"
             className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-7
-             placeholder-gray-400 focus:border-orange-400 focus:shadow-md focus:outline-none
-              focus:ring-orange-400"
+             placeholder-gray-400 transition-colors focus:border-orange-400 focus:shadow-md
+              focus:outline-none focus:ring-orange-400"
             type="text"
             placeholder="0.00"
           />
@@ -53,15 +53,15 @@ const Upload: NextPage = () => {
 
         <textarea
           className="mt-1 w-full rounded-md border-gray-400 shadow-md
-           focus:border-orange-400 focus:ring-orange-300"
+           transition-colors focus:border-orange-400 focus:ring-orange-300"
           rows={5}
         />
       </div>
 
       <button
         className="focus mt-5 w-full rounded-md border border-transparent bg-orange-400 py-2 px-4
-         font-bold text-white shadow-md hover:bg-orange-500 focus:outline-none focus:ring-2
-          focus:ring-orange-400 focus:ring-offset-2"
+         font-bold text-white shadow-md transition-colors hover:bg-orange-500 focus:outline-none
+          focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
       >
         Upload product
       </button>
