@@ -1,30 +1,11 @@
-import type { NextPage } from "next";
+import { NextPage } from "next";
+import Link from "next/link";
 import Layout from "../../components/layout";
 
-const Upload: NextPage = () => {
+const Create: NextPage = () => {
   return (
     <Layout canGoBack>
-      <div className="space-y-5 px-4 pt-1">
-        <div>
-          {/* input 태그를 label 태그 안에 넣으면 input을 숨길 수 있다. */}
-          <label
-            className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2
-           border-dashed border-gray-300 py-6 text-gray-800 transition-colors
-            hover:border-orange-400 hover:text-orange-400"
-          >
-            <svg className="h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-              <path
-                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-
-            <input type="file" className="hidden" />
-          </label>
-        </div>
-
+      <div className="space-y-5 px-4">
         <div>
           <label htmlFor="name" className="mb-1 block text-gray-800">
             Name
@@ -83,11 +64,11 @@ const Upload: NextPage = () => {
          font-bold text-white shadow-md transition-colors hover:bg-orange-500 focus:outline-none
           focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
         >
-          Upload item
+          Go live
         </button>
       </div>
     </Layout>
   );
 };
 
-export default Upload;
+export default Create;
