@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 10px; /* 스크롤바의 너비 */
+}
+
+::-webkit-scrollbar-thumb {
+  height: 10%; /* 스크롤바의 길이 */
+  background: gray; /* 스크롤바의 색상 */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1); /*스크롤바 뒷 배경 색상*/
+  border-radius: 5px;
+}
