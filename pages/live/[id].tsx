@@ -1,263 +1,42 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Layout from "../../components/layout";
+import Message from "../../components/message";
 
-const LiveDetail: NextPage = () => {
+const Stream: NextPage = () => {
   return (
     <Layout canGoBack>
-      <div className="space-y-4 px-4">
-        {/* aspect-video를 사용하면 높이가 즉시 비디오 비율에 맞게 자동으로 조정이 된다. */}
-        {/* 만약 높이를 신경쓰고 싶지 않다면 그냥 aspect-square를 사용하면 된다. */}
-        <div className="aspect-video w-full rounded-md bg-slate-400 shadow-md" />
-        <h3 className="mt-2 text-2xl font-bold text-gray-800">Let&apos;s try prtatos</h3>
-
-        <div className="mt-10 h-[50vh] space-y-4 overflow-y-scroll px-4 py-10 pb-16">
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-2">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            {/* w-1/2는 width:50%이다. */}
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>Hi how much are you selling them for?</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row-reverse items-start space-x-2 space-x-reverse">
-            <div className="h-8 w-8 rounded-full bg-slate-400" />
-            <div
-              className="w-1/2 rounded-md border-2 border-orange-400 p-2 text-sm text-gray-800
-         shadow-md"
-            >
-              <p>I want ￦20,000</p>
-            </div>
-          </div>
+      <div className="space-y-4 py-10  px-4">
+        <div className="aspect-video w-full rounded-md bg-slate-300 shadow-sm" />
+        <div className="mt-5">
+          <h1 className="text-3xl font-bold text-gray-900">Galaxy S50</h1>
+          <span className="mt-3 block text-2xl font-bold text-gray-900">$140</span>
+          <p className=" my-6 text-gray-700">
+            My money&apos;s in that office, right? If she start giving me some bullshit about it ain&apos;t there, and
+            we got to go someplace else and get it, I&apos;m gonna shoot you in the head then and there. Then I&apos;m
+            gonna shoot that bitch in the kneecaps, find out where my goddamn money is. She gonna tell me too. Hey, look
+            at me when I&apos;m talking to you, motherfucker. You listen: we go in there, and that ni**a Winston or
+            anybody else is in there, you the first motherfucker to get shot. You understand?
+          </p>
         </div>
 
-        <div className="fixed inset-x-0 bottom-5 mx-auto w-full max-w-md">
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              className="w-full rounded-full border-gray-300 pr-12 shadow-md
-             transition-colors focus:border-orange-400 focus:outline-none focus:ring-orange-400"
-            />
-            <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
-              <button
-                className="flex items-center rounded-full bg-orange-400 px-3 text-sm
-             text-white transition-colors hover:bg-orange-500 focus:ring-2 focus:ring-orange-500
-              focus:ring-offset-2"
-              >
-                &rarr;
-              </button>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
+          <div className="h-[50vh] space-y-4 overflow-y-scroll py-10  px-4 pb-16">
+            <Message message="물건 얼마에요?" />
+            <Message message="5만원이여" reversed />
+            <Message message="에반데;;" />
+          </div>
+          <div className="fixed inset-x-0 bottom-0  bg-white py-2">
+            <div className="relative mx-auto flex w-full  max-w-md items-center">
+              <input
+                type="text"
+                className="w-full rounded-full border-gray-300 pr-12 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
+              />
+              <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">
+                <button className="flex items-center rounded-full bg-orange-500 px-3 text-sm text-white hover:bg-orange-600 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                  &rarr;
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -266,4 +45,4 @@ const LiveDetail: NextPage = () => {
   );
 };
 
-export default LiveDetail;
+export default Stream;

@@ -1,34 +1,29 @@
 import type { NextPage } from "next";
-import Link from "next/link";
 import Layout from "../../components/layout";
+import TextArea from "../../components/textarea";
 
 const CommunityPostDetail: NextPage = () => {
   return (
     <Layout canGoBack>
-      <div className="-mt-3 px-4">
-        <span
-          className="my-3 inline-flex items-center rounded-full bg-gray-100 py-0.5 text-xs
-           font-medium text-gray-800"
-        >
+      <div>
+        <span className="my-3 ml-4 inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
           동네질문
         </span>
 
-        <div className="mb-3 flex cursor-pointer items-center space-x-3">
+        <div className="flex cursor-pointer items-center space-x-3 px-4 pb-3">
           <div className="h-10 w-10 rounded-full bg-slate-300" />
           <div>
-            <p className="text-sm font-bold text-gray-700">Steve Jebs</p>
-            <Link href={"/profile"}>
-              <p className="text-xs text-gray-500">View profile &rarr;</p>
-            </Link>
+            <p className="text-sm font-medium text-gray-700">미누</p>
+            <p className="text-xs font-medium text-gray-500">프로필 &rarr;</p>
           </div>
         </div>
 
         <div>
-          <div className="mt-2 text-gray-800">
-            <span className="font-bold">Q. What is the best mandu restaurant?</span>
+          <div className="mt-2 px-4 text-gray-700">
+            <span className="font-medium text-orange-500">Q </span>
+            <span>동네 맛집 좀 알려주세요!</span>
           </div>
-
-          <div className="flex w-full space-x-5 border-b-[1px] pt-1 pb-3 text-gray-700">
+          <div className="mt-1 flex w-full space-x-5 border-b-[1px] px-4 py-2.5  text-gray-700">
             <span className="flex items-center space-x-2 text-sm">
               <svg
                 className="h-4 w-4"
@@ -66,52 +61,23 @@ const CommunityPostDetail: NextPage = () => {
           </div>
         </div>
 
-        <div className="my-5 space-y-5">
+        <div className="my-5 space-y-5 px-4">
           <div className="flex items-start space-x-3">
             <div className="h-8 w-8 rounded-full bg-slate-200" />
             <div>
-              <span className="block text-sm font-bold text-gray-700">Steve Jebs</span>
+              <span className="block text-sm font-medium text-gray-700">미누</span>
               <span className="block text-xs text-gray-500 ">2시간 전</span>
-              <p className="mt-2 text-gray-700">The best mandu restaurant is the one next to my house.</p>
+              <p className="mt-2 text-gray-700">이 동네에는 맛집이 별로 없어요 ㅠ</p>
             </div>
           </div>
         </div>
 
-        <div className="my-5 space-y-5">
-          <div className="flex items-start space-x-3">
-            <div className="h-8 w-8 rounded-full bg-slate-200" />
-            <div>
-              <span className="block text-sm font-bold text-gray-700">Steve Jebs</span>
-              <span className="block text-xs text-gray-500 ">2시간 전</span>
-              <p className="mt-2 text-gray-700">The best mandu restaurant is the one next to my house.</p>
-            </div>
-          </div>
+        <div className="px-4">
+          <TextArea name="description" placeholder="답변을 입력하세요." required />
+          <button className="mt-2 w-full rounded-md border border-transparent bg-orange-400 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ">
+            Reply
+          </button>
         </div>
-
-        <div className="my-5 space-y-5">
-          <div className="flex items-start space-x-3">
-            <div className="h-8 w-8 rounded-full bg-slate-200" />
-            <div>
-              <span className="block text-sm font-bold text-gray-700">Steve Jebs</span>
-              <span className="block text-xs text-gray-500 ">2시간 전</span>
-              <p className="mt-2 text-gray-700">The best mandu restaurant is the one next to my house.</p>
-            </div>
-          </div>
-        </div>
-
-        <textarea
-          className="mt-1 w-full rounded-md border-gray-300 shadow-sm transition-colors
-           focus:border-orange-400 focus:ring-orange-400"
-          rows={4}
-          placeholder="Answer this question!"
-        />
-        <button
-          className="mt-2 w-full rounded-md border border-transparent bg-orange-400 py-2 text-sm
-           font-bold text-white shadow-sm transition-colors hover:bg-orange-500 focus:outline-none
-            focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-        >
-          Reply
-        </button>
       </div>
     </Layout>
   );

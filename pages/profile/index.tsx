@@ -4,100 +4,85 @@ import Layout from "../../components/layout";
 
 const Profile: NextPage = () => {
   return (
-    <Layout title="프로필" hasTabBar>
+    <Layout hasTabBar title="나의 캐럿">
       <div className="px-4">
         <div className="mt-4 flex items-center space-x-3">
-          <div className="h-16 w-16 rounded-full bg-slate-400" />
+          <div className="h-16 w-16 rounded-full bg-slate-500" />
           <div className="flex flex-col">
-            <span className="font-bold text-gray-800">Steve Jebs</span>
-            <Link href={"/profile/edit"}>
-              <span className="cursor-pointer text-sm text-gray-700">Edit profile &rarr;</span>
+            <span className="font-medium text-gray-900">미누</span>
+            <Link href="/profile/edit" className="text-sm text-gray-700">
+              내 정보 수정 &rarr;
             </Link>
           </div>
         </div>
 
         <div className="mt-10 flex justify-around">
-          <Link href={"/profile/sold"}>
-            <div className="flex cursor-pointer flex-col items-center">
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400
-           text-white"
+          <Link href="/profile/sold" className="flex flex-col items-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  ></path>
-                </svg>
-              </div>
-              <span className="mt-2 text-sm font-bold text-gray-800">판매내역</span>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                ></path>
+              </svg>
             </div>
+            <span className="mt-2 text-sm font-medium text-gray-700">판매내역</span>
           </Link>
 
-          <Link href={"/profile/bought"}>
-            <div className="flex cursor-pointer flex-col items-center">
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400
-           text-white"
+          <Link href="/profile/bought" className="flex flex-col items-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                  ></path>
-                </svg>
-              </div>
-              <span className="mt-2 text-sm font-bold text-gray-800">구매내역</span>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                ></path>
+              </svg>
             </div>
+            <span className="mt-2 text-sm font-medium text-gray-700">구매내역</span>
           </Link>
 
-          <Link href={"/profile/loved"}>
-            <div className="flex cursor-pointer flex-col items-center">
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400
-           text-white"
+          <Link href="/profile/loved" className="flex flex-col items-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white">
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  ></path>
-                </svg>
-              </div>
-              <span className="mt-2 text-sm font-bold text-gray-800">관심목록</span>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                ></path>
+              </svg>
             </div>
+            <span className="mt-2 text-sm font-medium text-gray-700">관심목록</span>
           </Link>
         </div>
 
         <div className="mt-12">
           <div className="flex items-center space-x-4">
-            <div className="h-12 w-12 rounded-full bg-slate-400" />
+            <div className="h-12 w-12 rounded-full bg-slate-500" />
             <div>
-              <h4 className="text-sm font-bold text-gray-800">미누</h4>
+              <h4 className="text-sm font-bold text-gray-800">니꼬</h4>
               <div className="flex items-center">
                 <svg
                   className="h-5 w-5 text-yellow-400"
@@ -147,8 +132,7 @@ const Profile: NextPage = () => {
               </div>
             </div>
           </div>
-
-          <div className="mt-4 text-sm text-gray-700">
+          <div className="mt-4 text-sm text-gray-600">
             <p>
               Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while
               I&apos;m in a transitional period so I don&apos;t wanna kill you, I wanna help you. But I can&apos;t give

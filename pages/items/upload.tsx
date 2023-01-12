@@ -1,16 +1,17 @@
 import type { NextPage } from "next";
+import Button from "../../components/button";
+import Input from "../../components/input";
 import Layout from "../../components/layout";
+import TextArea from "../../components/textarea";
 
 const Upload: NextPage = () => {
   return (
-    <Layout canGoBack>
-      <div className="space-y-5 px-4 pt-1">
+    <Layout canGoBack title="내 물건 팔기">
+      <form className="space-y-4 p-4">
         <div>
-          {/* input 태그를 label 태그 안에 넣으면 input을 숨길 수 있다. */}
           <label
-            className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2
-           border-dashed border-gray-300 py-6 text-gray-800 transition-colors
-            hover:border-orange-400 hover:text-orange-400"
+            className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed
+           border-gray-300 text-gray-600 transition-colors hover:border-orange-500 hover:text-orange-500"
           >
             <svg className="h-12 w-12" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
               <path
@@ -20,72 +21,15 @@ const Upload: NextPage = () => {
                 strokeLinejoin="round"
               />
             </svg>
-
-            <input type="file" className="hidden" />
+            <input className="hidden" type="file" />
           </label>
         </div>
 
-        <div>
-          <label htmlFor="name" className="mb-1 block text-gray-800">
-            Name
-          </label>
-          <div className="relative flex items-center rounded-md shadow-md">
-            <input
-              id="name"
-              className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 
-             placeholder-gray-400 transition-colors focus:border-orange-400 focus:shadow-md
-              focus:outline-none focus:ring-orange-400"
-              type="text"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="price" className="mb-1 block text-gray-800">
-            Price
-          </label>
-          <div className="relative flex items-center rounded-md shadow-md">
-            <div
-              className="pointer-events-none absolute left-0 flex items-center
-           justify-center pl-3"
-            >
-              <span className="text-gray-500">$</span>
-            </div>
-            <input
-              id="price"
-              className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-7
-             placeholder-gray-400 transition-colors focus:border-orange-400 focus:shadow-md
-              focus:outline-none focus:ring-orange-400"
-              type="text"
-              placeholder="0.00"
-            />
-            <div className="pointer-events-none absolute right-0 ml-5 flex items-center pr-3">
-              <span className="text-gray-500">USD</span>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="description" className="mb-1 block text-gray-800">
-            Description
-          </label>
-
-          <textarea
-            id="description"
-            className="mt-1 w-full rounded-md border-gray-400 shadow-md
-           transition-colors focus:border-orange-400 focus:ring-orange-300"
-            rows={5}
-          />
-        </div>
-
-        <button
-          className="focus mt-5 w-full rounded-md border border-transparent bg-orange-400 py-2 px-4
-         font-bold text-white shadow-md transition-colors hover:bg-orange-500 focus:outline-none
-          focus:ring-2 focus:ring-orange-400 focus:ring-offset-2"
-        >
-          Upload item
-        </button>
-      </div>
+        <Input required label="상품명" name="name" type="text" />
+        <Input required label="금액" placeholder="0" name="price" type="text" kind="price" />
+        <TextArea name="description" label="설명" />
+        <Button text="완료" />
+      </form>
     </Layout>
   );
 };
