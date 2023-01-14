@@ -1,3 +1,7 @@
+// prisma init 명령어로 prisma 기본 파일들 생성
+// pscale database create (db이름) --region (지역이름) 명령어로 db를 생성할 수 있다.
+// pscale conntect (db이름) 명령어를 통해 db와 보안적으로 연결을 할 수 있다.
+// npx prisma db push 명령어를 통해 db를 planetscale에 push 할 수 있다.
 // Vitess는 foreugn key constraunt(제약)을 지원하지 않는다.
 generator client {
   provider = "prisma-client-js"
