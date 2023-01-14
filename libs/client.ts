@@ -4,9 +4,4 @@ import { PrismaClient } from "@prisma/client";
 // 위의 명령어로 인해 자동완성 기능을 사용할 수 있다.
 const prisma = new PrismaClient();
 
-prisma.user.create({
-  data: {
-    email: "minu@gmail.com",
-    name: "minu",
-  },
-});
+export default prisma;
