@@ -1,61 +1,15 @@
-import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const React_Hook_form = () => {
-  const [userName, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const onUsernameChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setUsername(value);
-  };
-
-  const onEmailChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setEmail(value);
-  };
-  console.log(userName, email, password);
-
-  const onPasswordChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value },
-    } = event;
-    setPassword(value);
-  };
-
-  const onSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log(userName, email, password);
-  };
+  // register 함수는 input을 state와 연결시켜 주는 역할을 한다.
+  const { register, watch } = useForm();
+  console.log(watch());
 
   return (
-    <form onSubmit={onSubmit}>
-      <input
-        type="text"
-        placeholder="Username"
-        required
-        value={userName}
-        onChange={onUsernameChange}
-        minLength={5}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        required
-        value={email}
-        onChange={onEmailChange}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        required
-        value={password}
-        onChange={onPasswordChange}
-      />
+    <form>
+      <input type="text" placeholder="Username" required {...register("userName")} />
+      <input type="email" placeholder="Email" required {...register("email")} />
+      <input type="password" placeholder="Password" required {...register("passWord")} />
       <input type="submit" value="Create Account" />
     </form>
   );
