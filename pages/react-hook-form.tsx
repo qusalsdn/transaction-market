@@ -5,6 +5,7 @@ interface LoginForm {
   userName: string;
   email: string;
   passWord: string;
+  errors?: string;
 }
 
 const React_Hook_form = () => {
@@ -13,11 +14,17 @@ const React_Hook_form = () => {
     register,
     watch,
     handleSubmit,
+    setError,
+    reset,
+    resetField,
     formState: { errors },
   } = useForm<LoginForm>({ mode: "onChange" }); // 기본값은 onsubmit으로 설정되어 있다.
 
   const onValid = (data: LoginForm) => {
     console.log("valid!");
+    // setError("userName", { message: "이미 존재하는 유저이름입니다." });
+    // reset();
+    resetField("passWord");
   };
 
   const onInValid = (errors: FieldErrors) => {
@@ -25,7 +32,7 @@ const React_Hook_form = () => {
   };
 
   console.log(errors);
-  //   console.log(watch());
+  console.log(watch("email"));
 
   return (
     // handleSubmit 함수에는 2가지 인자를 갖는데 1번째 인자는 form이 유효할 때 실행할 함수이고 2번째 인자는 form이 유효하지 않을 때 실행할 함수이다.
@@ -39,6 +46,7 @@ const React_Hook_form = () => {
           minLength: { message: "5글자 이상이어야 합니다.", value: 5 },
         })}
       />
+      {errors.userName?.message}
       <input
         type="email"
         placeholder="Email"
@@ -58,6 +66,7 @@ const React_Hook_form = () => {
         {...register("passWord", { required: "비밀번호는 필수 입력사항합니다." })}
       />
       <input type="submit" value="Create Account" />
+      {errors.errors?.message}
     </form>
   );
 };
