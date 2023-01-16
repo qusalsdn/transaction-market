@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
 import { useRouter } from "next/router";
 
 interface LayoutProps {
@@ -27,11 +27,18 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
             </svg>
           </button>
         ) : null}
-        {title ? <span className={cls(canGoBack ? "mx-auto" : "", "")}>{title}</span> : null}
+        {title ? (
+          <span className={cls(canGoBack ? "mx-auto" : "", "")}>{title}</span>
+        ) : null}
       </div>
 
       <div className={cls("pt-12", hasTabBar ? "pb-24" : "")}>{children}</div>
@@ -42,7 +49,9 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href="/"
             className={cls(
               "flex flex-col items-center space-y-2 ",
-              router.pathname === "/" ? "text-orange-400" : "transition-colors hover:text-gray-500"
+              router.pathname === "/"
+                ? "text-orange-400"
+                : "transition-colors hover:text-gray-500"
             )}
           >
             <svg
@@ -66,7 +75,9 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href="/community"
             className={cls(
               "flex flex-col items-center space-y-2 ",
-              router.pathname === "/community" ? "text-orange-400" : "transition-colors hover:text-gray-500"
+              router.pathname === "/community"
+                ? "text-orange-400"
+                : "transition-colors hover:text-gray-500"
             )}
           >
             <svg
@@ -90,7 +101,9 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href="/chats"
             className={cls(
               "flex flex-col items-center space-y-2 ",
-              router.pathname === "/chats" ? "text-orange-400" : "transition-colors hover:text-gray-500"
+              router.pathname === "/chats"
+                ? "text-orange-400"
+                : "transition-colors hover:text-gray-500"
             )}
           >
             <svg
@@ -114,7 +127,9 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href="/live"
             className={cls(
               "flex flex-col items-center space-y-2 ",
-              router.pathname === "/live" ? "text-orange-400" : "transition-colors hover:text-gray-500"
+              router.pathname === "/live"
+                ? "text-orange-400"
+                : "transition-colors hover:text-gray-500"
             )}
           >
             <svg
@@ -138,7 +153,9 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
             href="/profile"
             className={cls(
               "flex flex-col items-center space-y-2 ",
-              router.pathname === "/profile" ? "text-orange-400" : "transition-colors hover:text-gray-500"
+              router.pathname === "/profile"
+                ? "text-orange-400"
+                : "transition-colors hover:text-gray-500"
             )}
           >
             <svg

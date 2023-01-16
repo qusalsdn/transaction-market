@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "../../../libs/client";
+import prisma from "../../../libs/server/client";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "post") {
