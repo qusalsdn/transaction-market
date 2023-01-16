@@ -30,6 +30,7 @@ const Enter: NextPage = () => {
   const onValid = (data: EnterForm) => {
     enter(data);
   };
+  console.log(loading, data, error);
 
   return (
     <div className="mt-16 px-4">

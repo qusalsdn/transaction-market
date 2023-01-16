@@ -2,10 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../libs/server/client";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "post") {
+  if (req.method !== "POST") {
     res.status(401).end();
   }
-  console.log(req.body.email);
+  console.log(req.body);
   res.status(200).end();
 };
 
