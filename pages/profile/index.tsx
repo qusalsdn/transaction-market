@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import Layout from "../../components/layout";
+import Layout from "@components/layout";
 
 const Profile: NextPage = () => {
   return (
@@ -134,10 +134,11 @@ const Profile: NextPage = () => {
           </div>
           <div className="mt-4 text-sm text-gray-600">
             <p>
-              Normally, both your asses would be dead as fucking fried chicken, but you happen to pull this shit while
-              I&apos;m in a transitional period so I don&apos;t wanna kill you, I wanna help you. But I can&apos;t give
-              you this case, it don&apos;t belong to me. Besides, I&apos;ve already been through too much shit this
-              morning over this case to hand it over to your dumb ass.
+              Normally, both your asses would be dead as fucking fried chicken, but you
+              happen to pull this shit while I&apos;m in a transitional period so I
+              don&apos;t wanna kill you, I wanna help you. But I can&apos;t give you this
+              case, it don&apos;t belong to me. Besides, I&apos;ve already been through
+              too much shit this morning over this case to hand it over to your dumb ass.
             </p>
           </div>
         </div>

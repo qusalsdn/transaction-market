@@ -1,6 +1,6 @@
+import withHandler from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "../../../libs/server/client";
-import withHandler from "../../../libs/server/withHandler";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(req.body);
