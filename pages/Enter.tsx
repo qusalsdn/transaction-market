@@ -11,6 +11,7 @@ interface EnterForm {
 }
 
 const Enter: NextPage = () => {
+  const [submitting, setSubmitting] = useState(false);
   const { register, reset, handleSubmit } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
 
@@ -25,7 +26,15 @@ const Enter: NextPage = () => {
   };
 
   const onValid = (data: EnterForm) => {
-    console.log(data);
+    setSubmitting(true);
+    fetch("api/users/enter", {
+      method: "POST",
+      body: JSON.stringify(data),
+      // headers를 추가해주는 이유는 백엔드에서 req.body.email과 같이 특정 body 값을 얻기 위해서이다.
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(() => setSubmitting(false));
   };
 
   return (
@@ -80,7 +89,9 @@ const Enter: NextPage = () => {
             />
           ) : null}
           {method === "email" ? <Button text={"로그인 링크 가져오기"} /> : null}
-          {method === "phone" ? <Button text={"인증번호 보내기"} /> : null}
+          {method === "phone" ? (
+            <Button text={submitting ? "로딩중..." : "인증번호 보내기"} />
+          ) : null}
         </form>
 
         <div className="mt-8">
