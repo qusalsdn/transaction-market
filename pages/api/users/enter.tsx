@@ -4,19 +4,39 @@ import client from "@libs/server/client";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, phone } = req.body;
-  const payload = email ? { email } : { phone: +phone };
+  const user = email ? { email } : { phone: +phone };
+  const payload = Math.floor(100000 + Math.random() * 900000) + "";
   // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
-  const user = await client.user.upsert({
-    where: {
-      ...payload,
+  // const user = await client.user.upsert({
+  //   where: {
+  //     ...payload,
+  //   },
+  //   create: {
+  //     name: "Anonymous",
+  //     ...payload,
+  //   },
+  //   update: {},
+  // });
+
+  const token = await client.token.create({
+    data: {
+      payload,
+      user: {
+        // where의 조건을 만족하는 user가 있는 경우에는 token과 연결하고 없으면 create의 프로퍼티를 가지고 user를 만들고 token과 연결한다.
+        // 이로 인해 db에서 유저를 찾을 필요 없이 모든 걸 한 번에 처리할 수 있다.
+        connectOrCreate: {
+          where: {
+            ...user,
+          },
+          create: {
+            name: "Anonymous",
+            ...user,
+          },
+        },
+      },
     },
-    create: {
-      name: "Anonymous",
-      ...payload,
-    },
-    update: {},
   });
-  console.log(user);
+  console.log(token);
 
   // if (email) {
   //   user = await client.user.findUnique({
