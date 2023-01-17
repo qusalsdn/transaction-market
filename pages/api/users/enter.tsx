@@ -1,11 +1,12 @@
-import withHandler from "@libs/server/withHandler";
+import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const { email, phone } = req.body;
-  const user = email ? { email } : { phone: +phone };
-  const payload = Math.floor(100000 + Math.random() * 900000) + "";
+  const user = email ? { email } : phone ? { phone: +phone } : null;
+  if (!user) return res.status(400).json({ ok: false });
+  const payload = Math.floor(100000 + Math.random() * 900000) + ""; // + ""을 붙이면 문자열로 변환된다.
   // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
   // const user = await client.user.upsert({
   //   where: {
@@ -75,7 +76,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //   }
   //   console.log(user);
   // }
-  res.status(200).end();
+  res.json({
+    ok: true,
+  });
 };
 
 export default withHandler("POST", handler);
