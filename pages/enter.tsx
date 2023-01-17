@@ -13,7 +13,6 @@ interface EnterForm {
 
 const Enter: NextPage = () => {
   const [enter, { loading, data, error }] = useMutation("api/users/enter");
-  const [submitting, setSubmitting] = useState(false);
   const { register, reset, handleSubmit } = useForm<EnterForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
 
@@ -28,6 +27,7 @@ const Enter: NextPage = () => {
   };
 
   const onValid = (data: EnterForm) => {
+    if (loading) return;
     enter(data);
   };
   console.log(loading, data, error);
@@ -83,9 +83,11 @@ const Enter: NextPage = () => {
               register={register("phone", { required: true })}
             />
           ) : null}
-          {method === "email" ? <Button text={"로그인 링크 가져오기"} /> : null}
+          {method === "email" ? (
+            <Button text={loading ? "로딩중..." : "로그인 링크 가져오기"} />
+          ) : null}
           {method === "phone" ? (
-            <Button text={submitting ? "로딩중..." : "인증번호 보내기"} />
+            <Button text={loading ? "로딩중..." : "인증번호 보내기"} />
           ) : null}
         </form>
 
