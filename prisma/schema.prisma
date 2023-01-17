@@ -18,7 +18,7 @@ datasource db {
 model User {
   // @default(autoincrement())을 추가하면 인덱스가 추가될 때마다 자동으로 증가한다.
   id        Int      @id @default(autoincrement())
-  phone     Int?     @unique
+  phone     BigInt?  @unique
   email     String?  @unique
   name      String
   avatar    String?
@@ -32,7 +32,7 @@ model User {
 model Token {
   id        Int      @id @default(autoincrement())
   payload   String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade로 설정하면 User(부모)가 삭제될 때 Token도 같이 삭제된다.
   // 아래의 userId는 User 모델의 id이다.
   userId    Int
   createdAt DateTime @default(now())

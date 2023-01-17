@@ -11,9 +11,22 @@ interface EnterForm {
   phone?: string;
 }
 
+interface TokenForm {
+  token: string;
+}
+
+interface MutationResult {
+  ok: boolean;
+}
+
 const Enter: NextPage = () => {
-  const [enter, { loading, data, error }] = useMutation("api/users/enter");
+  const [enter, { loading, data, error }] =
+    useMutation<MutationResult>("api/users/enter");
+  const [confirmToken, { loading: tokenLoading, data: tokenData, error: tokenError }] =
+    useMutation<MutationResult>("api/users/confirm");
   const { register, reset, handleSubmit } = useForm<EnterForm>();
+  const { register: tokenRegister, handleSubmit: tokenHandleSubmit } =
+    useForm<TokenForm>();
   const [method, setMethod] = useState<"email" | "phone">("email");
 
   const onEmailClick = () => {
@@ -30,66 +43,91 @@ const Enter: NextPage = () => {
     if (loading) return;
     enter(data);
   };
-  console.log(loading, data, error);
+
+  const onTokenValid = (data: TokenForm) => {
+    if (tokenLoading) return;
+    confirmToken(data);
+  };
 
   return (
     <div className="mt-16 px-4">
       <h3 className="text-center text-3xl font-bold">로그인</h3>
       <div className="mt-12">
-        <div className="flex flex-col items-center">
-          <div className="mt-8  grid  w-full grid-cols-2 border-b ">
-            <button
-              className={cls(
-                "border-b-2 pb-4 text-sm font-bold",
-                method === "email"
-                  ? " border-orange-400 text-orange-400"
-                  : "border-transparent text-gray-500 hover:text-gray-400"
-              )}
-              onClick={onEmailClick}
-            >
-              이메일
-            </button>
-            <button
-              className={cls(
-                "border-b-2 pb-4 text-sm font-bold",
-                method === "phone"
-                  ? " border-orange-400 text-orange-400"
-                  : "border-transparent text-gray-500 hover:text-gray-400"
-              )}
-              onClick={onPhoneClick}
-            >
-              전화번호
-            </button>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit(onValid)} className="mt-8 flex flex-col space-y-4">
-          {method === "email" ? (
+        {data?.ok ? (
+          <form
+            onSubmit={tokenHandleSubmit(onTokenValid)}
+            className="mt-8 flex flex-col space-y-4"
+          >
             <Input
-              name="email"
-              label="이메일 주소"
-              type="email"
-              required
-              register={register("email", { required: true })}
-            />
-          ) : null}
-          {method === "phone" ? (
-            <Input
-              name="phone"
-              label="전화번호"
+              name="token"
+              label="인증번호"
               type="number"
-              kind="phone"
               required
-              register={register("phone", { required: true })}
+              register={tokenRegister("token", { required: true })}
             />
-          ) : null}
-          {method === "email" ? (
-            <Button text={loading ? "로딩중..." : "로그인 링크 가져오기"} />
-          ) : null}
-          {method === "phone" ? (
-            <Button text={loading ? "로딩중..." : "인증번호 보내기"} />
-          ) : null}
-        </form>
+            <Button text={tokenLoading ? "로딩중..." : "확인"} />
+          </form>
+        ) : (
+          <>
+            <div className="flex flex-col items-center">
+              <div className="mt-8  grid  w-full grid-cols-2 border-b ">
+                <button
+                  className={cls(
+                    "border-b-2 pb-4 text-sm font-bold",
+                    method === "email"
+                      ? " border-orange-400 text-orange-400"
+                      : "border-transparent text-gray-500 hover:text-gray-400"
+                  )}
+                  onClick={onEmailClick}
+                >
+                  이메일
+                </button>
+                <button
+                  className={cls(
+                    "border-b-2 pb-4 text-sm font-bold",
+                    method === "phone"
+                      ? " border-orange-400 text-orange-400"
+                      : "border-transparent text-gray-500 hover:text-gray-400"
+                  )}
+                  onClick={onPhoneClick}
+                >
+                  전화번호
+                </button>
+              </div>
+            </div>
+
+            <form
+              onSubmit={handleSubmit(onValid)}
+              className="mt-8 flex flex-col space-y-4"
+            >
+              {method === "email" ? (
+                <Input
+                  name="email"
+                  label="이메일 주소"
+                  type="email"
+                  required
+                  register={register("email", { required: true })}
+                />
+              ) : null}
+              {method === "phone" ? (
+                <Input
+                  name="phone"
+                  label="전화번호"
+                  type="number"
+                  kind="phone"
+                  required
+                  register={register("phone", { required: true })}
+                />
+              ) : null}
+              {method === "email" ? (
+                <Button text={loading ? "로딩중..." : "로그인 링크 가져오기"} />
+              ) : null}
+              {method === "phone" ? (
+                <Button text={loading ? "로딩중..." : "인증번호 보내기"} />
+              ) : null}
+            </form>
+          </>
+        )}
 
         <div className="mt-8">
           <div className="relative">
