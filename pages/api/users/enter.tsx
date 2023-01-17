@@ -1,23 +1,15 @@
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
+import twilio from "twilio";
+
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const { email, phone } = req.body;
   const user = email ? { email } : phone ? { phone: +phone } : null;
   if (!user) return res.status(400).json({ ok: false });
   const payload = Math.floor(100000 + Math.random() * 900000) + ""; // + ""을 붙이면 문자열로 변환된다.
-  // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
-  // const user = await client.user.upsert({
-  //   where: {
-  //     ...payload,
-  //   },
-  //   create: {
-  //     name: "Anonymous",
-  //     ...payload,
-  //   },
-  //   update: {},
-  // });
 
   const token = await client.token.create({
     data: {
@@ -37,7 +29,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       },
     },
   });
-  console.log(token);
+
+  if (phone) {
+    const message = await twilioClient.messages.create({
+      messagingServiceSid: process.env.TWILIO_MSID,
+      to: process.env.MY_NUMBER!, // MY_NUMBER라는 환경변수가 존재하지 않을 수도 있기 때문에 !를 붙여준다.
+      body: `인증번호 : ${payload}`,
+    });
+    console.log(message);
+  }
+
+  // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
+  // const user = await client.user.upsert({
+  //   where: {
+  //     ...payload,
+  //   },
+  //   create: {
+  //     name: "Anonymous",
+  //     ...payload,
+  //   },
+  //   update: {},
+  // });
 
   // if (email) {
   //   user = await client.user.findUnique({
