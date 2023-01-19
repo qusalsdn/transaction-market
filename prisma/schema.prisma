@@ -18,7 +18,7 @@ datasource db {
 model User {
   // @default(autoincrement())을 추가하면 인덱스가 추가될 때마다 자동으로 증가한다.
   id        Int      @id @default(autoincrement())
-  phone     BigInt?  @unique
+  phone     String?  @unique
   email     String?  @unique
   name      String
   avatar    String?
