@@ -8,7 +8,7 @@ const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const { email, phone } = req.body;
-  const user = email ? { email } : phone ? { phone: +phone } : null;
+  const user = email ? { email } : phone ? { phone: phone } : null;
   if (!user) return res.status(400).json({ ok: false });
   const payload = Math.floor(100000 + Math.random() * 900000) + ""; // + ""을 붙이면 문자열로 변환된다.
 
@@ -107,9 +107,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   //   }
   //   console.log(user);
   // }
-  res.json({
-    ok: true,
-  });
+  res.status(200).json({ ok: true });
 };
 
 export default withHandler("POST", handler);
