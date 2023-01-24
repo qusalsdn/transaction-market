@@ -3,11 +3,27 @@ import Button from "@components/button";
 import Input from "@components/input";
 import Layout from "@components/layout";
 import TextArea from "@components/textarea";
+import { useForm } from "react-hook-form";
+import useMutation from "@libs/client/useMutation";
+
+interface UploadProductForm {
+  name: string;
+  price: number;
+  description: string;
+}
 
 const Upload: NextPage = () => {
+  const { register, handleSubmit } = useForm<UploadProductForm>();
+  const [uploadProduct, { loading, data }] = useMutation("/api/products");
+
+  const onValid = (data: UploadProductForm) => {
+    if (loading) return;
+    uploadProduct(data);
+  };
+
   return (
     <Layout canGoBack title="내 물건 팔기">
-      <form className="space-y-4 p-4">
+      <form className="space-y-4 p-4" onSubmit={handleSubmit(onValid)}>
         <div>
           <label
             className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed
@@ -31,17 +47,28 @@ const Upload: NextPage = () => {
           </label>
         </div>
 
-        <Input required label="상품명" name="name" type="text" />
+        <Input
+          required
+          label="상품명"
+          name="name"
+          type="text"
+          register={register("name", { required: true })}
+        />
         <Input
           required
           label="금액"
-          placeholder="0"
           name="price"
           type="text"
           kind="price"
+          register={register("price", { required: true })}
         />
-        <TextArea name="description" label="설명" />
-        <Button text="완료" />
+        <TextArea
+          required
+          name="description"
+          label="설명"
+          register={register("description", { required: true })}
+        />
+        <Button text={loading ? "로딩중..." : "완료"} />
       </form>
     </Layout>
   );
