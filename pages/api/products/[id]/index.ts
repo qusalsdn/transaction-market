@@ -4,7 +4,10 @@ import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
-  const { id } = req.query;
+  const {
+    query: { id },
+    session: { user },
+  } = req;
   const product = await client.product.findUnique({
     where: {
       id: Number(id),
@@ -34,10 +37,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       },
     },
   });
+  const isLiked = Boolean(
+    await client.fav.findFirst({
+      where: {
+        productId: product?.id,
+        userId: user?.id,
+      },
+      //  select를 이용하면 db의 모든 필드를 가져오지 않고 선택한 필드만 가져오게 된다.
+      select: {
+        id: true,
+      },
+    })
+  );
   res.status(200).json({
     ok: true,
     product,
     relatedProducts,
+    isLiked,
   });
 };
 
