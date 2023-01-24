@@ -5,6 +5,9 @@ import Layout from "@components/layout";
 import TextArea from "@components/textarea";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
+import { useEffect } from "react";
+import { Product } from "@prisma/client";
+import { useRouter } from "next/router";
 
 interface UploadProductForm {
   name: string;
@@ -12,14 +15,28 @@ interface UploadProductForm {
   description: string;
 }
 
+interface UploadProductMutation {
+  ok: boolean;
+  // prisma는 자동으로 타입을 만들어주기 때문에 모든 타입들을 다시 재정의 할 필요가 없다.
+  product: Product;
+}
+
 const Upload: NextPage = () => {
   const { register, handleSubmit } = useForm<UploadProductForm>();
-  const [uploadProduct, { loading, data }] = useMutation("/api/products");
+  const [uploadProduct, { loading, data }] =
+    useMutation<UploadProductMutation>("/api/products");
+  const router = useRouter();
 
   const onValid = (data: UploadProductForm) => {
     if (loading) return;
     uploadProduct(data);
   };
+
+  useEffect(() => {
+    if (data?.ok) {
+      router.push(`/products/${data.product.id}`);
+    }
+  }, [data, router]);
 
   return (
     <Layout canGoBack title="내 물건 팔기">
