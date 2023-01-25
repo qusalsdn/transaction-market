@@ -22,12 +22,16 @@ interface ItemDetailResponse {
 const ItemDetail: NextPage = () => {
   const router = useRouter();
   // useSWR을 사용할 때 optional query는 아래처럼 구현한다.
-  const { data } = useSWR<ItemDetailResponse>(
+  const { data, mutate } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
 
   const onFavClick = () => {
+    if (!data) return;
+    // 첫 번째 인자는 변경하는 값 즉, 유저에게 화면UI의 변경사항을 보여주기 위한 부분이고 두 번째 인자는 변경이 일어난 후에 다시 API에서 데이터를 불러올지를 결정하는 부분이다.
+    // 정리하자면 첫 번째 인자에는 가짜 데이터를 놓고 두 번째 인자가 true면 SWR이 다시 진짜 데이터를 찾아서 불러온다.
+    mutate({ ...data, isLiked: !data.isLiked }, false);
     toggleFav({});
   };
 
