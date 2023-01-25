@@ -9,7 +9,11 @@ import { Product } from "@prisma/client";
 
 interface ProductsRespons {
   ok: boolean;
-  products: Product[];
+  products: (Product & {
+    _count: {
+      favs: number;
+    };
+  })[];
 }
 
 const Home: NextPage = () => {
@@ -28,7 +32,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={1}
+            hearts={product._count.favs}
           />
         ))}
 
