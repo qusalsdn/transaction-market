@@ -6,6 +6,7 @@ import { withApiSession } from "@libs/server/withSession";
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const {
     query: { id },
+    session: { user },
   } = req;
   const post = await client.post.findUnique({
     where: {
@@ -46,9 +47,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       error: "해당 게시물을 찾을 수 없습니다.",
     });
   }
+  const isWondering = Boolean(
+    await client.wondering.findFirst({
+      where: {
+        postId: Number(id),
+        userId: user?.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
   res.status(200).json({
     ok: true,
     post,
+    isWondering,
   });
 };
 
