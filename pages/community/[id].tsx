@@ -86,8 +86,10 @@ const CommunityPostDetail: NextPage = () => {
   useEffect(() => {
     if (answerData && answerData.ok) {
       reset();
+      // 아래의 코드로 인해 refech를 수행하게 되고 답변을 입력하면 실시간으로 답글이 달리는 것처럼 구현할 수 있다.
+      mutate();
     }
-  }, [answerData, reset]);
+  }, [answerData, reset, mutate]);
 
   return (
     <Layout canGoBack>
@@ -160,7 +162,9 @@ const CommunityPostDetail: NextPage = () => {
                 <span className="block text-sm font-medium text-gray-700">
                   {answer.user.name}
                 </span>
-                <span className="block text-xs text-gray-500 ">{answer.createdAt}</span>
+                <span className="block text-xs text-gray-500 ">
+                  {answer.createdAt?.toString()}
+                </span>
                 <p className="mt-2 text-gray-700">{answer.answer}</p>
               </div>
             </div>
