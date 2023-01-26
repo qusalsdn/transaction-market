@@ -27,6 +27,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     });
   }
   if (req.method === "GET") {
+    const {
+      query: { latitude, longitude },
+    } = req;
+    const parsedLatiude = parseFloat(latitude?.toString());
+    const parsedLongitude = parseFloat(longitude?.toString());
     const posts = await client.post.findMany({
       include: {
         user: {
@@ -41,6 +46,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
             wondering: true,
             answers: true,
           },
+        },
+      },
+      where: {
+        // gte: 크거나 같다.
+        // lte: 작거나 같다.
+        latitude: {
+          gte: parsedLatiude - 0.01,
+          lte: parsedLatiude + 0.01,
+        },
+        longitude: {
+          gte: parsedLongitude - 0.01,
+          lte: parsedLongitude + 0.01,
         },
       },
     });
