@@ -7,6 +7,7 @@ import useMutation from "@libs/client/useMutation";
 import { Post } from "@prisma/client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import useCoords from "@libs/client/useCoords";
 
 interface WriteForm {
   question: string;
@@ -21,11 +22,12 @@ const Write: NextPage = () => {
   const { register, handleSubmit } = useForm<WriteForm>();
   const [post, { data, loading }] = useMutation<WriteResponse>("/api/posts");
   const router = useRouter();
+  const { latitude, longitude } = useCoords();
 
   const onValid = (data: WriteForm) => {
-    // loading이 있을 경우 return을 하는 이유는 유저가 여러번 클릭하는 것을 방자하기 위해서이다.
+    // loading이 있을 경우 return을 하는 이유는 유저가 여러번 클릭하는 것을 방지하기 위해서이다.
     if (loading) return;
-    post(data);
+    post({ ...data, latitude, longitude });
   };
 
   useEffect(() => {
