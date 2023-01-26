@@ -30,8 +30,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     const {
       query: { latitude, longitude },
     } = req;
-    const parsedLatiude = parseFloat(latitude?.toString());
-    const parsedLongitude = parseFloat(longitude?.toString());
+    const parsedLatiude = parseFloat(`${latitude}`);
+    const parsedLongitude = parseFloat(`${longitude}`);
     const posts = await client.post.findMany({
       include: {
         user: {
