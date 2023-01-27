@@ -7,17 +7,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   const {
     session: { user },
   } = req;
-  const purchaases = await client.purchase.findMany({
+  const purchases = await client.purchase.findMany({
     where: {
       userId: user?.id,
     },
     include: {
-      product: true,
+      product: {
+        include: {
+          _count: {
+            select: {
+              favs: true,
+            },
+          },
+        },
+      },
     },
   });
   res.status(200).json({
     ok: true,
-    purchaases,
+    purchases,
   });
 };
 

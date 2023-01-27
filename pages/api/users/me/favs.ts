@@ -12,7 +12,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       userId: user?.id,
     },
     include: {
-      product: true,
+      product: {
+        include: {
+          _count: {
+            select: {
+              favs: true,
+            },
+          },
+        },
+      },
     },
   });
   res.status(200).json({
