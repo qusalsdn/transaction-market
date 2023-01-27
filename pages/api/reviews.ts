@@ -9,10 +9,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   } = req;
   const reviews = await client.review.findMany({
     where: {
-      createForId: user?.id,
+      createdForId: user?.id,
     },
     include: {
-      createBy: {
+      createdBy: {
         select: {
           id: true,
           name: true,

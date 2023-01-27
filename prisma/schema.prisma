@@ -131,16 +131,16 @@ model Fav {
 }
 
 model Review {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  review      String   @db.MediumText
+  id           Int      @id @default(autoincrement())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  review       String   @db.MediumText
   // 아래처럼 다른 model을 여러번 선언할 때에는 name을 선언하고 relation하는 모델에도 name을 선언하면 한 개의 모델에서도 같은 종류의 모델을 relation할 수 있다.
-  createBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id], onDelete: Cascade)
-  createFor   User     @relation(name: "receivedReviews", fields: [createForId], references: [id], onDelete: Cascade)
-  createdById Int
-  createForId Int
-  socre       Int?
+  createdBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id], onDelete: Cascade)
+  createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id], onDelete: Cascade)
+  createdById  Int
+  createdForId Int
+  socre        Int      @default(1)
 }
 
 // 위의 3개의 모델처럼 겹치는 모델들이 있으면 아래처럼 통합해서 사용할 수 있다.
