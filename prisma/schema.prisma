@@ -17,21 +17,26 @@ datasource db {
 
 model User {
   // @default(autoincrement())을 추가하면 인덱스가 추가될 때마다 자동으로 증가한다.
-  id         Int         @id @default(autoincrement())
-  phone      String?     @unique
-  email      String?     @unique
-  name       String
-  avatar     String?
+  id              Int         @id @default(autoincrement())
+  phone           String?     @unique
+  email           String?     @unique
+  name            String
+  avatar          String?
   // now 함수는 새 유저가 만들어 질 때 그 시점의 날짜를 가져와준다.
-  createdAt  DateTime    @default(now())
+  createdAt       DateTime    @default(now())
   // @updatedAt은 유저가 업데이트 될 때마다 해당 field가 변한다.
-  updatedAt  DateTime    @updatedAt
-  tokens     Token[]
-  products   Product[]
-  fav        Fav[]
-  posts      Post[]
-  answers    Answer[]
-  wonderings Wondering[]
+  updatedAt       DateTime    @updatedAt
+  tokens          Token[]
+  products        Product[]
+  posts           Post[]
+  answers         Answer[]
+  wonderings      Wondering[]
+  writtenReviews  Review[]    @relation(name: "writtenReviews")
+  receivedReviews Review[]    @relation(name: "receivedReviews")
+  sales           Sale[]
+  purchases       Purchase[]
+  fav             Fav[]
+  records         Record[]
 }
 
 model Token {
@@ -46,26 +51,19 @@ model Token {
 
 // model -> 데이터베이스 -> mutation -> useSWR로 데이터 가져오기 형식으로 진행한다.
 model Product {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      Int
   image       String
   name        String
   price       Int
-  description String   @db.MediumText
+  description String     @db.MediumText
+  sales       Sale[]
+  purchases   Purchase[]
   favs        Fav[]
-}
-
-model Fav {
-  id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    Int
-  productId Int
+  records     Record[]
 }
 
 model Post {
@@ -100,4 +98,64 @@ model Wondering {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId    Int
   postId    Int
+}
+
+model Sale {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    Int
+  productId Int
+}
+
+model Purchase {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    Int
+  productId Int
+}
+
+model Fav {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    Int
+  productId Int
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  review      String   @db.MediumText
+  // 아래처럼 다른 model을 여러번 선언할 때에는 name을 선언하고 relation하는 모델에도 name을 선언하면 한 개의 모델에서도 같은 종류의 모델을 relation할 수 있다.
+  createBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id], onDelete: Cascade)
+  createFor   User     @relation(name: "receivedReviews", fields: [createForId], references: [id], onDelete: Cascade)
+  createdById Int
+  createForId Int
+}
+
+// 위의 3개의 모델처럼 겹치는 모델들이 있으면 아래처럼 통합해서 사용할 수 있다.
+model Record {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    Int
+  productId Int
+  kind      Kind
+}
+
+enum Kind {
+  Purchase
+  Sale
+  Fav
 }
