@@ -140,6 +140,7 @@ model Review {
   createFor   User     @relation(name: "receivedReviews", fields: [createForId], references: [id], onDelete: Cascade)
   createdById Int
   createForId Int
+  socre       Int?
 }
 
 // 위의 3개의 모델처럼 겹치는 모델들이 있으면 아래처럼 통합해서 사용할 수 있다.
