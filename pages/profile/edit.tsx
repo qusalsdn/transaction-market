@@ -5,11 +5,18 @@ import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import useMutation from "@libs/client/useMutation";
 
 interface EditProfileForm {
+  name?: string;
   email?: string;
   phone?: string;
   formErrors?: string;
+}
+
+interface EditProfileResponse {
+  ok: boolean;
+  error?: string;
 }
 
 const EditProfile: NextPage = () => {
@@ -21,18 +28,29 @@ const EditProfile: NextPage = () => {
     setError,
     formState: { errors },
   } = useForm<EditProfileForm>();
+  const [editProfile, { data, loading }] =
+    useMutation<EditProfileResponse>("/api/users/me");
 
   useEffect(() => {
-    if (user?.email) setValue("email", user?.email);
+    if (user?.name) setValue("name", user.name);
+    if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
   }, [user, setValue]);
 
-  const onValid = ({ email, phone }: EditProfileForm) => {
-    if (email === "" && phone === "") {
-      setError("formErrors", {
+  useEffect(() => {
+    if (data && !data.ok && data.error) {
+      setError("formErrors", { message: data.error });
+    }
+  }, [data, setError]);
+
+  const onValid = ({ name, email, phone }: EditProfileForm) => {
+    if (loading) return;
+    if (name === "" && email === "" && phone === "") {
+      return setError("formErrors", {
         message: "이메일이나 전화번호 중 하나가 필요합니다. 하나를 선택하세요.",
       });
     }
+    editProfile({ name, email, phone });
   };
 
   return (
@@ -50,6 +68,13 @@ const EditProfile: NextPage = () => {
           </label>
         </div>
 
+        <Input
+          required={false}
+          label="닉네임"
+          name="name"
+          type="text"
+          register={register("name")}
+        />
         <Input
           required={false}
           label="이메일 주소"
@@ -70,7 +95,7 @@ const EditProfile: NextPage = () => {
             {errors?.formErrors?.message}
           </span>
         ) : null}
-        <Button text="업데이트" />
+        <Button text={loading ? "로딩중..." : "업데이트"} />
       </form>
     </Layout>
   );
