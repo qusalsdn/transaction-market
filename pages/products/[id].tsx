@@ -27,7 +27,6 @@ const ItemDetail: NextPage = () => {
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
-  const { user, isLoading } = useUser();
   const { mutate } = useSWRConfig();
 
   const onFavClick = () => {
