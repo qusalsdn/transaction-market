@@ -36,21 +36,38 @@ const SelectStream: NextPage = () => {
   const {
     query: { id },
   } = router;
-  const { data, mutate } = useSWR<StreamResponse>(id ? `/api/streams/${id}` : null);
+  const { data, mutate } = useSWR<StreamResponse>(id ? `/api/streams/${id}` : null, {
+    refreshInterval: 1000,
+  });
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
     `/api/streams/${id}/messages`
   );
   const { user } = useUser();
 
-  useEffect(() => {
-    if (sendMessageData && sendMessageData.ok) {
-      mutate();
-    }
-  }, [sendMessageData, mutate]);
-
   const onValid = (data: MessageForm) => {
     if (loading) return;
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          stream: {
+            ...prev.stream,
+            messages: [
+              ...prev.stream.messages,
+              {
+                id: Date.now(),
+                message: data.message,
+                user: {
+                  ...user,
+                },
+              },
+            ],
+          },
+        } as any),
+      false
+    );
     sendMessage(data);
     reset();
   };
