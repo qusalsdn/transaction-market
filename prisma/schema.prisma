@@ -180,9 +180,9 @@ model Message {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  message   String   @db.MediumText
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  message   String   @db.MediumText
   stream    Stream   @relation(fields: [streamId], references: [id])
   streamId  Int
 }
