@@ -124,7 +124,7 @@ export default function Layout({ title, canGoBack, hasTabBar, children }: Layout
           </Link>
 
           <Link
-            href="/live"
+            href="/streams"
             className={cls(
               "flex flex-col items-center space-y-2 ",
               router.pathname === "/live"
