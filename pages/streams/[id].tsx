@@ -6,26 +6,48 @@ import { useRouter } from "next/router";
 import { Stream } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
+import useUser from "@libs/client/useUser";
+import { useEffect } from "react";
+
+interface StreamMessage {
+  id: number;
+  message: string;
+  user: {
+    id: number;
+    avatar?: string;
+  };
+}
+
+interface StreamWithMessage extends Stream {
+  messages: StreamMessage[];
+}
 
 interface StreamResponse {
   ok: true;
-  streams: Stream;
+  stream: StreamWithMessage;
 }
 
 interface MessageForm {
   message: string;
 }
 
-const Stream: NextPage = () => {
+const SelectStream: NextPage = () => {
   const router = useRouter();
   const {
     query: { id },
   } = router;
-  const { data } = useSWR<StreamResponse>(id ? `/api/streams/${id}` : null);
+  const { data, mutate } = useSWR<StreamResponse>(id ? `/api/streams/${id}` : null);
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
     `/api/streams/${id}/messages`
   );
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (sendMessageData && sendMessageData.ok) {
+      mutate();
+    }
+  }, [sendMessageData, mutate]);
 
   const onValid = (data: MessageForm) => {
     if (loading) return;
@@ -38,19 +60,23 @@ const Stream: NextPage = () => {
       <div className="space-y-4 py-10  px-4">
         <div className="aspect-video w-full rounded-md bg-slate-300 shadow-sm" />
         <div className="mt-5">
-          <h1 className="text-3xl font-bold text-gray-900">{data?.streams?.name}</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{data?.stream?.name}</h1>
           <span className="mt-3 block text-2xl font-bold text-gray-900">
-            {data?.streams?.price}원
+            {data?.stream?.price}원
           </span>
-          <p className=" my-6 text-gray-700">{data?.streams?.description}</p>
+          <p className=" my-6 text-gray-700">{data?.stream?.description}</p>
         </div>
 
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
           <div className="h-[50vh] space-y-4 overflow-y-scroll py-10  px-4 pb-16">
-            <Message message="물건 얼마에요?" />
-            <Message message="5만원이여" reversed />
-            <Message message="에반데;;" />
+            {data?.stream.messages.map((message) => (
+              <Message
+                key={message.id}
+                message={message.message}
+                reversed={user?.id === message.user.id ? true : false}
+              />
+            ))}
           </div>
           <div className="fixed inset-x-0 bottom-0  bg-white py-2">
             <form
@@ -75,4 +101,4 @@ const Stream: NextPage = () => {
   );
 };
 
-export default Stream;
+export default SelectStream;

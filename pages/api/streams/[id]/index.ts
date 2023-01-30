@@ -7,12 +7,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   const {
     query: { id },
   } = req;
-  const streams = await client.stream.findUnique({
+  const stream = await client.stream.findUnique({
     where: {
       id: Number(id),
     },
+    include: {
+      messages: {
+        select: {
+          id: true,
+          message: true,
+          user: {
+            select: {
+              id: true,
+              avatar: true,
+            },
+          },
+        },
+      },
+    },
   });
-  if (!streams) {
+  if (!stream) {
     return res.status(404).json({
       ok: false,
       error: "해당 제품은 존재하지 않습니다.",
@@ -20,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   }
   res.status(200).json({
     ok: true,
-    streams,
+    stream,
   });
 };
 
