@@ -27,7 +27,7 @@ const Create: NextPage = () => {
 
   useEffect(() => {
     if (data && data.ok) {
-      router.push(`/stream/${data.stream.id}`);
+      router.push(`/streams/${data.stream.id}`);
     }
   }, [data, router]);
 
@@ -52,7 +52,8 @@ const Create: NextPage = () => {
           name="price"
           type="text"
           kind="price"
-          register={register("price", { required: true })}
+          // valueAsNumber를 true로 해주면 input의 string 값을 number로 변경해준다.
+          register={register("price", { required: true, valueAsNumber: true })}
         />
         <TextArea
           name="description"
