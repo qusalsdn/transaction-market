@@ -10,10 +10,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   // 3.Cloudflare가 백엔드로 URL을 보내준다.
   // 4.백엔드에서 유저에게 URL을 보내준다.
   // 5.유저는 그 URL로 직접 파일을 업로드한다.
+  const response = await (
+    await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/images/v2/direct_upload`,
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${process.env.CF_TOKENS}` },
+      }
+    )
+  ).json();
   res.status(200).json({
     ok: true,
-    url: "",
+    ...response.result,
   });
 };
 
-export default withApiSession(withHandler({ methods: ["POST"], handler }));
+export default withApiSession(withHandler({ methods: ["GET"], handler }));

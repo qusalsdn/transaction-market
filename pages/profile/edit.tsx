@@ -45,16 +45,21 @@ const EditProfile: NextPage = () => {
     }
   }, [data, setError]);
 
-  const onValid = ({ avatar, name, email, phone }: EditProfileForm) => {
-    console.log(avatar);
-    return;
+  const onValid = async ({ avatar, name, email, phone }: EditProfileForm) => {
     if (loading) return;
     if (name === "" && email === "" && phone === "") {
       return setError("formErrors", {
         message: "이메일이나 전화번호 중 하나가 필요합니다. 하나를 선택하세요.",
       });
     }
-    editProfile({ name, email, phone });
+    if (avatar && avatar.length > 0) {
+      const cloudflareRequest = await (await fetch("/api/files")).json();
+      console.log(cloudflareRequest);
+      return;
+      editProfile({ name, email, phone, avatarURL: "" });
+    } else {
+      editProfile({ name, email, phone });
+    }
   };
 
   const [avatarPreview, setAvatarPreview] = useState("");
