@@ -24,13 +24,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   if (req.method === "POST") {
     const {
       session: { user },
-      body: { name, email, phone },
+      body: { name, email, phone, avatarId },
     } = req;
     const currentUser = await client.user.findUnique({
       where: {
         id: user?.id,
       },
     });
+    if (avatarId) {
+      await client.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          avatar: avatarId,
+        },
+      });
+    }
     if (name) {
       await client.user.update({
         where: {

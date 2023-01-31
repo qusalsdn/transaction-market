@@ -37,6 +37,10 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
+    if (user?.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${user?.avatar}/public`
+      );
   }, [user, setValue]);
 
   useEffect(() => {
@@ -57,8 +61,7 @@ const EditProfile: NextPage = () => {
       const form = new FormData();
       form.append("file", avatar[0], user?.id.toString());
       await fetch(uploadURL, { method: "POST", body: form });
-      return;
-      editProfile({ name, email, phone, avatarURL: "" });
+      editProfile({ name, email, phone, avatarId: id });
     } else {
       editProfile({ name, email, phone });
     }
