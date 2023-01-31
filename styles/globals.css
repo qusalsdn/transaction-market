@@ -16,3 +16,9 @@
   background: rgba(0, 0, 0, 0.1); /*스크롤바 뒷 배경 색상*/
   border-radius: 5px;
 }
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

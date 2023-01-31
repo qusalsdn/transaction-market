@@ -21,15 +21,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   }
   if (req.method === "POST") {
     const {
-      body: { name, price, description },
+      body: { name, price, description, photoId },
       session: { user },
     } = req;
+    const removeCommaPrice = Number(price.replaceAll(",", ""));
     const product = await client.product.create({
       data: {
         name,
-        price: +price,
+        price: removeCommaPrice,
         description,
-        image: "xx",
+        image: photoId,
         user: {
           connect: {
             id: user?.id,

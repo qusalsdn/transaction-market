@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 interface InputProps {
@@ -17,6 +18,16 @@ export default function Input({
   register,
   required,
 }: InputProps) {
+  const [price, setPrice] = useState<string>("");
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = event;
+    const removeCommaValue: number = Number(value.replaceAll(",", ""));
+    setPrice(removeCommaValue.toLocaleString("ko-KR"));
+  };
+
   return (
     <div>
       <label className="mb-1 block text-gray-700" htmlFor={name}>
@@ -48,6 +59,8 @@ export default function Input({
             {...register}
             className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-7 placeholder-gray-400 
             transition-colors focus:border-orange-500 focus:outline-none focus:ring-orange-500"
+            onChange={onChange}
+            value={price}
           />
           <div className="pointer-events-none absolute right-0 flex items-center pr-3">
             <span className="text-gray-500">KRW</span>

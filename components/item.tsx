@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 interface ItemProps {
+  image?: string;
   title: string;
   id: number;
   price: number;
@@ -8,17 +9,26 @@ interface ItemProps {
   hearts: number;
 }
 
-export default function Item({ title, price, comments, hearts, id }: ItemProps) {
+export default function Item({ image, title, price, comments, hearts, id }: ItemProps) {
   return (
     <Link
       href={`/products/${id}`}
       className="flex cursor-pointer justify-between px-4 pt-5"
     >
       <div className="flex space-x-4">
-        <div className="h-20 w-20 rounded-md bg-gray-400" />
+        {image ? (
+          <img
+            src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${image}/product`}
+            className="h-20 w-20 rounded-md bg-gray-400"
+          />
+        ) : (
+          <div className="h-20 w-20 rounded-md bg-gray-400" />
+        )}
         <div className="flex flex-col pt-2">
           <h3 className="text-gray-900">{title}</h3>
-          <span className="mt-1 font-bold text-gray-900">${price}</span>
+          <span className="mt-1 font-bold text-gray-900">
+            {price.toLocaleString("ko-KR")}원
+          </span>
         </div>
       </div>
 

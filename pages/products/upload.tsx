@@ -5,7 +5,7 @@ import Layout from "@components/layout";
 import TextArea from "@components/textarea";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Product } from "@prisma/client";
 import { useRouter } from "next/router";
 
@@ -13,6 +13,7 @@ interface UploadProductForm {
   name: string;
   price: number;
   description: string;
+  photo: FileList;
 }
 
 interface UploadProductMutation {
@@ -22,14 +23,22 @@ interface UploadProductMutation {
 }
 
 const Upload: NextPage = () => {
-  const { register, handleSubmit } = useForm<UploadProductForm>();
+  const { register, handleSubmit, watch } = useForm<UploadProductForm>();
   const [uploadProduct, { loading, data }] =
     useMutation<UploadProductMutation>("/api/products");
   const router = useRouter();
 
-  const onValid = (data: UploadProductForm) => {
+  const onValid = async ({ name, price, description, photo }: UploadProductForm) => {
     if (loading) return;
-    uploadProduct(data);
+    if (photo && photo.length > 0) {
+      const { id, uploadURL } = await (await fetch("/api/files")).json();
+      const form = new FormData();
+      form.append("file", photo[0], name);
+      await fetch(uploadURL, { method: "POST", body: form });
+      uploadProduct({ name, price, description, photoId: id });
+    } else {
+      uploadProduct({ name, price, description });
+    }
   };
 
   useEffect(() => {
@@ -37,6 +46,15 @@ const Upload: NextPage = () => {
       router.push(`/products/${data.product.id}`);
     }
   }, [data, router]);
+
+  const [photoPreview, setPhotoPreview] = useState("");
+  const photo = watch("photo");
+  useEffect(() => {
+    if (photo && photo.length > 0) {
+      const file = photo[0];
+      setPhotoPreview(URL.createObjectURL(file));
+    }
+  }, [photo]);
 
   return (
     <Layout canGoBack title="내 물건 팔기">
@@ -60,8 +78,19 @@ const Upload: NextPage = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <input className="hidden" type="file" />
+            <input
+              className="hidden"
+              type="file"
+              accept="image/*"
+              {...register("photo")}
+            />
           </label>
+          {photoPreview && (
+            <img
+              src={photoPreview}
+              className="mt-3 aspect-auto h-auto w-full rounded-md text-gray-600"
+            />
+          )}
         </div>
 
         <Input
