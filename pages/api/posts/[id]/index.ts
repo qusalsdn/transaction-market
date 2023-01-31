@@ -38,6 +38,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
             },
           },
         },
+        take: 10,
+        skip: 10,
       },
     },
   });
