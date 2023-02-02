@@ -53,7 +53,10 @@ const Create: NextPage = () => {
           type="text"
           kind="price"
           // valueAsNumber를 true로 해주면 input의 string 값을 number로 변경해준다.
-          register={register("price", { required: true, valueAsNumber: true })}
+          register={register("price", {
+            required: true,
+            // valueAsNumber: true,
+          })}
         />
         <TextArea
           name="description"

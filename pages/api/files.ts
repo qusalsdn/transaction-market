@@ -1,6 +1,5 @@
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
@@ -15,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/images/v2/direct_upload`,
       {
         method: "POST",
-        headers: { Authorization: `Bearer ${process.env.CF_TOKENS}` },
+        headers: { Authorization: `Bearer ${process.env.CF_IMAGE_TOKEN}` },
       }
     )
   ).json();

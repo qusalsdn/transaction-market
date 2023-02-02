@@ -26,9 +26,13 @@ const Pagination: NextPage<PaginationProps> = ({ page, countProduct }) => {
 
   return (
     <div>
-      <button onClick={() => onClick("left")}>&larr;</button>
-      <span>{page}</span>
-      <button onClick={() => onClick("right")}>&rarr;</button>
+      {countProduct !== 0 ? (
+        <div>
+          <button onClick={() => onClick("left")}>&larr;</button>
+          <span>{page}</span>
+          <button onClick={() => onClick("right")}>&rarr;</button>
+        </div>
+      ) : null}
     </div>
   );
 };

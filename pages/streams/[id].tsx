@@ -79,7 +79,7 @@ const SelectStream: NextPage = () => {
         <div className="mt-5">
           <h1 className="text-3xl font-bold text-gray-900">{data?.stream?.name}</h1>
           <span className="mt-3 block text-2xl font-bold text-gray-900">
-            {data?.stream?.price}원
+            {data?.stream?.price.toLocaleString("ko-KR")}원
           </span>
           <p className=" my-6 text-gray-700">{data?.stream?.description}</p>
         </div>

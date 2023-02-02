@@ -10,16 +10,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     query: { page },
   } = req;
   if (req.method === "POST") {
+    const removeCommaPrice = Number(price.replaceAll(",", ""));
+    const {
+      result: {
+        uid,
+        rtmps: { url, streamKey },
+      },
+    } = await (
+      await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/stream/live_inputs`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${process.env.CF_STREAM_TOKEN}` },
+          body: `{"meta": {"name":"${name}"},"recording": { "mode": "automatic", "timeoutSeconds": 10 }}`,
+        }
+      )
+    ).json();
     const stream = await client.stream.create({
       data: {
         name,
-        price,
+        price: removeCommaPrice,
         description,
         user: {
           connect: {
             id: user?.id,
           },
         },
+        cloudflareId: uid,
+        cloudflareUrl: url,
+        cloudflareKey: streamKey,
       },
     });
     res.status(200).json({ ok: true, stream });
