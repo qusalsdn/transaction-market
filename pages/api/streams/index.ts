@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         {
           method: "POST",
           headers: { Authorization: `Bearer ${process.env.CF_STREAM_TOKEN}` },
-          body: `{"meta": {"name":"${name}"},"recording": { "mode": "automatic", "timeoutSeconds": 10 }}`,
+          body: `{"meta": {"name":"${name}"},"recording": { "mode": "automatic" }}`,
         }
       )
     ).json();
