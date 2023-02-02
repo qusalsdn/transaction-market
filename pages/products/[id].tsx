@@ -7,7 +7,6 @@ import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
-import useUser from "@libs/client/useUser";
 import Image from "next/image";
 
 interface ProductWithUser extends Product {
@@ -45,10 +44,19 @@ const ItemDetail: NextPage = () => {
       <div className="px-4  py-4">
         <div className="mb-8">
           {data?.product.image ? (
-            <img
-              src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.image}/public`}
-              className="h-4/5 w-full bg-slate-300"
-            />
+            // 이미지를 div 컨테이너 안에 넣고 부모 컨테이너에 relative를 적용하면 이미지를 표시할 수 있다. layout이 fill일 때 자주 사용하는 패턴이다.
+            // 이미지의 크기는 컨테이너에서 margin or padding으로 지정하여 설정할 수 있다.
+            <div className="relative pb-80">
+              <Image
+                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.image}/public`}
+                alt="product"
+                // object-Fit을 사용하면 배경 이미지처럼 이미지를 배치할 수 있다.
+                className="bg-slate-300 object-contain"
+                // layout을 이용하면 이미지의 width와 height을 지정할 필요가 없다.
+                // layout을 fill로 지정하면 전체 이미지를 최대한 키워주게 되고 position이 absolute로 변경되게 된다.
+                fill
+              />
+            </div>
           ) : (
             <div className="h-96 bg-slate-300" />
           )}
@@ -56,8 +64,8 @@ const ItemDetail: NextPage = () => {
             {data?.product.user.avatar ? (
               <Image
                 src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.user.avatar}/avatar`}
-                className="h-12 w-12 rounded-full bg-slate-300"
                 alt="avatar"
+                className="h-12 w-12 rounded-full bg-slate-300"
                 width={48}
                 height={48}
               />
