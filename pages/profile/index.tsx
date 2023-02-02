@@ -5,6 +5,7 @@ import useUser from "@libs/client/useUser";
 import useSWR from "swr";
 import { Review, User } from "@prisma/client";
 import { cls } from "@libs/client/utils";
+import Image from "next/image";
 
 interface ReviewWithUser extends Review {
   createdBy: User;
@@ -24,9 +25,12 @@ const Profile: NextPage = () => {
       <div className="px-4">
         <div className="mt-4 flex items-center space-x-3">
           {user?.avatar ? (
-            <img
+            <Image
               src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${user?.avatar}/avatar`}
+              alt="avatar"
               className="h-16 w-16 rounded-full bg-slate-500"
+              width={64}
+              height={64}
             />
           ) : (
             <div className="h-16 w-16 rounded-full bg-slate-500" />

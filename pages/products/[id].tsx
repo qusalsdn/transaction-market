@@ -150,9 +150,12 @@ const ItemDetail: NextPage = () => {
               <div key={product.id}>
                 <Link href={`/products/${product.id}`}>
                   {product.image ? (
-                    <img
+                    <Image
                       src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${product.image}/product`}
+                      alt="product"
                       className="mb-4 h-56 w-full bg-slate-300"
+                      width={221}
+                      height={224}
                     />
                   ) : (
                     <div className="mb-4 h-56 w-full bg-slate-300" />
