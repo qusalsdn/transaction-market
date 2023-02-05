@@ -11,9 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       }}
     >
       <div className="mx-auto w-full max-w-xl">
-        <Auth>
-          <Component {...pageProps} />
-        </Auth>
+        <Component {...pageProps} />
       </div>
     </SWRConfig>
   );
