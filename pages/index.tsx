@@ -5,6 +5,7 @@ import Layout from "@components/layout";
 import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import Loading from "@components/loading";
+import client from "@libs/server/client";
 
 export interface ProductWithCount extends Product {
   _count: {
