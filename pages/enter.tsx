@@ -7,12 +7,19 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import Loading from "@components/loading";
 
 // ssr:false를 해주면 서버단에서 로딩하지 않게 설정할 수 있다.
-const DynamicBtn = dynamic(() => import("@components/dynamicBtn"), {
-  ssr: false,
-  loading: () => "Loading...",
-});
+const DynamicBtn = dynamic(
+  () =>
+    new Promise((resolve) =>
+      setTimeout(() => resolve(import("@components/dynamicBtn")), 10000)
+    ),
+  {
+    ssr: false,
+    loading: () => <Loading />,
+  }
+);
 
 interface EnterForm {
   email?: string;
