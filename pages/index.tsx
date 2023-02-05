@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
 import Layout from "@components/layout";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import Loading from "@components/loading";
 
@@ -17,23 +17,27 @@ interface ProductsRespons {
   products: ProductWithCount[];
 }
 
-const Home: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
-  // const { data } = useSWR<ProductsRespons>("/api/products");
+const Home: NextPage = () => {
+  const { data } = useSWR<ProductsRespons>("/api/products");
 
   return (
     <Layout title="홈" hasTabBar seoTitle="홈">
       <div className="flex flex-col space-y-5 divide-y">
-        {products?.map((product) => (
-          <Item
-            id={product.id}
-            key={product.id}
-            image={product.image ? product.image : ""}
-            title={product.name}
-            price={product.price}
-            comments={1}
-            hearts={product._count?.favs}
-          />
-        ))}
+        {data ? (
+          data?.products?.map((product) => (
+            <Item
+              id={product.id}
+              key={product.id}
+              image={product.image ? product.image : ""}
+              title={product.name}
+              price={product.price}
+              comments={1}
+              hearts={product._count?.favs || 0}
+            />
+          ))
+        ) : (
+          <Loading />
+        )}
 
         <FloatingButton href="/products/upload">
           <svg
@@ -57,6 +61,15 @@ const Home: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
   );
 };
 
+const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
+  // fallback은 캐시의 초기값을 설정해준다.
+  return (
+    <SWRConfig value={{ fallback: { "/api/products": { ok: true, products } } }}>
+      <Home />
+    </SWRConfig>
+  );
+};
+
 export async function getServerSideProps() {
   const products = await client?.product.findMany();
   return {
@@ -66,4 +79,4 @@ export async function getServerSideProps() {
   };
 }
 
-export default Home;
+export default Page;
