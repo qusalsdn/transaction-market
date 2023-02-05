@@ -11,6 +11,7 @@ import Loading from "@components/loading";
 
 // ssr:false를 해주면 서버단에서 로딩하지 않게 설정할 수 있다.
 const DynamicBtn = dynamic(
+  //@ts-ignore
   () =>
     new Promise((resolve) =>
       setTimeout(() => resolve(import("@components/dynamicBtn")), 10000)

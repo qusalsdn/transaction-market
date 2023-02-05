@@ -73,7 +73,7 @@ const SelectStream: NextPage = () => {
   };
 
   return (
-    <Layout canGoBack>
+    <Layout canGoBack seoTitle="라이브 스트림">
       <div className="space-y-4 py-10  px-4">
         {data?.stream.cloudflareId ? (
           <iframe

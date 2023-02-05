@@ -37,7 +37,7 @@ const Create: NextPage = () => {
   };
 
   return (
-    <Layout canGoBack title="Go Live">
+    <Layout canGoBack title="Go Live" seoTitle="라이브 스트림 시작">
       <form onSubmit={handleSubmit(onValid)} className=" space-y-4 py-10 px-4">
         <Input
           required

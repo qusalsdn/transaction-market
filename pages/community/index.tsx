@@ -28,7 +28,7 @@ const Community: NextPage = () => {
   );
 
   return (
-    <Layout hasTabBar title="동네생활">
+    <Layout hasTabBar title="동네생활" seoTitle="커뮤니티 홈">
       <div className="space-y-4 divide-y-[1px]">
         {data?.posts?.map((post) => (
           <Link

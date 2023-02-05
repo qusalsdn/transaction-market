@@ -37,7 +37,7 @@ const Write: NextPage = () => {
   }, [data, router]);
 
   return (
-    <Layout canGoBack title="동네생활 글쓰기">
+    <Layout canGoBack title="동네생활 글쓰기" seoTitle="커뮤니티 글쓰기">
       <form onSubmit={handleSubmit(onValid)} className="space-y-4 p-4">
         <TextArea
           required

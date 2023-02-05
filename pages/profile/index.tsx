@@ -21,7 +21,7 @@ const Profile: NextPage = () => {
   const { data } = useSWR<ReviewsResponse>("/api/reviews");
 
   return (
-    <Layout hasTabBar title="나의 캐럿">
+    <Layout hasTabBar title="나의 캐럿" seoTitle="프로필">
       <div className="px-4">
         <div className="mt-4 flex items-center space-x-3">
           {user?.avatar ? (
