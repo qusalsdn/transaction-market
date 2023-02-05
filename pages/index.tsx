@@ -2,9 +2,9 @@ import type { NextPage } from "next";
 import FloatingButton from "@components/floating-button";
 import Item from "@components/item";
 import Layout from "@components/layout";
-import Head from "next/head";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
+import Loading from "@components/loading";
 
 export interface ProductWithCount extends Product {
   _count: {
@@ -17,13 +17,13 @@ interface ProductsRespons {
   products: ProductWithCount[];
 }
 
-const Home: NextPage = () => {
-  const { data } = useSWR<ProductsRespons>("/api/products");
+const Home: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
+  // const { data } = useSWR<ProductsRespons>("/api/products");
 
   return (
     <Layout title="홈" hasTabBar seoTitle="홈">
       <div className="flex flex-col space-y-5 divide-y">
-        {data?.products?.map((product) => (
+        {products?.map((product) => (
           <Item
             id={product.id}
             key={product.id}
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={product._count.favs}
+            hearts={product._count?.favs}
           />
         ))}
 
@@ -56,5 +56,14 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps() {
+  const products = await client?.product.findMany();
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
 
 export default Home;
