@@ -6,6 +6,13 @@ import Input from "@components/input";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
+// ssr:false를 해주면 서버단에서 로딩하지 않게 설정할 수 있다.
+const DynamicBtn = dynamic(() => import("@components/dynamicBtn"), {
+  ssr: false,
+  loading: () => "Loading...",
+});
 
 interface EnterForm {
   email?: string;
@@ -118,14 +125,17 @@ const Enter: NextPage = () => {
                 />
               ) : null}
               {method === "phone" ? (
-                <Input
-                  name="phone"
-                  label="전화번호"
-                  type="number"
-                  kind="phone"
-                  required
-                  register={register("phone", { required: true })}
-                />
+                <>
+                  <DynamicBtn />
+                  <Input
+                    name="phone"
+                    label="전화번호"
+                    type="number"
+                    kind="phone"
+                    required
+                    register={register("phone", { required: true })}
+                  />
+                </>
               ) : null}
               {method === "email" ? (
                 <Button text={loading ? "로딩중..." : "로그인 링크 가져오기"} />
