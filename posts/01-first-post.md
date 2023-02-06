@@ -9,3 +9,7 @@ category: 테스트
 This is my first blog post!
 
 Thank you for reading
+
+- i
+- like
+- potato

@@ -1,7 +1,7 @@
 import Layout from "@components/layout";
 import { readdirSync, readFileSync } from "fs";
 import matter from "gray-matter";
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 
 interface Post {
@@ -17,7 +17,7 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
       <h1 className="textlg text-center font-bold">최근 게시물</h1>
       {posts.map((post, index) => {
         return (
-          <div key={index} className="my-2">
+          <div key={index} className="my-2 text-center">
             <Link href={`/blog/${post.slug}`}>
               <span className="text-lg text-red-500">{post.title}</span>
               <div>
@@ -34,7 +34,7 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
 };
 
 // getStaticProps는 딱 한 번만 실행된다.
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = () => {
   const blogPosts = readdirSync("./posts").map((file) => {
     const content = readFileSync(`./posts/${file}`, "utf-8");
     const [slug, _] = file.split(".");
@@ -43,6 +43,6 @@ export async function getStaticProps() {
   return {
     props: { posts: blogPosts },
   };
-}
+};
 
 export default Blog;

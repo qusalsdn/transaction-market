@@ -27,3 +27,16 @@ input[type="number"]::-webkit-inner-spin-button {
 body {
   font-family: "Noto Sans KR", sans-serif;
 }
+
+/* @apply 태그를 이용하면 css 파일에서 tailwind CSS를 사용할 수 있다. */
+.blog-post-content h1 {
+  @apply mb-5 text-3xl text-orange-400;
+}
+
+.blog-post-content p {
+  @apply mb-2 text-lg text-gray-600;
+}
+
+.blog-post-content ul {
+  @apply list-disc pl-10;
+}
