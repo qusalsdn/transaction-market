@@ -33,7 +33,7 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
   );
 };
 
-// getStaticProps는 딱 한 번만 실행된다.
+// getStaticProps는 딱 한 번만 실행된다. 페이지에서 html로 바꿔주기 전에 데이터를 넣을 수 있게 해준다.
 export const getStaticProps: GetStaticProps = () => {
   const blogPosts = readdirSync("./posts").map((file) => {
     const content = readFileSync(`./posts/${file}`, "utf-8");

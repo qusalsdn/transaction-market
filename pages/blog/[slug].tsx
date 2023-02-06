@@ -15,6 +15,7 @@ const Post: NextPage<{ post: string; data: any }> = ({ post, data }) => {
 };
 
 // getStaticPaths는 동적인 URL을 갖는 페이지에서 getStaticProps를 사용할 때 필요하다.
+// 몇 개의 페이지를 생성해야 하는지 getStaticPaths에서 알려줘야 한다.
 export const getStaticPaths: GetStaticPaths = () => {
   const files = readdirSync("./posts").map((file) => {
     const [name, extension] = file.split(".");
