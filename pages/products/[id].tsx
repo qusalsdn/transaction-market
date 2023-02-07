@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layout";
 import { useRouter } from "next/router";
@@ -8,6 +8,7 @@ import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import Image from "next/image";
+import client from "@libs/server/client";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -20,7 +21,11 @@ interface ItemDetailResponse {
   isLiked: boolean;
 }
 
-const ItemDetail: NextPage = () => {
+const ItemDetail: NextPage<ItemDetailResponse> = ({
+  product,
+  relatedProducts,
+  isLiked,
+}) => {
   const router = useRouter();
   // useSWR을 사용할 때 optional query는 아래처럼 구현한다.
   const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
@@ -43,12 +48,12 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack seoTitle="제품 상세">
       <div className="px-4  py-4">
         <div className="mb-8">
-          {data?.product.image ? (
+          {product.image ? (
             // 이미지를 div 컨테이너 안에 넣고 부모 컨테이너에 relative를 적용하면 이미지를 표시할 수 있다. layout이 fill일 때 자주 사용하는 패턴이다.
             // 이미지의 크기는 컨테이너에서 margin or padding으로 지정하여 설정할 수 있다.
             <div className="relative pb-80">
               <Image
-                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.image}/public`}
+                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${product.image}/public`}
                 alt="product"
                 // object-Fit을 사용하면 배경 이미지처럼 이미지를 배치할 수 있다.
                 className="bg-slate-300 object-contain"
@@ -61,9 +66,9 @@ const ItemDetail: NextPage = () => {
             <div className="h-96 bg-slate-300" />
           )}
           <div className="flex cursor-pointer items-center space-x-3 border-t border-b py-3">
-            {data?.product.user.avatar ? (
+            {product.user.avatar ? (
               <Image
-                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.user.avatar}/avatar`}
+                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${product.user.avatar}/avatar`}
                 alt="avatar"
                 className="h-12 w-12 rounded-full bg-slate-300"
                 width={48}
@@ -73,11 +78,9 @@ const ItemDetail: NextPage = () => {
               <div className="h-12 w-12 rounded-full bg-slate-300" />
             )}
             <div>
-              <p className="text-sm font-medium text-gray-700">
-                {data?.product?.user?.name}
-              </p>
+              <p className="text-sm font-medium text-gray-700">{product?.user?.name}</p>
               <Link
-                href={`/users/profiles/${data?.product?.user?.id}`}
+                href={`/users/profiles/${product?.user?.id}`}
                 className="text-xs font-medium text-gray-500"
               >
                 View profile &rarr;
@@ -86,15 +89,11 @@ const ItemDetail: NextPage = () => {
           </div>
 
           <div className="mt-5">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {data ? data?.product?.name : "로딩중..."}
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900">{product?.name}</h1>
             <span className="mt-3 block text-2xl font-bold text-gray-900">
-              {data ? `${data?.product?.price.toLocaleString("ko-KR")}원` : "로딩중..."}
+              {`${product?.price.toLocaleString("ko-KR")}원`}
             </span>
-            <p className=" my-6 text-gray-700">
-              {data ? data?.product?.description : "로딩중..."}
-            </p>
+            <p className=" my-6 text-gray-700">{product?.description}</p>
 
             <div className="flex items-center justify-between space-x-2">
               <Button large text="Talk to seller" />
@@ -102,12 +101,12 @@ const ItemDetail: NextPage = () => {
                 onClick={onFavClick}
                 className={cls(
                   "flex items-center justify-center rounded-md p-3 transition-colors hover:bg-gray-100",
-                  data?.isLiked
+                  isLiked
                     ? "text-red-400 hover:text-gray-400"
                     : "text-gray-400 hover:text-red-400"
                 )}
               >
-                {data?.isLiked ? (
+                {isLiked ? (
                   <svg
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -146,7 +145,7 @@ const ItemDetail: NextPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Similar items</h2>
           <div className=" mt-6 grid grid-cols-2 gap-4">
-            {data?.relatedProducts?.map((product) => (
+            {relatedProducts?.map((product) => (
               <div key={product.id}>
                 <Link href={`/products/${product.id}`}>
                   {product.image ? (
@@ -172,6 +171,59 @@ const ItemDetail: NextPage = () => {
       </div>
     </Layout>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  if (!ctx.params?.id) {
+    return {
+      props: {},
+    };
+  }
+  const product = await client.product.findUnique({
+    where: {
+      id: Number(ctx.params.id),
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+  const terms = product?.name.split(" ").map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product?.id,
+        },
+      },
+    },
+  });
+  const isLiked = false;
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
+      isLiked,
+    },
+  };
 };
 
 export default ItemDetail;
