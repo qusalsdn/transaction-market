@@ -1,7 +1,6 @@
 import { NextRequest, NextFetchEvent, userAgent, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest, ev: NextFetchEvent) {
-  const { pathname } = req.nextUrl;
   if (userAgent(req).isBot) {
     return new Response("제발 봇이 아니었으면 좋겠어요...", { status: 403 });
   }

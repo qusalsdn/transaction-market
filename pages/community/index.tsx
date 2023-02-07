@@ -115,7 +115,7 @@ export async function getStaticProps() {
   return {
     props: { posts: JSON.parse(JSON.stringify(posts)) },
     // revalidate를 설정해주면 빌드하고 일정 시간이 지나면 이 페이지의 html을 다시 빌드하겠다고 설정할 수 있다.
-    revalidate: 10,
+    // revalidate: 60,
   };
 }
 
