@@ -25,9 +25,9 @@ const Pagination: NextPage<PaginationProps> = ({ page, countProduct }) => {
   };
 
   return (
-    <div>
+    <div className="fixed bottom-24 w-full border-none">
       {countProduct !== 0 ? (
-        <div>
+        <div className="flex items-center justify-center">
           <button onClick={() => onClick("left")}>&larr;</button>
           <span>{page}</span>
           <button onClick={() => onClick("right")}>&rarr;</button>

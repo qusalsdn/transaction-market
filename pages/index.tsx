@@ -6,6 +6,9 @@ import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import Loading from "@components/loading";
 import client from "@libs/server/client";
+import Pagination from "@components/pagination";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export interface ProductWithCount extends Product {
   _count: {
@@ -19,7 +22,15 @@ interface ProductsRespons {
 }
 
 const Home: NextPage = () => {
-  const { data } = useSWR<ProductsRespons>("/api/products");
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+  const { data } = useSWR<ProductsRespons>(`/api/products?page=${page}`);
+
+  useEffect(() => {
+    if (router.query.page) {
+      setPage(Number(router.query.page));
+    }
+  }, [page, router]);
 
   return (
     <Layout title="홈" hasTabBar seoTitle="홈">
@@ -57,11 +68,13 @@ const Home: NextPage = () => {
             />
           </svg>
         </FloatingButton>
+        <Pagination page={page} countProduct={data?.products?.length} />
       </div>
     </Layout>
   );
 };
 
+// SWR과 같이 사용하지는 방법
 const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
   // fallback은 캐시의 초기값을 설정해준다.
   return (
@@ -73,6 +86,7 @@ const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const products = await client?.product.findMany();
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   return {
     props: {
       products: JSON.parse(JSON.stringify(products)),

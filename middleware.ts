@@ -5,8 +5,6 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   if (userAgent(req).isBot) {
     return new Response("제발 봇이 아니었으면 좋겠어요...", { status: 403 });
   }
-  // 아래 코드가 없으면 syntaxerror: unexpected token '<' 에러가 발생한다.
-  if (pathname.startsWith("/_next")) return NextResponse.next();
   if (!req.url.includes("/api")) {
     if (!req.cookies.has("carrotsession") && !req.url.includes("/enter")) {
       return NextResponse.redirect(new URL("/enter", req.url));
@@ -14,4 +12,7 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   }
 }
 
-export const config = {};
+export const config = {
+  // api, _next/static, _next/image favicon.ico 경로를 제외한 모든 경로에 미들웨어 적용
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+};
