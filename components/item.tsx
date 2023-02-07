@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface ItemProps {
-  image?: string;
+  image?: string | null;
   title: string;
   id: number;
   price: number;
