@@ -110,10 +110,12 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
 
 // getStaticProps은 프로젝트를 빌드할 때만 데이터가 생성되지만 ISR을 이용하면 정적 페이지를 개별적으로 다시 생성할 수 있다.
 export async function getStaticProps() {
+  console.log("정적으로 동네생활 생성 중...");
   const posts = await client.post.findMany({ include: { user: true } });
   return {
     props: { posts: JSON.parse(JSON.stringify(posts)) },
-    revalidate: 20,
+    // revalidate를 설정해주면 빌드하고 일정 시간이 지나면 이 페이지의 html을 다시 빌드하겠다고 설정할 수 있다.
+    revalidate: 10,
   };
 }
 
