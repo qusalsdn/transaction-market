@@ -9,6 +9,7 @@ import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 interface AnswerWithUser extends Answer {
   user: User;
@@ -99,7 +100,17 @@ const CommunityPostDetail: NextPage = () => {
         </span>
 
         <div className="flex cursor-pointer items-center space-x-3 px-4 pb-3">
-          <div className="h-10 w-10 rounded-full bg-slate-300" />
+          {data?.post.user.avatar ? (
+            <Image
+              alt="avatar"
+              src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data.post.user.avatar}/public`}
+              width={40}
+              height={40}
+              className="rounded-full bg-slate-300"
+            />
+          ) : (
+            <div className="h-10 w-10 rounded-full bg-slate-300" />
+          )}
           <div>
             <p className="text-sm font-medium text-gray-700">{data?.post?.user?.name}</p>
             <Link href={`/users/profiles/${data?.post?.user?.id}`}>
