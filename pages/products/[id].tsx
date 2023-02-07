@@ -173,9 +173,15 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
   );
 };
 
+// 동적 페이지를 정적 페이지로 변환하는 방법
 export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [],
+    // fallback은 유저가 getStaticProps나 getStaticPaths를 가지고 있는 페이지를 방문할 때에 그 페이지에 해당하는
+    // HTML 파일이 없다면 'blocking'일 경우 유저가 잠시 기다리게 만들고 fallback blocking이 그동안 백그라운드에서
+    // 페이지를 만들어서 유저에게 넘겨준다. 이렇기 때문에 프로젝트를 빌드할 때 모든 상품의 id에 대한 페이지를 미리 만들어두지 않아도 된다.
+    // fallback이 false일 경우에는 준비된 HTML이 없으면 유저가 404 응답을 받게 된다.
+    // fallbackdl true일 경우에는 request 타임에 페이지를 생성할 수 있게 해주고 페이지를 생성하는 동안에 유저가 뭔가를 보여줄 수 있도록 해준다.
     fallback: "blocking",
   };
 };
