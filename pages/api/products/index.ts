@@ -4,8 +4,16 @@ import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
+  const {
+    query: { page },
+  } = req;
   if (req.method === "GET") {
     const products = await client.product.findMany({
+      skip: (Number(page) - 1) * 10,
+      take: 10,
+      orderBy: {
+        createdAt: "asc",
+      },
       include: {
         _count: {
           select: {
