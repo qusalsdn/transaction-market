@@ -5,6 +5,7 @@ import Layout from "@components/layout";
 import useSWR from "swr";
 import { Post, User } from "@prisma/client";
 import useCoords from "@libs/client/useCoords";
+import client from "@libs/server/client";
 
 interface PostWithUser extends Post {
   user: User;
@@ -15,22 +16,22 @@ interface PostWithUser extends Post {
 }
 
 interface PostsResponse {
-  ok: boolean;
+  // ok: boolean;
   posts: PostWithUser[];
 }
 
-const Community: NextPage = () => {
-  const { latitude, longitude } = useCoords();
-  const { data } = useSWR<PostsResponse>(
-    latitude && longitude
-      ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
-      : null
-  );
+const Community: NextPage<PostsResponse> = ({ posts }) => {
+  // const { latitude, longitude } = useCoords();
+  // const { data } = useSWR<PostsResponse>(
+  //   latitude && longitude
+  //     ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
+  //     : null
+  // );
 
   return (
     <Layout hasTabBar title="동네생활" seoTitle="커뮤니티 홈">
       <div className="space-y-4 divide-y-[1px]">
-        {data?.posts?.map((post) => (
+        {posts?.map((post) => (
           <Link
             key={post.id}
             href={`/community/${post.id}`}
@@ -106,5 +107,14 @@ const Community: NextPage = () => {
     </Layout>
   );
 };
+
+// getStaticProps은 프로젝트를 빌드할 때만 데이터가 생성되지만 ISR을 이용하면 정적 페이지를 개별적으로 다시 생성할 수 있다.
+export async function getStaticProps() {
+  const posts = await client.post.findMany({ include: { user: true } });
+  return {
+    props: { posts: JSON.parse(JSON.stringify(posts)) },
+    revalidate: 20,
+  };
+}
 
 export default Community;
