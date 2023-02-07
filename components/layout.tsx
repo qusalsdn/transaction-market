@@ -75,7 +75,7 @@ export default function Layout({
       {hasTabBar ? (
         <nav className="fixed bottom-0 flex w-full max-w-xl justify-between border-t bg-white px-10 pb-5 pt-3 text-xs text-gray-700">
           <Link
-            href="/"
+            href="/?page=1"
             className={cls(
               "flex flex-col items-center space-y-2 ",
               router.pathname === "/"
@@ -101,7 +101,7 @@ export default function Layout({
           </Link>
 
           <Link
-            href="/community"
+            href="/community?page=1"
             className={cls(
               "flex flex-col items-center space-y-2 ",
               router.pathname === "/community"
@@ -153,7 +153,7 @@ export default function Layout({
           </Link>
 
           <Link
-            href="/streams"
+            href="/streams?page=1"
             className={cls(
               "flex flex-col items-center space-y-2 ",
               router.pathname === "/live"
