@@ -134,7 +134,6 @@ const Enter: NextPage = () => {
               ) : null}
               {method === "phone" ? (
                 <>
-                  <DynamicBtn />
                   <Input
                     name="phone"
                     label="전화번호"
