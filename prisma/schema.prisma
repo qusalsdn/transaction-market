@@ -49,6 +49,9 @@ model Token {
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // userId와 관련된 관계로 인덱스를 생성한다.
+  @@index([userId])
 }
 
 // model -> 데이터베이스 -> mutation -> useSWR로 데이터 가져오기 형식으로 진행한다.
@@ -66,6 +69,8 @@ model Product {
   purchases   Purchase[]
   favs        Fav[]
   records     Record[]
+
+  @@index([userId])
 }
 
 model Post {
@@ -79,6 +84,8 @@ model Post {
   longitude Float?
   answers   Answer[]
   wondering Wondering[]
+
+  @@index([userId])
 }
 
 model Answer {
@@ -90,6 +97,9 @@ model Answer {
   userId    Int
   postId    Int
   answer    String   @db.MediumText
+
+  @@index([userId])
+  @@index([postId])
 }
 
 model Wondering {
@@ -100,6 +110,9 @@ model Wondering {
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId    Int
   postId    Int
+
+  @@index([userId])
+  @@index([postId])
 }
 
 model Sale {
@@ -110,6 +123,9 @@ model Sale {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    Int
   productId Int
+
+  @@index([userId])
+  @@index([productId])
 }
 
 model Purchase {
@@ -120,6 +136,9 @@ model Purchase {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    Int
   productId Int
+
+  @@index([userId])
+  @@index([productId])
 }
 
 model Fav {
@@ -130,6 +149,9 @@ model Fav {
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId    Int
   productId Int
+
+  @@index([userId])
+  @@index([productId])
 }
 
 model Review {
@@ -143,6 +165,9 @@ model Review {
   createdById  Int
   createdForId Int
   socre        Int      @default(1)
+
+  @@index([createdById])
+  @@index([createdForId])
 }
 
 // 위의 3개의 모델처럼 겹치는 모델들이 있으면 아래처럼 통합해서 사용할 수 있다.
@@ -155,6 +180,9 @@ model Record {
   userId    Int
   productId Int
   kind      Kind
+
+  @@index([userId])
+  @@index([productId])
 }
 
 // enum으로 인해 제한을 두고 자동완성 기능을 사용할 수 있게 해준다.
@@ -177,6 +205,8 @@ model Stream {
   cloudflareId  String
   cloudflareUrl String
   cloudflareKey String
+
+  @@index([userId])
 }
 
 model Message {
@@ -188,4 +218,7 @@ model Message {
   userId    Int
   stream    Stream   @relation(fields: [streamId], references: [id])
   streamId  Int
+
+  @@index([userId])
+  @@index([streamId])
 }
