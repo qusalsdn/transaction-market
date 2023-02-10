@@ -18,15 +18,17 @@ const Streams: NextPage = () => {
   const [page, setPage] = useState(1);
   const router = useRouter();
   const { data } = useSWR<StreamsResponse>(`/api/streams?page=${page}`);
+
   useEffect(() => {
     if (router.query.page) {
       setPage(Number(router.query.page));
     }
   }, [page, router]);
+
   return (
     <Layout hasTabBar title="라이브" seoTitle="라이브 스트림 홈">
       <div className=" space-y-4 divide-y-[1px]">
-        {data?.streams.map((stream) => (
+        {data?.streams?.map((stream) => (
           <Link
             key={stream.id}
             href={`/streams/${stream.id}`}

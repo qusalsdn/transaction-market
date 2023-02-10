@@ -9,10 +9,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   } = req;
   if (req.method === "GET") {
     const products = await client.product.findMany({
-      skip: (Number(page) - 1) * 10,
-      take: 10,
+      skip: (Number(page) - 1) * 20,
+      take: 20,
       orderBy: {
-        createdAt: "asc",
+        createdAt: "desc",
       },
       include: {
         _count: {

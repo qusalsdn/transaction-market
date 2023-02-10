@@ -74,7 +74,7 @@ const Home: NextPage = () => {
   );
 };
 
-// SWR과 같이 사용하지는 방법
+// SWR과 같이 사용하는 방법
 const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
   // fallback은 캐시의 초기값을 설정해준다.
   return (

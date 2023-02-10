@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const client = new PrismaClient();
 
 async function main() {
-  [...Array.from(Array(57).keys())].forEach(async (item) => {
+  [...Array.from(Array(10).keys())].forEach(async (item) => {
     const {
       result: {
         uid,
@@ -29,12 +29,36 @@ async function main() {
             id: 1,
           },
         },
-        cloudflareId: uid,
-        cloudflareUrl: url,
-        cloudflareKey: streamKey,
+        cloudflareId: "x",
+        cloudflareUrl: "x",
+        cloudflareKey: "x",
       },
     });
-    console.log(`${item}/57`);
+    const product = await client.product.create({
+      data: {
+        name: `seed${item}`,
+        price: item,
+        description: `seed${item}`,
+        user: {
+          connect: {
+            id: 1,
+          },
+        },
+      },
+    });
+    const post = await client.post.create({
+      data: {
+        question: `${item}`,
+        latitude: 37.0409472,
+        longitude: 127.0480896,
+        user: {
+          connect: {
+            id: 1,
+          },
+        },
+      },
+    });
+    console.log(`${item + 1}/10`);
   });
 }
 

@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage, NextPageContext } from "next";
 import Link from "next/link";
 import FloatingButton from "@components/floating-button";
 import Layout from "@components/layout";
@@ -6,6 +6,10 @@ import useSWR from "swr";
 import { Post, User } from "@prisma/client";
 import useCoords from "@libs/client/useCoords";
 import client from "@libs/server/client";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Pagination from "@components/pagination";
+import { NextRequest } from "next/server";
 
 interface PostWithUser extends Post {
   user: User;
@@ -16,22 +20,30 @@ interface PostWithUser extends Post {
 }
 
 interface PostsResponse {
-  // ok: boolean;
+  ok: boolean;
   posts: PostWithUser[];
 }
 
-const Community: NextPage<PostsResponse> = ({ posts }) => {
-  // const { latitude, longitude } = useCoords();
-  // const { data } = useSWR<PostsResponse>(
-  //   latitude && longitude
-  //     ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
-  //     : null
-  // );
+const Community: NextPage<PostsResponse> = () => {
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+  const { latitude, longitude } = useCoords();
+  const { data } = useSWR<PostsResponse>(
+    latitude && longitude
+      ? `/api/posts?latitude=${latitude}&longitude=${longitude}&page=${page}`
+      : null
+  );
+
+  useEffect(() => {
+    if (router.query.page) {
+      setPage(Number(router.query.page));
+    }
+  }, [page, router]);
 
   return (
     <Layout hasTabBar title="동네생활" seoTitle="커뮤니티 홈">
       <div className="space-y-4 divide-y-[1px]">
-        {posts?.map((post) => (
+        {data?.posts?.map((post) => (
           <Link
             key={post.id}
             href={`/community/${post.id}`}
@@ -103,20 +115,21 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
             ></path>
           </svg>
         </FloatingButton>
+        <Pagination page={page} countProduct={data?.posts.length} />
       </div>
     </Layout>
   );
 };
 
 // getStaticProps은 프로젝트를 빌드할 때만 데이터가 생성되지만 ISR을 이용하면 정적 페이지를 개별적으로 다시 생성할 수 있다.
-export async function getStaticProps() {
-  console.log("정적으로 동네생활 생성 중...");
-  const posts = await client.post.findMany({ include: { user: true } });
-  return {
-    props: { posts: JSON.parse(JSON.stringify(posts)) },
-    // revalidate를 설정해주면 빌드하고 일정 시간이 지나면 이 페이지의 html을 다시 빌드하겠다고 설정할 수 있다.
-    // revalidate: 60,
-  };
-}
+// export const getStaticProps: GetStaticProps = async (context) => {
+//   console.log("정적으로 동네생활 생성 중...");
+//   const posts = await client.post.findMany({ include: { user: true } });
+//   return {
+//     props: { posts: JSON.parse(JSON.stringify(posts)) },
+//     // revalidate를 설정해주면 빌드하고 일정 시간이 지나면 이 페이지의 html을 다시 빌드하겠다고 설정할 수 있다.
+//     // revalidate: 60,
+//   };
+// };
 
 export default Community;

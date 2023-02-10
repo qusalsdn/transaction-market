@@ -46,10 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   if (req.method === "GET") {
     // findMany 옵션에서 take는 db에서 5개만 가져오는거고 skip은 앞에 있는 5개를 스킵한다.
     const streams = await client.stream.findMany({
-      skip: (Number(page) - 1) * 10,
-      take: 10,
+      skip: (Number(page) - 1) * 20,
+      take: 20,
       orderBy: {
-        price: "asc",
+        createdAt: "desc",
       },
     });
     res.status(200).json({ ok: true, streams });

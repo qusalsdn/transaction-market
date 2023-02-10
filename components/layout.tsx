@@ -28,7 +28,7 @@ export default function Layout({
       <Head>
         <title>{`${seoTitle} | Carrot Market`}</title>
       </Head>
-      <div className="fixed top-0 flex h-12 w-full max-w-xl items-center border-b bg-white px-3 text-lg font-medium text-gray-800">
+      <div className="fixed top-0 z-10 flex h-12 w-full max-w-xl items-center border-b bg-white px-3 text-lg font-medium text-gray-800">
         {canGoBack ? (
           <div className="flex items-center">
             <button onClick={onClick} className="absolute left-3">

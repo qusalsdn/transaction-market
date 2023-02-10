@@ -30,11 +30,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   }
   if (req.method === "GET") {
     const {
-      query: { latitude, longitude },
+      query: { latitude, longitude, page },
     } = req;
     const parsedLatiude = parseFloat(`${latitude}`);
     const parsedLongitude = parseFloat(`${longitude}`);
     const posts = await client.post.findMany({
+      skip: (Number(page) - 1) * 20,
+      take: 20,
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         user: {
           select: {
