@@ -74,23 +74,23 @@ const Home: NextPage = () => {
   );
 };
 
-// SWR과 같이 사용하는 방법
-const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
-  // fallback은 캐시의 초기값을 설정해준다.
-  return (
-    <SWRConfig value={{ fallback: { "/api/products": { ok: true, products } } }}>
-      <Home />
-    </SWRConfig>
-  );
-};
+// // SWR과 같이 사용하는 방법
+// const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
+//   // fallback은 캐시의 초기값을 설정해준다.
+//   return (
+//     <SWRConfig value={{ fallback: { "/api/products": { ok: true, products } } }}>
+//       <Home />
+//     </SWRConfig>
+//   );
+// };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const products = await client?.product.findMany();
-  return {
-    props: {
-      products: JSON.parse(JSON.stringify(products)),
-    },
-  };
-};
+// export const getServerSideProps: GetServerSideProps = async () => {
+//   const products = await client?.product.findMany();
+//   return {
+//     props: {
+//       products: JSON.parse(JSON.stringify(products)),
+//     },
+//   };
+// };
 
-export default Page;
+export default Home;

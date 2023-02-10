@@ -21,11 +21,7 @@ interface ItemDetailResponse {
   isLiked: boolean;
 }
 
-const ItemDetail: NextPage<ItemDetailResponse> = ({
-  product,
-  relatedProducts,
-  isLiked,
-}) => {
+const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) => {
   const router = useRouter();
   // useSWR을 사용할 때 optional query는 아래처럼 구현한다.
   const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
@@ -101,12 +97,12 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
                 onClick={onFavClick}
                 className={cls(
                   "flex items-center justify-center rounded-md p-3 transition-colors hover:bg-gray-100",
-                  isLiked
+                  data?.isLiked
                     ? "text-red-400 hover:text-gray-400"
                     : "text-gray-400 hover:text-red-400"
                 )}
               >
-                {isLiked ? (
+                {data?.isLiked ? (
                   <svg
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -221,13 +217,23 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     },
   });
-  const isLiked = false;
+  // const isLiked = Boolean(
+  //   await client.fav.findFirst({
+  //     where: {
+  //       productId: Number(ctx.params.id),
+  //       userId: 1,
+  //     },
+  //     select: {
+  //       id: true,
+  //     },
+  //   })
+  // );
   // await new Promise((resolve) => setTimeout(resolve, 10000));
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
       relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
-      isLiked,
+      // isLiked,
     },
   };
 };
