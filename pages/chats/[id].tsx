@@ -1,18 +1,97 @@
 import type { NextPage } from "next";
 import Layout from "@components/layout";
 import Message from "@components/message";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { useForm } from "react-hook-form";
+import useMutation from "@libs/client/useMutation";
+import useUser from "@libs/client/useUser";
+import { Product } from "@prisma/client";
+
+interface productMessage {
+  id: number;
+  message: string;
+  user: {
+    id: number;
+    avatar?: string;
+  };
+}
+
+interface productWithMessage extends Product {
+  messages: productMessage[];
+}
+
+interface productResponse {
+  ok: true;
+  product: productWithMessage;
+}
+
+interface MessageForm {
+  message: string;
+}
 
 const ChatDetail: NextPage = () => {
+  const router = useRouter();
+  const {
+    query: { productId, userId, sellerName },
+  } = router;
+  const { data, mutate } = useSWR<productResponse>(
+    productId ? `/api/products/${productId}` : null,
+    {
+      refreshInterval: 1000,
+    }
+  );
+  const { register, handleSubmit, reset } = useForm<MessageForm>();
+  const [sendMessage, { data: sendMessageData, loading }] = useMutation(
+    `/api/products/${productId}/messages`
+  );
+  const { user } = useUser();
+
+  const onValid = (data: MessageForm) => {
+    if (loading) return;
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          product: {
+            ...prev.product,
+            messages: [
+              ...prev.product.messages,
+              {
+                id: Date.now(),
+                message: data.message,
+                user: {
+                  ...user,
+                },
+              },
+            ],
+          },
+        } as any),
+      false
+    );
+    sendMessage(data);
+    reset();
+  };
+
   return (
-    <Layout canGoBack title="미누" seoTitle="채팅">
+    <Layout canGoBack title={sellerName} seoTitle="채팅">
       <div className="space-y-4 py-10 px-4 pb-16">
-        <Message message="물건 얼마에요?" />
-        <Message message="5만원이여" reversed />
-        <Message message="에반데;;" />
-        <form className="fixed inset-x-0 bottom-0  bg-white py-2">
-          <div className="relative mx-auto flex w-full  max-w-md items-center">
+        {data?.product?.messages?.map((message) => (
+          <Message
+            key={message.id}
+            message={message.message}
+            reversed={user?.id === message.user.id ? true : false}
+          />
+        ))}
+        <form
+          className="fixed inset-x-0 bottom-0 bg-white py-2"
+          onSubmit={handleSubmit(onValid)}
+        >
+          <div className="relative mx-auto flex w-full max-w-md items-center">
             <input
               type="text"
+              {...register("message", { required: true })}
               className="w-full rounded-full border-gray-300 pr-12 shadow-md focus:border-orange-500 focus:outline-none focus:ring-orange-500"
             />
             <div className="absolute inset-y-0 right-0 flex py-1.5 pr-1.5">

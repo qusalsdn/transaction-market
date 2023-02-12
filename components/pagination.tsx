@@ -27,7 +27,7 @@ const Pagination: NextPage<PaginationProps> = ({ page, countProduct }) => {
     }
   };
 
-  const onClickHome = () => {
+  const onHomeClick = () => {
     router.push(`${router.pathname}?page=1`);
   };
 
@@ -37,7 +37,7 @@ const Pagination: NextPage<PaginationProps> = ({ page, countProduct }) => {
         <div className="flex flex-col items-center justify-center">
           {page !== 1 && (
             <div>
-              <button onClick={onClickHome}>
+              <button onClick={onHomeClick}>
                 <svg
                   className="h-6 w-6"
                   fill="none"

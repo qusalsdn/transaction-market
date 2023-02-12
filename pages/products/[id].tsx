@@ -9,6 +9,8 @@ import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import Image from "next/image";
 import client from "@libs/server/client";
+import useUser from "@libs/client/useUser";
+import { useEffect } from "react";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -21,6 +23,13 @@ interface ItemDetailResponse {
   isLiked: boolean;
 }
 
+interface ChatRoomResponse {
+  ok: boolean;
+  chatRoomId: number;
+  checkRoom: boolean;
+  error: string;
+}
+
 const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) => {
   const router = useRouter();
   // useSWR을 사용할 때 optional query는 아래처럼 구현한다.
@@ -29,6 +38,10 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
   const { mutate } = useSWRConfig();
+  const { user } = useUser();
+  const [createChatRoom, { data: chatRoomData, loading }] = useMutation<ChatRoomResponse>(
+    `/api/chats?productId=${product.id}&buyerId=${user?.id}&sellerId=${product.user.id}`
+  );
 
   const onFavClick = () => {
     if (!data) return;
@@ -39,6 +52,25 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     // mutate("/api/users/me", { ok: false }, false); // key 값 뒤로 인자를 없이 mutate 하게 되면 refetch를 할 수 있게 된다.
     toggleFav({});
   };
+
+  const onChatClick = () => {
+    const result = window.confirm("채팅방이 생성됩니다. 수락하시겠습니까?");
+    if (result) {
+      createChatRoom({});
+    }
+  };
+
+  useEffect(() => {
+    if (chatRoomData?.ok) {
+      router.push(`/chats/${chatRoomData.chatRoomId}`);
+    }
+    if (!chatRoomData?.ok && chatRoomData?.chatRoomId) {
+      console.log("hi");
+      window.alert("이미 채팅방이 존재하여 해당 채팅방으로 이동합니다.");
+      router.push(`/chats/${chatRoomData.chatRoomId}`);
+    }
+    if (chatRoomData?.error) window.alert(chatRoomData.error);
+  }, [chatRoomData, router]);
 
   return (
     <Layout canGoBack seoTitle="제품 상세">
@@ -92,7 +124,11 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
             <p className=" my-6 text-gray-700">{product?.description}</p>
 
             <div className="flex items-center justify-between space-x-2">
-              <Button large text="Talk to seller" />
+              <Button
+                large
+                text={loading ? "로딩중..." : "채팅하기"}
+                onClick={onChatClick}
+              />
               <button
                 onClick={onFavClick}
                 className={cls(
