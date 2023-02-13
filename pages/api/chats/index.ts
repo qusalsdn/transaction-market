@@ -52,14 +52,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         OR: [{ buyerId: user?.id }, { sellerId: user?.id }],
       },
       include: {
-        product: {
+        buyer: {
           select: {
-            user: {
-              select: {
-                avatar: true,
-                name: true,
-              },
-            },
+            avatar: true,
+            name: true,
+          },
+        },
+        seller: {
+          select: {
+            avatar: true,
+            name: true,
           },
         },
         chatMessage: {
