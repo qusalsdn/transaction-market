@@ -6,24 +6,21 @@ import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
-import { Product } from "@prisma/client";
+import { ChatMessage, Chatroom, User } from "@prisma/client";
 
-interface productMessage {
-  id: number;
-  message: string;
-  user: {
-    id: number;
-    avatar?: string;
-  };
+interface ChatMessageWithUser extends ChatMessage {
+  user: User;
 }
 
-interface productWithMessage extends Product {
-  messages: productMessage[];
+interface ChatRoomWithMessage extends Chatroom {
+  chatMessage: ChatMessageWithUser[];
+  buyer: User;
+  seller: User;
 }
 
-interface productResponse {
+interface ChatRoomResponse {
   ok: true;
-  product: productWithMessage;
+  chatRoom: ChatRoomWithMessage;
 }
 
 interface MessageForm {
@@ -33,17 +30,14 @@ interface MessageForm {
 const ChatDetail: NextPage = () => {
   const router = useRouter();
   const {
-    query: { productId, userId, sellerName },
+    query: { id, sellerName },
   } = router;
-  const { data, mutate } = useSWR<productResponse>(
-    productId ? `/api/products/${productId}` : null,
-    {
-      refreshInterval: 1000,
-    }
-  );
+  const { data, mutate } = useSWR<ChatRoomResponse>(id ? `/api/chats/${id}` : null, {
+    refreshInterval: 1000,
+  });
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
-    `/api/products/${productId}/messages`
+    `/api/chats/${id}/messages`
   );
   const { user } = useUser();
 
@@ -54,10 +48,10 @@ const ChatDetail: NextPage = () => {
         prev &&
         ({
           ...prev,
-          product: {
-            ...prev.product,
+          chatroom: {
+            ...prev.chatRoom,
             messages: [
-              ...prev.product.messages,
+              ...prev.chatRoom.chatMessage,
               {
                 id: Date.now(),
                 message: data.message,
@@ -77,11 +71,12 @@ const ChatDetail: NextPage = () => {
   return (
     <Layout canGoBack title={sellerName} seoTitle="채팅">
       <div className="space-y-4 py-10 px-4 pb-16">
-        {data?.product?.messages?.map((message) => (
+        {data?.chatRoom?.chatMessage?.map((message) => (
           <Message
             key={message.id}
             message={message.message}
             reversed={user?.id === message.user.id ? true : false}
+            avatarUrl={message.user.avatar}
           />
         ))}
         <form

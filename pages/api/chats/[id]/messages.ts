@@ -9,22 +9,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     body,
     session: { user },
   } = req;
-  // const message = await client.message.create({
-  //   data: {
-  //     message: body.message,
-  //     product: {
-  //       connect: {
-  //         id: Number(id),
-  //       },
-  //     },
-  //     user: {
-  //       connect: {
-  //         id: user?.id,
-  //       },
-  //     },
-
-  //   },
-  // });
+  const message = await client.chatMessage.create({
+    data: {
+      message: body.message,
+      user: {
+        connect: {
+          id: user?.id,
+        },
+      },
+      chatroom: {
+        connect: {
+          id: Number(id),
+        },
+      },
+    },
+  });
   res.status(200).json({
     ok: true,
     // message,

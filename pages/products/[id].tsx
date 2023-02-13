@@ -65,7 +65,6 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
       router.push(`/chats/${chatRoomData.chatRoomId}`);
     }
     if (!chatRoomData?.ok && chatRoomData?.chatRoomId) {
-      console.log("hi");
       window.alert("이미 채팅방이 존재하여 해당 채팅방으로 이동합니다.");
       router.push(`/chats/${chatRoomData.chatRoomId}`);
     }
