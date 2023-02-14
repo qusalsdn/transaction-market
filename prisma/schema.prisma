@@ -231,7 +231,7 @@ model Chatroom {
   id          Int           @id @default(autoincrement())
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  product     Product       @relation(fields: [productId], references: [id])
+  product     Product       @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId   Int
   buyer       User          @relation(name: "buyer", fields: [buyerId], references: [id], onDelete: Cascade)
   buyerId     Int

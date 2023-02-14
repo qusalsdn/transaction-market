@@ -32,6 +32,10 @@ interface ChatRoomResponse {
   error: string;
 }
 
+interface DeleteProductResponse {
+  ok: boolean;
+}
+
 const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) => {
   const router = useRouter();
   // useSWR을 사용할 때 optional query는 아래처럼 구현한다.
@@ -41,10 +45,14 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
   const { mutate } = useSWRConfig();
   const { user } = useUser();
-  const [createChatRoom, { data: chatRoomData, loading }] = useMutation<ChatRoomResponse>(
-    `/api/chats?productId=${product.id}&buyerId=${user?.id}&sellerId=${product.user.id}`
-  );
-  const [] = useMutation(`/api/products`);
+  const [createChatRoom, { data: chatRoomData, loading: chatRoomLoading }] =
+    useMutation<ChatRoomResponse>(
+      `/api/chats?productId=${product?.id}&buyerId=${user?.id}&sellerId=${product?.user.id}`
+    );
+  const [deleteProduct, { data: deleteProductData, loading: deleteProductLoading }] =
+    useMutation<DeleteProductResponse>(
+      `/api/products/${router.query.id}/delete?imageId=${product?.image}`
+    );
 
   const onFavClick = () => {
     if (!data) return;
@@ -73,6 +81,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
   const onDeleteClick = () => {
     const result = window.confirm("게시물을 삭제하시겠습니까?");
     if (result) {
+      deleteProduct({}, "DELETE");
     }
   };
 
@@ -87,6 +96,12 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     if (chatRoomData?.error) window.alert(chatRoomData.error);
   }, [chatRoomData, router]);
 
+  useEffect(() => {
+    if (deleteProductData?.ok) {
+      router.push("/");
+    }
+  }, [deleteProductData, router]);
+
   return (
     <Layout canGoBack seoTitle="제품 상세">
       <div className="px-4  py-4">
@@ -100,7 +115,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
                     className="mr-4 text-2xl text-orange-400"
                   />
                 </button>
-                <button>
+                <button onClick={onDeleteClick}>
                   <FontAwesomeIcon
                     icon={faTrashCan}
                     className="text-2xl text-orange-400"
@@ -159,7 +174,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
             <div className="flex items-center justify-between space-x-2">
               <Button
                 large
-                text={loading ? "로딩중..." : "채팅하기"}
+                text={chatRoomLoading || deleteProductLoading ? "로딩중..." : "채팅하기"}
                 onClick={onChatClick}
               />
               <button

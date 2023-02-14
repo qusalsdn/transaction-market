@@ -29,6 +29,17 @@ const useMutation = <T = any,>(url: string): UseMutationResult<T> => {
         .then((data) => setState((prev) => ({ ...prev, data })))
         .catch((error) => setState((prev) => ({ ...prev, error })))
         .finally(() => setState((prev) => ({ ...prev, loading: false })));
+    } else if (method === "DELETE") {
+      fetch(url, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json().catch(() => {}))
+        .then((data) => setState((prev) => ({ ...prev, data })))
+        .catch((error) => setState((prev) => ({ ...prev, error })))
+        .finally(() => setState((prev) => ({ ...prev, loading: false })));
     } else {
       fetch(url, {
         method: "POST",
