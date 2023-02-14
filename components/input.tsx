@@ -25,8 +25,10 @@ export default function Input({
   const [newName, setNewName] = useState<string | undefined>("");
   const [price, setPrice] = useState<string | undefined>("");
   useEffect(() => {
-    setNewName(beforeName);
-    setPrice(Number(beforePrice).toLocaleString("ko-KR"));
+    if (beforeName || beforePrice) {
+      setNewName(beforeName);
+      setPrice(Number(beforePrice).toLocaleString("ko-KR"));
+    }
   }, [beforeName, beforePrice]);
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
