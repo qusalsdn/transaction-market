@@ -71,6 +71,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       ok: true,
       updateData,
     });
+    await res.revalidate(`/product/${id}`);
   }
 };
 
