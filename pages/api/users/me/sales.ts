@@ -6,27 +6,52 @@ import { withApiSession } from "@libs/server/withSession";
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const {
     session: { user },
+    query: { otherProfileId },
   } = req;
-  const sales = await client.sale.findMany({
-    where: {
-      userId: user?.id,
-    },
-    include: {
-      product: {
-        include: {
-          _count: {
-            select: {
-              favs: true,
+  if (otherProfileId) {
+    const sales = await client.sale.findMany({
+      where: {
+        userId: Number(otherProfileId),
+      },
+      include: {
+        product: {
+          include: {
+            _count: {
+              select: {
+                favs: true,
+              },
             },
           },
         },
       },
-    },
-  });
-  res.status(200).json({
-    ok: true,
-    sales,
-  });
+    });
+    res.status(200).json({
+      ok: true,
+      sales,
+    });
+  } else {
+    const sales = await client.sale.findMany({
+      where: {
+        userId: user?.id,
+      },
+      include: {
+        product: {
+          include: {
+            _count: {
+              select: {
+                favs: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    res.status(200).json({
+      ok: true,
+      sales,
+    });
+  }
 };
 
 export default withApiSession(withHandler({ methods: ["GET"], handler }));

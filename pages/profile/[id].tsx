@@ -54,7 +54,7 @@ const Profile: NextPage = () => {
         </div>
 
         <div className="mt-10 flex justify-around">
-          <Link href="/profile/sold" className="flex flex-col items-center">
+          <Link href={`/profile/sold?id=${id}`} className="flex flex-col items-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-orange-400 text-white">
               <svg
                 className="h-6 w-6"

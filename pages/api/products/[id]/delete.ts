@@ -21,6 +21,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         },
       }
     );
+    const slaeId = await client.product.findUnique({
+      where: {
+        id: Number(id),
+      },
+      select: {
+        sales: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (slaeId) {
+      await client.sale.delete({
+        where: {
+          id: Number(id),
+        },
+      });
+    }
     res.status(200).json({
       ok: true,
     });

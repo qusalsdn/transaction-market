@@ -6,6 +6,7 @@ import { withApiSession } from "@libs/server/withSession";
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const {
     query: { page },
+    session: { user },
   } = req;
   if (req.method === "GET") {
     const products = await client.product.findMany({
@@ -46,6 +47,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         },
       },
     });
+    if (product) {
+      await client.sale.create({
+        data: {
+          user: {
+            connect: {
+              id: user?.id,
+            },
+          },
+          product: {
+            connect: {
+              id: product.id,
+            },
+          },
+        },
+      });
+    }
     res.status(200).json({
       ok: true,
       product,
