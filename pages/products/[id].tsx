@@ -146,17 +146,19 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
               <Image
                 src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${product.user.avatar}/avatar`}
                 alt="avatar"
-                className="h-12 w-12 rounded-full bg-slate-300"
+                className="h-12 w-12 cursor-default rounded-full bg-slate-300"
                 width={48}
                 height={48}
               />
             ) : (
-              <div className="h-12 w-12 rounded-full bg-slate-300" />
+              <div className="h-12 w-12 cursor-default rounded-full bg-slate-300" />
             )}
             <div>
-              <p className="text-sm font-medium text-gray-700">{product?.user?.name}</p>
+              <p className="cursor-default text-sm font-medium text-gray-700">
+                {product?.user?.name}
+              </p>
               <Link
-                href={`/users/profiles/${product?.user?.id}`}
+                href={`/profile/${product?.user?.id}`}
                 className="text-xs font-medium text-gray-500"
               >
                 View profile &rarr;
