@@ -8,6 +8,8 @@ interface InputProps {
   type: string;
   register: UseFormRegisterReturn;
   required: boolean;
+  beforeName?: string;
+  beforePrice?: string;
 }
 
 export default function Input({
@@ -17,10 +19,24 @@ export default function Input({
   type,
   register,
   required,
+  beforeName,
+  beforePrice,
 }: InputProps) {
-  const [price, setPrice] = useState<string>("");
+  const [newName, setNewName] = useState<string | undefined>("");
+  const [price, setPrice] = useState<string | undefined>("");
+  useEffect(() => {
+    setNewName(beforeName);
+    setPrice(Number(beforePrice).toLocaleString("ko-KR"));
+  }, [beforeName, beforePrice]);
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value },
+    } = event;
+    setNewName(value);
+  };
+
+  const onPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value },
     } = event;
@@ -43,6 +59,8 @@ export default function Input({
             {...register}
             className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400
              transition-colors focus:border-orange-500 focus:outline-none focus:ring-orange-500"
+            onChange={onNameChange}
+            value={newName}
           />
         </div>
       ) : null}
@@ -59,7 +77,7 @@ export default function Input({
             {...register}
             className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-7 placeholder-gray-400 
             transition-colors focus:border-orange-500 focus:outline-none focus:ring-orange-500"
-            onChange={onChange}
+            onChange={onPriceChange}
             value={price}
           />
           <div className="pointer-events-none absolute right-0 flex items-center pr-3">

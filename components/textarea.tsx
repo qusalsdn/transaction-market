@@ -1,13 +1,33 @@
+import React, { useEffect, useState } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 
 interface TextAreaProps {
   label?: string;
   name?: string;
   register: UseFormRegisterReturn;
+  beforeValue?: string;
   [key: string]: any;
 }
 
-export default function TextArea({ label, name, register, ...rest }: TextAreaProps) {
+export default function TextArea({
+  label,
+  name,
+  register,
+  beforeValue,
+  ...rest
+}: TextAreaProps) {
+  const [text, setText] = useState<string | undefined>("");
+
+  const onChange = (event: any) => {
+    const {
+      target: { value },
+    } = event;
+    setText(value);
+  };
+  useEffect(() => {
+    setText(beforeValue);
+  }, [beforeValue]);
+
   return (
     <div>
       {label ? (
@@ -23,6 +43,8 @@ export default function TextArea({ label, name, register, ...rest }: TextAreaPro
         rows={4}
         {...register}
         {...rest}
+        onChange={onChange}
+        value={text}
       />
     </div>
   );

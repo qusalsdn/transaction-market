@@ -3,6 +3,9 @@ import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import Auth from "@components/auth";
 import Script from "next/script";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+config.autoAddCss = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

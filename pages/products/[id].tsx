@@ -11,6 +11,8 @@ import Image from "next/image";
 import client from "@libs/server/client";
 import useUser from "@libs/client/useUser";
 import { useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -60,6 +62,13 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     }
   };
 
+  const onEditClick = () => {
+    const result = window.confirm("게시물을 수정하시겠습니까?");
+    if (result) {
+      router.push(`/products/edit/${product.id}`);
+    }
+  };
+
   useEffect(() => {
     if (chatRoomData?.ok) {
       router.push(`/chats/${chatRoomData.chatRoomId}`);
@@ -75,6 +84,16 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     <Layout canGoBack seoTitle="제품 상세">
       <div className="px-4  py-4">
         <div className="mb-8">
+          <div className="text-end">
+            {user?.id === product.userId ? (
+              <button onClick={onEditClick}>
+                <FontAwesomeIcon
+                  icon={faPen}
+                  className="mb-2 text-right text-2xl text-orange-400"
+                />
+              </button>
+            ) : null}
+          </div>
           {product.image ? (
             // 이미지를 div 컨테이너 안에 넣고 부모 컨테이너에 relative를 적용하면 이미지를 표시할 수 있다. layout이 fill일 때 자주 사용하는 패턴이다.
             // 이미지의 크기는 컨테이너에서 margin or padding으로 지정하여 설정할 수 있다.
@@ -252,23 +271,10 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       },
     },
   });
-  // const isLiked = Boolean(
-  //   await client.fav.findFirst({
-  //     where: {
-  //       productId: Number(ctx.params.id),
-  //       userId: 1,
-  //     },
-  //     select: {
-  //       id: true,
-  //     },
-  //   })
-  // );
-  // await new Promise((resolve) => setTimeout(resolve, 10000));
   return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
       relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
-      // isLiked,
     },
   };
 };

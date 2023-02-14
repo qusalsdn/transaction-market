@@ -5,7 +5,7 @@ import { withApiSession } from "@libs/server/withSession";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const {
-    query: { page },
+    query: { page, id },
   } = req;
   if (req.method === "GET") {
     const products = await client.product.findMany({
@@ -51,6 +51,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       product,
     });
   }
+  if (req.method === "PUT") {
+    const {
+      body: { name, price, description, photoId },
+    } = req;
+    const removeCommaPrice = Number(price.replaceAll(",", ""));
+    const updateData = await client.product.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        name,
+        price: removeCommaPrice,
+        description,
+        image: photoId,
+      },
+    });
+    res.status(200).json({
+      ok: true,
+      updateData,
+    });
+  }
 };
 
-export default withApiSession(withHandler({ methods: ["GET", "POST"], handler }));
+export default withApiSession(withHandler({ methods: ["GET", "POST", "PUT"], handler }));
