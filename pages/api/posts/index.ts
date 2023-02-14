@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       },
     });
     // On-Demand Revalidation(ODR)을 이용하면 수동으로 getStaticProps를 어디에서든지 작동시킬 수 있다.
-    await res.revalidate("/community");
+    // await res.revalidate("/community");
     res.status(200).json({
       ok: true,
       post,

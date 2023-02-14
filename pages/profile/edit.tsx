@@ -111,21 +111,21 @@ const EditProfile: NextPage = () => {
 
         <Input
           required={false}
-          label="닉네임"
+          label={`현재 닉네임 : ${user?.name}`}
           name="name"
           type="text"
           register={register("name")}
         />
         <Input
           required={false}
-          label="이메일 주소"
+          label={`현재 이메일 주소 : ${user?.email ? user?.email : "없음"}`}
           name="email"
           type="email"
           register={register("email")}
         />
         <Input
           required={false}
-          label="전화번호"
+          label={`현재 전화번호 : ${user?.phone ? user?.phone : "없음"}`}
           name="phone"
           type="number"
           kind="phone"
