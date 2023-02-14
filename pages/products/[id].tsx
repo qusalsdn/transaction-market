@@ -12,7 +12,7 @@ import client from "@libs/server/client";
 import useUser from "@libs/client/useUser";
 import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -44,6 +44,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
   const [createChatRoom, { data: chatRoomData, loading }] = useMutation<ChatRoomResponse>(
     `/api/chats?productId=${product.id}&buyerId=${user?.id}&sellerId=${product.user.id}`
   );
+  const [] = useMutation(`/api/products`);
 
   const onFavClick = () => {
     if (!data) return;
@@ -69,6 +70,12 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     }
   };
 
+  const onDeleteClick = () => {
+    const result = window.confirm("게시물을 삭제하시겠습니까?");
+    if (result) {
+    }
+  };
+
   useEffect(() => {
     if (chatRoomData?.ok) {
       router.push(`/chats/${chatRoomData.chatRoomId}`);
@@ -84,14 +91,22 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     <Layout canGoBack seoTitle="제품 상세">
       <div className="px-4  py-4">
         <div className="mb-8">
-          <div className="text-end">
+          <div className="mb-2 text-end">
             {user?.id === product.userId ? (
-              <button onClick={onEditClick}>
-                <FontAwesomeIcon
-                  icon={faPen}
-                  className="mb-2 text-right text-2xl text-orange-400"
-                />
-              </button>
+              <div>
+                <button onClick={onEditClick}>
+                  <FontAwesomeIcon
+                    icon={faPen}
+                    className="mr-4 text-2xl text-orange-400"
+                  />
+                </button>
+                <button>
+                  <FontAwesomeIcon
+                    icon={faTrashCan}
+                    className="text-2xl text-orange-400"
+                  />
+                </button>
+              </div>
             ) : null}
           </div>
           {product.image ? (

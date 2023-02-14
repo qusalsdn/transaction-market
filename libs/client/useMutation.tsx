@@ -6,10 +6,7 @@ interface UseMutationState<T> {
   error?: object;
 }
 
-type UseMutationResult<T> = [
-  (data: any, putMethod?: string) => void,
-  UseMutationState<T>
-];
+type UseMutationResult<T> = [(data: any, method?: string) => void, UseMutationState<T>];
 
 const useMutation = <T = any,>(url: string): UseMutationResult<T> => {
   const [state, setState] = useState<UseMutationState<T>>({
@@ -18,9 +15,9 @@ const useMutation = <T = any,>(url: string): UseMutationResult<T> => {
     error: undefined,
   });
 
-  const mutation = (data: any, putMethod?: any) => {
+  const mutation = (data: any, method?: string) => {
     setState((prev) => ({ ...prev, loading: true }));
-    if (putMethod) {
+    if (method === "PUT") {
       fetch(url, {
         method: "PUT",
         headers: {

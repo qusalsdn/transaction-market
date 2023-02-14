@@ -27,7 +27,7 @@ interface ProductSearchResponse {
   product: Product;
 }
 
-const Upload: NextPage = () => {
+const Update: NextPage = () => {
   const router = useRouter();
   const {
     query: { id },
@@ -35,7 +35,7 @@ const Upload: NextPage = () => {
   const { data } = useSWR<ProductSearchResponse>(`/api/products/${id}/search`);
   const { register, handleSubmit, watch } = useForm<UpdateProductForm>();
   const [updateProduct, { loading, data: updateData }] =
-    useMutation<UpdateProductMutation>(`/api/products?id=${id}`);
+    useMutation<UpdateProductMutation>(`/api/products/${id}/update`);
 
   const onValid = async ({ name, price, description, photo }: UpdateProductForm) => {
     if (loading) return;
@@ -54,7 +54,6 @@ const Upload: NextPage = () => {
   };
 
   useEffect(() => {
-    console.log(updateData);
     if (updateData?.ok) {
       router.push(`/products/${id}`);
     }
@@ -149,4 +148,4 @@ const Upload: NextPage = () => {
   );
 };
 
-export default Upload;
+export default Update;
