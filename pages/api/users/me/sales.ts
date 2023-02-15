@@ -46,7 +46,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         },
       },
     });
-
     res.status(200).json({
       ok: true,
       sales,

@@ -18,7 +18,7 @@ interface ProductListResponse {
 
 export default function ProductList({ kind, otherProfileId }: ProductListProps) {
   const { data } = useSWR<ProductListResponse>(
-    `/api/users/me/${kind}${otherProfileId && `?otherProfileId=${otherProfileId}`}`
+    `/api/users/me/${kind}${otherProfileId ? `?otherProfileId=${otherProfileId}` : ""}`
   );
   return data ? (
     <>
