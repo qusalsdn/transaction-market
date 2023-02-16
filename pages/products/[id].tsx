@@ -4,18 +4,27 @@ import Layout from "@components/layout";
 import { useRouter } from "next/router";
 import useSWR, { useSWRConfig } from "swr";
 import Link from "next/link";
-import { Product, User } from "@prisma/client";
+import { Chatroom, Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
 import Image from "next/image";
 import client from "@libs/server/client";
 import useUser from "@libs/client/useUser";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
+interface ProductCompletedResponse {
+  ok: boolean;
+}
+
+interface ChatRoomWithUser extends Chatroom {
+  buyer: User;
+}
+
 interface ProductWithUser extends Product {
   user: User;
+  chatRoom: ChatRoomWithUser[];
 }
 
 interface ItemDetailResponse {
@@ -85,12 +94,37 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     }
   };
 
+  const [buyerId, setBuyerId] = useState("");
+  const [
+    productCompleted,
+    { data: CompletedResponseData, loading: CompletedResponseLoading },
+  ] = useMutation<ProductCompletedResponse>(
+    `/api/products/${router.query.id}/update?completed=completed`
+  );
+  const onBuyerIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const {
+      target: { value },
+    } = event;
+    setBuyerId(value);
+  };
+  const onProductStateClick = () => {
+    if (!buyerId) {
+      return window.alert("구매자와의 채팅방이 없거나 구매자를 선택하지 않았습니다.");
+    }
+    const result = window.confirm(
+      "거래완료를 선택하면 리뷰 때문에 돌이킬 수 없습니다. 거래완료를 하시겠습니까?"
+    );
+    if (result) {
+      productCompleted({ doneDealId: buyerId }, "PUT");
+    }
+  };
+
   useEffect(() => {
     if (chatRoomData?.ok) {
       router.push(`/chats/${chatRoomData.chatRoomId}`);
     }
     if (!chatRoomData?.ok && chatRoomData?.chatRoomId) {
-      window.alert("이미 채팅방이 존재하여 해당 채팅방으로 이동합니다.");
+      window.alert("이미 제품에 대한 채팅방이 존재하여 해당 채팅방으로 이동합니다.");
       router.push(`/chats/${chatRoomData.chatRoomId}`);
     }
     if (chatRoomData?.error) window.alert(chatRoomData.error);
@@ -106,21 +140,61 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
     <Layout canGoBack seoTitle="제품 상세">
       <div className="px-4  py-4">
         <div className="mb-8">
-          <div className="mb-2 text-end">
+          <div className="mb-3">
             {user?.id === product.userId ? (
-              <div>
-                <button onClick={onEditClick}>
-                  <FontAwesomeIcon
-                    icon={faPen}
-                    className="mr-4 text-2xl text-orange-400"
-                  />
-                </button>
-                <button onClick={onDeleteClick}>
-                  <FontAwesomeIcon
-                    icon={faTrashCan}
-                    className="text-2xl text-orange-400"
-                  />
-                </button>
+              <div className="flex items-center justify-between">
+                {!product.completed ? (
+                  !CompletedResponseData?.ok && (
+                    <div className="flex space-x-2">
+                      <button
+                        className="rounded-md bg-orange-400 p-3 font-bold text-white"
+                        onClick={onProductStateClick}
+                      >
+                        {CompletedResponseLoading ? "로딩중..." : "거래완료"}
+                      </button>
+                      <div className="flex flex-col">
+                        <label className="text-sm">
+                          거래를 완료할 상대를 선택해주세요.
+                        </label>
+                        <select
+                          className="p-0 text-center"
+                          required
+                          onChange={onBuyerIdChange}
+                        >
+                          <option value="">상대방 선택하기</option>
+                          {product.chatRoom?.map((user) => {
+                            return (
+                              <option value={user.buyer.id} key={user.buyer.id}>
+                                {user.buyer.name}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                  )
+                ) : (
+                  <p className="rounded-md bg-orange-400 p-2 font-bold text-white">
+                    거래완료 상품입니다.
+                  </p>
+                )}
+
+                {!product.completed && !CompletedResponseData?.ok && (
+                  <div className="space-x-4">
+                    <button onClick={onEditClick}>
+                      <FontAwesomeIcon
+                        icon={faPen}
+                        className="text-2xl text-orange-400"
+                      />
+                    </button>
+                    <button onClick={onDeleteClick}>
+                      <FontAwesomeIcon
+                        icon={faTrashCan}
+                        className="text-2xl text-orange-400"
+                      />
+                    </button>
+                  </div>
+                )}
               </div>
             ) : null}
           </div>
@@ -284,6 +358,16 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
           id: true,
           name: true,
           avatar: true,
+        },
+      },
+      chatRoom: {
+        select: {
+          buyer: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
         },
       },
     },

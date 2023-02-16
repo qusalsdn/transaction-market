@@ -73,6 +73,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     res.status(200).json({ ok: true, chatRooms });
   }

@@ -68,11 +68,14 @@ model Product {
   name        String
   price       Int
   description String     @db.MediumText
+  completed   Boolean?
+  doneDealId  Int?
   sales       Sale[]
   purchases   Purchase[]
   favs        Fav[]
   records     Record[]
   chatRoom    Chatroom[]
+  review      Review[]
 
   @@index([userId])
 }
@@ -166,12 +169,15 @@ model Review {
   // 아래처럼 다른 model을 여러번 선언할 때에는 name을 선언하고 relation하는 모델에도 name을 선언하면 한 개의 모델에서도 같은 종류의 모델을 relation할 수 있다.
   createdBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id], onDelete: Cascade)
   createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id], onDelete: Cascade)
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   createdById  Int
   createdForId Int
   socre        Int      @default(1)
+  productId    Int
 
   @@index([createdById])
   @@index([createdForId])
+  @@index([productId])
 }
 
 // 위의 3개의 모델처럼 겹치는 모델들이 있으면 아래처럼 통합해서 사용할 수 있다.

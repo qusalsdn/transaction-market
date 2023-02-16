@@ -46,7 +46,6 @@ const Update: NextPage = () => {
       const form = new FormData();
       form.append("file", photo[0], name);
       await fetch(uploadURL, { method: "POST", body: form });
-      console.log(data?.product.id);
       updateProduct({ name, price, description, photoId: id }, "PUT");
     } else {
       updateProduct({ name, price, description }, "PUT");

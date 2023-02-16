@@ -38,6 +38,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           },
         },
       },
+      product: {
+        select: {
+          completed: true,
+          doneDealId: true,
+        },
+      },
     },
   });
   res.status(200).json({ ok: true, chatRoom });
