@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         updateData,
       });
     }
-    await res.revalidate(`/products/${id}`);
+    // await res.revalidate(`/products/${id}`);
   }
 };
 
