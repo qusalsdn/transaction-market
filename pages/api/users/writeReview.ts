@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       },
     },
   });
-  if (findProductReview?._count.review === 0) {
+  if (findProductReview?._count.review === 0 && selectStar !== 0) {
     await client.review.create({
       data: {
         review,

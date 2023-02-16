@@ -46,6 +46,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         },
       },
     },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 10,
   });
   const isLiked = Boolean(
     await client.fav.findFirst({

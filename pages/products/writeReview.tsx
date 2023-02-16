@@ -52,6 +52,7 @@ const Write: NextPage = () => {
           placeholder="리뷰를 입력하세요."
           register={register("review", { required: true, minLength: 5 })}
         />
+        <p className="text-sm font-bold">별점은 최소 1점입니다.</p>
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             type="button"
