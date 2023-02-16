@@ -45,7 +45,7 @@ interface DeleteProductResponse {
   ok: boolean;
 }
 
-const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) => {
+const ItemDetail: NextPage = () => {
   const router = useRouter();
   // useSWR을 사용할 때 optional query는 아래처럼 구현한다.
   const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
@@ -56,11 +56,11 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
   const { user } = useUser();
   const [createChatRoom, { data: chatRoomData, loading: chatRoomLoading }] =
     useMutation<ChatRoomResponse>(
-      `/api/chats?productId=${product?.id}&buyerId=${user?.id}&sellerId=${product?.user.id}`
+      `/api/chats?productId=${data?.product?.id}&buyerId=${user?.id}&sellerId=${data?.product?.user.id}`
     );
   const [deleteProduct, { data: deleteProductData, loading: deleteProductLoading }] =
     useMutation<DeleteProductResponse>(
-      `/api/products/${router.query.id}/delete?imageId=${product?.image}`
+      `/api/products/${router.query.id}/delete?imageId=${data?.product?.image}`
     );
 
   const onFavClick = () => {
@@ -83,7 +83,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
   const onEditClick = () => {
     const result = window.confirm("게시물을 수정하시겠습니까?");
     if (result) {
-      router.push(`/products/edit/${product.id}`);
+      router.push(`/products/edit/${data?.product.id}`);
     }
   };
 
@@ -141,9 +141,9 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="mb-3">
-            {user?.id === product.userId ? (
+            {user?.id === data?.product.userId ? (
               <div className="flex items-center justify-between">
-                {!product.completed ? (
+                {!data?.product.completed ? (
                   !CompletedResponseData?.ok && (
                     <div className="flex space-x-2">
                       <button
@@ -162,7 +162,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
                           onChange={onBuyerIdChange}
                         >
                           <option value="">상대방 선택하기</option>
-                          {product.chatRoom?.map((user) => {
+                          {data?.product.chatRoom?.map((user) => {
                             return (
                               <option value={user.buyer.id} key={user.buyer.id}>
                                 {user.buyer.name}
@@ -179,7 +179,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
                   </p>
                 )}
 
-                {!product.completed && !CompletedResponseData?.ok && (
+                {!data?.product.completed && !CompletedResponseData?.ok && (
                   <div className="space-x-4">
                     <button onClick={onEditClick}>
                       <FontAwesomeIcon
@@ -198,12 +198,12 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
               </div>
             ) : null}
           </div>
-          {product.image ? (
+          {data?.product.image ? (
             // 이미지를 div 컨테이너 안에 넣고 부모 컨테이너에 relative를 적용하면 이미지를 표시할 수 있다. layout이 fill일 때 자주 사용하는 패턴이다.
             // 이미지의 크기는 컨테이너에서 margin or padding으로 지정하여 설정할 수 있다.
             <div className="relative pb-80">
               <Image
-                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${product.image}/public`}
+                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.image}/public`}
                 alt="product"
                 // object-Fit을 사용하면 배경 이미지처럼 이미지를 배치할 수 있다.
                 className="bg-slate-300 object-contain"
@@ -216,9 +216,9 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
             <div className="h-96 bg-slate-300" />
           )}
           <div className="flex cursor-pointer items-center space-x-3 border-t border-b py-3">
-            {product.user.avatar ? (
+            {data?.product.user.avatar ? (
               <Image
-                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${product.user.avatar}/avatar`}
+                src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data?.product.user.avatar}/avatar`}
                 alt="avatar"
                 className="h-12 w-12 cursor-default rounded-full bg-slate-300"
                 width={48}
@@ -229,10 +229,10 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
             )}
             <div>
               <p className="cursor-default text-sm font-medium text-gray-700">
-                {product?.user?.name}
+                {data?.product?.user?.name}
               </p>
               <Link
-                href={`/profile/${product?.user?.id}`}
+                href={`/profile/${data?.product?.user?.id}`}
                 className="text-xs font-medium text-gray-500"
               >
                 View profile &rarr;
@@ -241,11 +241,11 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
           </div>
 
           <div className="mt-5">
-            <h1 className="text-3xl font-bold text-gray-900">{product?.name}</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{data?.product?.name}</h1>
             <span className="mt-3 block text-2xl font-bold text-gray-900">
-              {`${product?.price.toLocaleString("ko-KR")}원`}
+              {`${data?.product?.price.toLocaleString("ko-KR")}원`}
             </span>
-            <p className=" my-6 text-gray-700">{product?.description}</p>
+            <p className=" my-6 text-gray-700">{data?.product?.description}</p>
 
             <div className="flex items-center justify-between space-x-2">
               <Button
@@ -301,7 +301,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Similar items</h2>
           <div className=" mt-6 grid grid-cols-2 gap-4">
-            {relatedProducts?.map((product) => (
+            {data?.relatedProducts?.map((product) => (
               <div key={product.id}>
                 <Link href={`/products/${product.id}`}>
                   {product.image ? (
@@ -330,69 +330,69 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({ product, relatedProducts }) 
 };
 
 // 동적 페이지를 정적 페이지로 변환하는 방법
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    // fallback은 유저가 getStaticProps나 getStaticPaths를 가지고 있는 페이지를 방문할 때에 그 페이지에 해당하는
-    // HTML 파일이 없다면 'blocking'일 경우 유저가 잠시 기다리게 만들고 fallback blocking이 그동안 백그라운드에서
-    // 페이지를 만들어서 유저에게 넘겨준다. 이렇기 때문에 프로젝트를 빌드할 때 모든 상품의 id에 대한 페이지를 미리 만들어두지 않아도 된다.
-    // fallback이 false일 경우에는 준비된 HTML이 없으면 유저가 404 응답을 받게 된다.
-    // fallbackdl true일 경우에는 request 타임에 페이지를 생성할 수 있게 해주고 페이지를 생성하는 동안에 유저가 뭔가를 보여줄 수 있도록 해준다.
-    fallback: "blocking",
-  };
-};
+// export const getStaticPaths: GetStaticPaths = () => {
+//   return {
+//     paths: [],
+//     // fallback은 유저가 getStaticProps나 getStaticPaths를 가지고 있는 페이지를 방문할 때에 그 페이지에 해당하는
+//     // HTML 파일이 없다면 'blocking'일 경우 유저가 잠시 기다리게 만들고 fallback blocking이 그동안 백그라운드에서
+//     // 페이지를 만들어서 유저에게 넘겨준다. 이렇기 때문에 프로젝트를 빌드할 때 모든 상품의 id에 대한 페이지를 미리 만들어두지 않아도 된다.
+//     // fallback이 false일 경우에는 준비된 HTML이 없으면 유저가 404 응답을 받게 된다.
+//     // fallbackdl true일 경우에는 request 타임에 페이지를 생성할 수 있게 해주고 페이지를 생성하는 동안에 유저가 뭔가를 보여줄 수 있도록 해준다.
+//     fallback: "blocking",
+//   };
+// };
 
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  if (!ctx.params?.id) {
-    return {
-      props: {},
-    };
-  }
-  const product = await client.product.findUnique({
-    where: {
-      id: Number(ctx.params.id),
-    },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          avatar: true,
-        },
-      },
-      chatRoom: {
-        select: {
-          buyer: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
-    },
-  });
-  const terms = product?.name.split(" ").map((word) => ({
-    name: {
-      contains: word,
-    },
-  }));
-  const relatedProducts = await client.product.findMany({
-    where: {
-      OR: terms,
-      AND: {
-        id: {
-          not: product?.id,
-        },
-      },
-    },
-  });
-  return {
-    props: {
-      product: JSON.parse(JSON.stringify(product)),
-      relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
-    },
-  };
-};
+// export const getStaticProps: GetStaticProps = async (ctx) => {
+//   if (!ctx.params?.id) {
+//     return {
+//       props: {},
+//     };
+//   }
+//   const product = await client.product.findUnique({
+//     where: {
+//       id: Number(ctx.params.id),
+//     },
+//     include: {
+//       user: {
+//         select: {
+//           id: true,
+//           name: true,
+//           avatar: true,
+//         },
+//       },
+//       chatRoom: {
+//         select: {
+//           buyer: {
+//             select: {
+//               id: true,
+//               name: true,
+//             },
+//           },
+//         },
+//       },
+//     },
+//   });
+//   const terms = product?.name.split(" ").map((word) => ({
+//     name: {
+//       contains: word,
+//     },
+//   }));
+//   const relatedProducts = await client.product.findMany({
+//     where: {
+//       OR: terms,
+//       AND: {
+//         id: {
+//           not: product?.id,
+//         },
+//       },
+//     },
+//   });
+//   return {
+//     props: {
+//       product: JSON.parse(JSON.stringify(product)),
+//       relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
+//     },
+//   };
+// };
 
 export default ItemDetail;

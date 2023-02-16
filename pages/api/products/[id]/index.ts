@@ -20,6 +20,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
           avatar: true,
         },
       },
+      chatRoom: {
+        select: {
+          buyer: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
   const terms = product?.name.split(" ").map((word) => ({
