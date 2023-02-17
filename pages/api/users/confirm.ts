@@ -5,7 +5,7 @@ import { withApiSession } from "@libs/server/withSession";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   // 핸들러를 withIronSessionApiRoute 함수로 감싸줬기 때문에 req.session을 확인할 수 있다.
-  console.log(req.session);
+  // console.log(req.session);
   const { token } = req.body;
   const foundToken = await client.token.findUnique({
     where: {

@@ -6,7 +6,6 @@ import { withApiSession } from "@libs/server/withSession";
 const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) => {
   const {
     query: { page },
-    session: { user },
   } = req;
   if (req.method === "GET") {
     const products = await client.product.findMany({
@@ -19,6 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         _count: {
           select: {
             favs: true,
+            chatRoom: true,
           },
         },
       },

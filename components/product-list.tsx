@@ -29,7 +29,7 @@ export default function ProductList({ kind, otherProfileId }: ProductListProps) 
           key={record?.id}
           title={record?.product?.name}
           price={record?.product?.price}
-          comments={1}
+          comments={record?.product?._count?.chatRoom}
           hearts={record?.product?._count?.favs}
           image={record?.product?.image}
         />

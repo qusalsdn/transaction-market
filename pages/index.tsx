@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 export interface ProductWithCount extends Product {
   _count: {
     favs: number;
+    chatRoom: number;
   };
 }
 
@@ -43,7 +44,7 @@ const Home: NextPage = () => {
               image={product.image ? product.image : ""}
               title={product.name}
               price={product.price}
-              comments={1}
+              comments={product._count.chatRoom}
               hearts={product._count?.favs || 0}
             />
           ))

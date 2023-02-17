@@ -19,6 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
             _count: {
               select: {
                 favs: true,
+                chatRoom: true,
               },
             },
           },
@@ -40,6 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
             _count: {
               select: {
                 favs: true,
+                chatRoom: true,
               },
             },
           },
