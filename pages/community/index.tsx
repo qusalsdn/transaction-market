@@ -115,7 +115,7 @@ const Community: NextPage<PostsResponse> = () => {
             ></path>
           </svg>
         </FloatingButton>
-        <Pagination page={page} countProduct={data?.posts.length} />
+        <Pagination page={page} countProduct={data?.posts?.length} />
       </div>
     </Layout>
   );
