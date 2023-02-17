@@ -46,6 +46,7 @@ const Home: NextPage = () => {
               price={product.price}
               comments={product._count.chatRoom}
               hearts={product._count?.favs || 0}
+              completed={product.completed}
             />
           ))
         ) : (

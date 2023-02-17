@@ -206,6 +206,13 @@ const ItemDetail: NextPage = () => {
                 </div>
               ) : null}
             </div>
+            {data?.product.userId !== user?.id && data?.product.completed && (
+              <div className="-mt-3 mb-3 flex">
+                <p className="rounded-md bg-orange-400 p-2 font-bold text-white">
+                  거래완료 상품입니다.
+                </p>
+              </div>
+            )}
             {data?.product.image ? (
               // 이미지를 div 컨테이너 안에 넣고 부모 컨테이너에 relative를 적용하면 이미지를 표시할 수 있다. layout이 fill일 때 자주 사용하는 패턴이다.
               // 이미지의 크기는 컨테이너에서 margin or padding으로 지정하여 설정할 수 있다.
