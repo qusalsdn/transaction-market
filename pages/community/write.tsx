@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import useCoords from "@libs/client/useCoords";
 
 interface WriteForm {
+  title: string;
   question: string;
 }
 
@@ -39,6 +40,11 @@ const Write: NextPage = () => {
   return (
     <Layout canGoBack title="동네생활 글쓰기" seoTitle="커뮤니티 글쓰기">
       <form onSubmit={handleSubmit(onValid)} className="space-y-4 p-4">
+        <TextArea
+          required
+          placeholder="제목을 입력하세요."
+          register={register("title", { required: true, minLength: 5, maxLength: 20 })}
+        />
         <TextArea
           required
           placeholder="질문을 입력하세요."

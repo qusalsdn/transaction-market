@@ -243,7 +243,7 @@ const ItemDetail: NextPage = () => {
                   href={`/profile/${data?.product?.user?.id}`}
                   className="text-xs font-medium text-gray-500"
                 >
-                  View profile &rarr;
+                  프로필 &rarr;
                 </Link>
               </div>
             </div>
