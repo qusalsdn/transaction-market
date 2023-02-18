@@ -6,6 +6,7 @@ interface TextAreaProps {
   name?: string;
   register: UseFormRegisterReturn;
   beforeValue?: string;
+  reset?: boolean;
   [key: string]: any;
 }
 
@@ -14,6 +15,7 @@ export default function TextArea({
   name,
   register,
   beforeValue,
+  reset,
   ...rest
 }: TextAreaProps) {
   const [text, setText] = useState<string | undefined>("");
@@ -44,7 +46,7 @@ export default function TextArea({
         {...register}
         {...rest}
         onChange={onChange}
-        value={text}
+        value={reset ? "" : text}
       />
     </div>
   );
