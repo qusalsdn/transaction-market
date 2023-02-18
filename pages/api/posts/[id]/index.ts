@@ -30,6 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         select: {
           id: true,
           answer: true,
+          createdAt: true,
           user: {
             select: {
               id: true,

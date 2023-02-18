@@ -245,30 +245,33 @@ const CommunityPostDetail: NextPage = () => {
           </div>
 
           <div className="my-5 space-y-5 px-4">
-            {data?.post?.answers.map((answer) => (
-              <div key={answer.id} className="flex items-start space-x-3">
-                {answer.user.avatar ? (
-                  <Image
-                    alt="avatar"
-                    src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${answer.user.avatar}/avatar`}
-                    width={32}
-                    height={32}
-                    className="rounded-full bg-slate-300"
-                  />
-                ) : (
-                  <div className="h-8 w-8 rounded-full bg-slate-200" />
-                )}
-                <div>
-                  <span className="block text-sm font-medium text-gray-700">
-                    {answer.user.name}
-                  </span>
-                  <span className="block text-xs text-gray-500 ">
-                    {answer.createdAt?.toString()}
-                  </span>
-                  <p className="mt-2 text-gray-700">{answer.answer}</p>
+            {data?.post?.answers.map((answer) => {
+              const date = answer.createdAt.toString().slice(0, 9);
+              const time = answer.createdAt.toString().slice(11, 19);
+              const writeDate = date.concat(` ${time}`);
+              return (
+                <div key={answer.id} className="flex items-start space-x-3">
+                  {answer.user.avatar ? (
+                    <Image
+                      alt="avatar"
+                      src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${answer.user.avatar}/avatar`}
+                      width={32}
+                      height={32}
+                      className="rounded-full bg-slate-300"
+                    />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-slate-200" />
+                  )}
+                  <div>
+                    <span className="block text-sm font-medium text-gray-700">
+                      {answer.user.name}
+                    </span>
+                    <span className="block text-xs text-gray-500 ">{writeDate}</span>
+                    <p className="mt-2 text-gray-700">{answer.answer}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <form className="px-4" onSubmit={handleSubmit(onValid)}>
