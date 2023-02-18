@@ -41,7 +41,7 @@ const Community: NextPage<PostsResponse> = () => {
   }, [page, router]);
 
   return (
-    <Layout hasTabBar title="동네생활" seoTitle="커뮤니티 홈">
+    <Layout hasTabBar title="동네생활 (위치 서비스 수락하기!)" seoTitle="커뮤니티 홈">
       <div className="space-y-4 divide-y-[1px]">
         {data?.posts?.map((post) => (
           <Link

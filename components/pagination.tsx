@@ -33,7 +33,7 @@ const Pagination: NextPage<PaginationProps> = ({ page, countProduct }) => {
 
   return (
     <div className="fixed bottom-24 w-full max-w-xl border-none text-lg font-bold">
-      {page === 1 && countProduct === 0 ? null : (
+      {(page === 1 && countProduct === 0) || countProduct === undefined ? null : (
         <div className="flex flex-col items-center justify-center">
           {page !== 1 && (
             <div>

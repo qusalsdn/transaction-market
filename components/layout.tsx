@@ -156,7 +156,7 @@ export default function Layout({
             href="/streams?page=1"
             className={cls(
               "flex flex-col items-center space-y-2 ",
-              router.pathname === "/live"
+              router.pathname === "/streams"
                 ? "text-orange-400"
                 : "transition-colors hover:text-gray-500"
             )}
