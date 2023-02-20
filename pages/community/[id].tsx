@@ -110,9 +110,9 @@ const CommunityPostDetail: NextPage = () => {
 
   const [editTextArea, setEditTextArea] = useState(false);
   const [updatePost, { data: updatePostData, loading: updatePostLoading }] =
-    useMutation<UpdateWithDeletePost>(`/api/posts/${data?.post.id}/update`);
+    useMutation<UpdateWithDeletePost>(`/api/posts/${data?.post?.id}/update`);
   const [deletePost, { data: deletePostData, loading: deletePostLoading }] =
-    useMutation<UpdateWithDeletePost>(`/api/posts/${data?.post.id}/delete`);
+    useMutation<UpdateWithDeletePost>(`/api/posts/${data?.post?.id}/delete`);
   const onEditValid = (data: AnswerForm) => {
     const title = data.title;
     const question = data.question;
@@ -162,7 +162,7 @@ const CommunityPostDetail: NextPage = () => {
             <span className="my-3 ml-4 inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
               동네질문
             </span>
-            {data?.post.userId === user?.id && (
+            {data?.post?.userId === user?.id && (
               <div className="space-x-4">
                 <button onClick={onEditClick}>
                   <FontAwesomeIcon icon={faPen} className="text-2xl text-orange-400" />
@@ -178,7 +178,7 @@ const CommunityPostDetail: NextPage = () => {
           </div>
 
           <div className="flex cursor-pointer items-center space-x-3 px-4 pb-3">
-            {data?.post.user.avatar ? (
+            {data?.post?.user?.avatar ? (
               <Image
                 alt="avatar"
                 src={`https://imagedelivery.net/zbviVI8oDmIX5FtWyQ7S9g/${data.post.user.avatar}/avatar`}
@@ -203,7 +203,7 @@ const CommunityPostDetail: NextPage = () => {
             <div className="mt-2 px-4 text-gray-700">
               <span className="font-bold text-orange-500">Q </span>
               <span className="font-bold">{data?.post?.title}</span>
-              <p className="mt-2">{data?.post.question}</p>
+              <p className="mt-2">{data?.post?.question}</p>
             </div>
             <div className="mt-1 flex w-full space-x-5 border-b-[1px] px-4 py-2.5  text-gray-700">
               <button
@@ -280,8 +280,15 @@ const CommunityPostDetail: NextPage = () => {
                             }}
                           />
                           {answer.id === popUpId && popUpShow && (
-                            <div className="absolute right-1 top-5 flex w-20 flex-col rounded-l-md rounded-b-md bg-orange-400 text-sm text-white">
-                              <button className="mx-1 border-b-[1px] border-b-white py-1">
+                            <div className="absolute right-1 top-5 flex w-20 select-none flex-col rounded-l-md rounded-b-md bg-orange-400 text-sm text-white">
+                              <button
+                                className="mx-1 border-b-[1px] border-b-white py-1"
+                                onClick={() =>
+                                  router.push(
+                                    `/community/answerUpdate?postId=${answer.postId}&answerId=${answer.id}&answer=${answer.answer}`
+                                  )
+                                }
+                              >
                                 수정
                               </button>
                               <button className="mx-1 border-b-[1px] border-b-white py-1">
@@ -306,7 +313,7 @@ const CommunityPostDetail: NextPage = () => {
             })}
           </div>
 
-          <form className="px-4" onSubmit={handleSubmit(onValid)}>
+          <form className="mb-5 px-4" onSubmit={handleSubmit(onValid)}>
             <TextArea
               name="description"
               placeholder="답변을 입력하세요."

@@ -9,25 +9,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     session: { user },
     body: { answer },
   } = req;
-  const newAnswer = await client.answer.create({
-    data: {
-      user: {
-        connect: {
-          id: user?.id,
+  if (req.method === "POST") {
+    const newAnswer = await client.answer.create({
+      data: {
+        user: {
+          connect: {
+            id: user?.id,
+          },
         },
-      },
-      post: {
-        connect: {
-          id: Number(id),
+        post: {
+          connect: {
+            id: Number(id),
+          },
         },
+        answer,
       },
-      answer,
-    },
-  });
-  res.status(200).json({
-    ok: true,
-    answer: newAnswer,
-  });
+    });
+    res.status(200).json({
+      ok: true,
+      answer: newAnswer,
+    });
+  }
+  if (req.method === "PUT") {
+    await client.answer.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        answer: req.body,
+      },
+    });
+    res.status(200).json({ ok: true });
+  }
 };
 
-export default withApiSession(withHandler({ methods: ["POST"], handler }));
+export default withApiSession(withHandler({ methods: ["POST", "PUT"], handler }));

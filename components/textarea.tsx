@@ -5,7 +5,7 @@ interface TextAreaProps {
   label?: string;
   name?: string;
   register: UseFormRegisterReturn;
-  beforeValue?: string;
+  beforeValue?: string | undefined | string[];
   reset?: boolean;
   [key: string]: any;
 }
@@ -18,7 +18,7 @@ export default function TextArea({
   reset,
   ...rest
 }: TextAreaProps) {
-  const [text, setText] = useState<string | undefined>("");
+  const [text, setText] = useState<string | string[] | undefined>("");
 
   const onChange = (event: any) => {
     const {
