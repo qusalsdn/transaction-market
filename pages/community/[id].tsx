@@ -16,6 +16,10 @@ import { faEllipsisVertical, faPen, faTrashCan } from "@fortawesome/free-solid-s
 import useUser from "@libs/client/useUser";
 import Button from "@components/button";
 
+interface AnswerDeleteResponse {
+  ok: boolean;
+}
+
 interface UpdateWithDeletePost {
   ok: boolean;
 }
@@ -129,6 +133,13 @@ const CommunityPostDetail: NextPage = () => {
   useEffect(() => {
     if (deletePostData?.ok) router.push("/community");
   }, [deletePostData, router]);
+
+  const [deleteAnswer, { data: deleteAnswerData, loading: deleteAnswerLoading }] =
+    useMutation<AnswerDeleteResponse>(`/api/posts/${router.query.id}/answers`);
+  const onAnswerDeleteClick = (answerId: number) => {
+    const result = window.confirm("답변을 삭제하시겠습니까?");
+    if (result) deleteAnswer({ answerId }, "DELETE");
+  };
 
   return (
     <Layout canGoBack seoTitle="커뮤니티">
@@ -291,7 +302,10 @@ const CommunityPostDetail: NextPage = () => {
                               >
                                 수정
                               </button>
-                              <button className="mx-1 border-b-[1px] border-b-white py-1">
+                              <button
+                                className="mx-1 border-b-[1px] border-b-white py-1"
+                                onClick={() => onAnswerDeleteClick(answer.id)}
+                              >
                                 삭제
                               </button>
                               <button

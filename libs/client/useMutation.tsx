@@ -35,6 +35,7 @@ const useMutation = <T = any,>(url: string): UseMutationResult<T> => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(data),
       })
         .then((response) => response.json().catch(() => {}))
         .then((data) => setState((prev) => ({ ...prev, data })))

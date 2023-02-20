@@ -7,7 +7,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   const {
     query: { id },
     session: { user },
-    body: { answer },
+    body: { answer, answerId },
   } = req;
   if (req.method === "POST") {
     const newAnswer = await client.answer.create({
@@ -41,6 +41,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
     });
     res.status(200).json({ ok: true });
   }
+  if (req.method === "DELETE") {
+    await client.answer.delete({
+      where: {
+        id: answerId,
+      },
+    });
+    res.status(200).json({ ok: true });
+  }
 };
 
-export default withApiSession(withHandler({ methods: ["POST", "PUT"], handler }));
+export default withApiSession(
+  withHandler({ methods: ["POST", "PUT", "DELETE"], handler })
+);
