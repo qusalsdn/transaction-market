@@ -45,6 +45,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         },
       },
     });
+    await client.purchase.create({
+      data: {
+        user: {
+          connect: {
+            id: Number(buyerId),
+          },
+        },
+        product: {
+          connect: {
+            id: Number(productId),
+          },
+        },
+      },
+    });
     res.status(200).json({ ok: true });
   } else {
     res.status(404).json({ ok: false });

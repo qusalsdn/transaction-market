@@ -57,7 +57,9 @@ const ChatDetail: NextPage = () => {
   );
   const { user } = useUser();
   const { data: reviewData } = useSWR<ProductReviewResponse>(
-    `/api/products/review?productId=${data?.chatRoom.productId}`
+    data?.chatRoom.productId
+      ? `/api/products/review?productId=${data?.chatRoom.productId}`
+      : null
   );
 
   const onValid = (data: MessageForm) => {
