@@ -1,6 +1,7 @@
 import { ProductWithCount } from "pages";
 import useSWR from "swr";
 import Item from "@components/item";
+import Loading from "./loading";
 
 interface ProductListProps {
   kind: "sales" | "purchases" | "favs";
@@ -36,5 +37,7 @@ export default function ProductList({ kind, otherProfileId }: ProductListProps) 
         />
       ))}
     </>
-  ) : null;
+  ) : (
+    <Loading />
+  );
 }

@@ -8,6 +8,7 @@ import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
 import { ChatMessage, Chatroom, Product, User } from "@prisma/client";
 import { cls } from "@libs/client/utils";
+import Loading from "@components/loading";
 
 interface ReviewCount {
   review: number;
@@ -47,9 +48,9 @@ const ChatDetail: NextPage = () => {
   const {
     query: { id, sellerName },
   } = router;
-  const { data, mutate } = useSWR<ChatRoomResponse>(id ? `/api/chats/${id}` : null, {
-    refreshInterval: 1000,
-  });
+  const { data, mutate, isLoading } = useSWR<ChatRoomResponse>(
+    id ? `/api/chats/${id}` : null
+  );
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
     `/api/chats/${id}/messages`
@@ -94,7 +95,10 @@ const ChatDetail: NextPage = () => {
 
   return (
     <Layout canGoBack title={sellerName} seoTitle="채팅">
-      {data?.chatRoom.product.completed &&
+      {isLoading ? (
+        <Loading />
+      ) : (
+        data?.chatRoom.product.completed &&
         user?.id === data.chatRoom.product.doneDealId && (
           <div className="fixed mx-auto w-full max-w-xl border-b-[1px] bg-white p-2 text-center">
             <h1>상대방이 거래를 완료하였습니다.</h1>
@@ -113,7 +117,8 @@ const ChatDetail: NextPage = () => {
               </div>
             )}
           </div>
-        )}
+        )
+      )}
       <div
         className={cls(
           data?.chatRoom.product.completed &&

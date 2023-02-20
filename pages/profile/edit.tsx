@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useMutation from "@libs/client/useMutation";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import Loading from "@components/loading";
 
 interface EditProfileForm {
   avatar?: FileList;
@@ -23,6 +25,7 @@ interface EditProfileResponse {
 
 const EditProfile: NextPage = () => {
   const { user } = useUser();
+  const router = useRouter();
   const {
     register,
     setValue,
@@ -33,6 +36,10 @@ const EditProfile: NextPage = () => {
   } = useForm<EditProfileForm>();
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>("/api/users/me");
+
+  useEffect(() => {
+    if (data?.ok) router.push("/profile");
+  }, [data, router]);
 
   useEffect(() => {
     if (user?.name) setValue("name", user.name);
@@ -80,64 +87,68 @@ const EditProfile: NextPage = () => {
 
   return (
     <Layout canGoBack title="내 정보 수정" seoTitle="내 정보 수정">
-      <form onSubmit={handleSubmit(onValid)} className="space-y-4 py-10 px-4">
-        <div className="flex items-center space-x-3">
-          {avatarPreview ? (
-            <Image
-              src={avatarPreview}
-              className="h-14 w-14 rounded-full bg-slate-500"
-              alt="avatar"
-              width={56}
-              height={56}
-            />
-          ) : (
-            <div className="h-14 w-14 rounded-full bg-slate-500" />
-          )}
-          <label
-            htmlFor="picture"
-            className="cursor-pointer rounded-md border border-gray-300 py-2 px-3 text-sm font-medium text-gray-700
+      {user === undefined ? (
+        <Loading />
+      ) : (
+        <form onSubmit={handleSubmit(onValid)} className="space-y-4 py-10 px-4">
+          <div className="flex items-center space-x-3">
+            {avatarPreview ? (
+              <Image
+                src={avatarPreview}
+                className="h-14 w-14 rounded-full bg-slate-500"
+                alt="avatar"
+                width={56}
+                height={56}
+              />
+            ) : (
+              <div className="h-14 w-14 rounded-full bg-slate-500" />
+            )}
+            <label
+              htmlFor="picture"
+              className="cursor-pointer rounded-md border border-gray-300 py-2 px-3 text-sm font-medium text-gray-700
              shadow-sm hover:bg-gray-50 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
-          >
-            변경
-            <input
-              id="picture"
-              type="file"
-              className="hidden"
-              accept="image/*"
-              {...register("avatar")}
-            />
-          </label>
-        </div>
+            >
+              변경
+              <input
+                id="picture"
+                type="file"
+                className="hidden"
+                accept="image/*"
+                {...register("avatar")}
+              />
+            </label>
+          </div>
 
-        <Input
-          required={false}
-          label={`현재 닉네임 : ${user?.name}`}
-          name="name"
-          type="text"
-          register={register("name")}
-        />
-        <Input
-          required={false}
-          label={`현재 이메일 주소 : ${user?.email ? user?.email : "없음"}`}
-          name="email"
-          type="email"
-          register={register("email")}
-        />
-        <Input
-          required={false}
-          label={`현재 전화번호 : ${user?.phone ? user?.phone : "없음"}`}
-          name="phone"
-          type="number"
-          kind="phone"
-          register={register("phone")}
-        />
-        {errors?.formErrors ? (
-          <span className="my-2 block text-center font-bold text-orange-400">
-            {errors?.formErrors?.message}
-          </span>
-        ) : null}
-        <Button text={loading ? "로딩중..." : "업데이트"} />
-      </form>
+          <Input
+            required={false}
+            label={`현재 닉네임 : ${user?.name}`}
+            name="name"
+            type="text"
+            register={register("name")}
+          />
+          <Input
+            required={false}
+            label={`현재 이메일 주소 : ${user?.email ? user?.email : "없음"}`}
+            name="email"
+            type="email"
+            register={register("email")}
+          />
+          <Input
+            required={false}
+            label={`현재 전화번호 : ${user?.phone ? user?.phone : "없음"}`}
+            name="phone"
+            type="number"
+            kind="phone"
+            register={register("phone")}
+          />
+          {errors?.formErrors ? (
+            <span className="my-2 block text-center font-bold text-orange-400">
+              {errors?.formErrors?.message}
+            </span>
+          ) : null}
+          <Button text={loading ? "로딩중..." : "업데이트"} />
+        </form>
+      )}
     </Layout>
   );
 };
