@@ -34,24 +34,11 @@ async function main() {
     //     cloudflareKey: "x",
     //   },
     // });
-    // const product = await client.product.create({
-    //   data: {
-    //     name: `seed${item}`,
-    //     price: item,
-    //     description: `seed${item}`,
-    //     user: {
-    //       connect: {
-    //         id: 1,
-    //       },
-    //     },
-    //   },
-    // });
-    const post = await client.post.create({
+    const product = await client.product.create({
       data: {
-        title: item.toString(),
-        question: `${item}`,
-        latitude: 37.0409472,
-        longitude: 127.0480896,
+        name: `seed${item}`,
+        price: item,
+        description: `seed${item}`,
         user: {
           connect: {
             id: 1,
@@ -59,6 +46,19 @@ async function main() {
         },
       },
     });
+    // const post = await client.post.create({
+    //   data: {
+    //     title: item.toString(),
+    //     question: `${item}`,
+    //     latitude: 37.0409472,
+    //     longitude: 127.0480896,
+    //     user: {
+    //       connect: {
+    //         id: 1,
+    //       },
+    //     },
+    //   },
+    // });
     console.log(`${item + 1}/20`);
   });
 }

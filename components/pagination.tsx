@@ -1,3 +1,5 @@
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 
@@ -55,10 +57,14 @@ const Pagination: NextPage<PaginationProps> = ({ page, countProduct }) => {
               </button>
             </div>
           )}
-          <div>
-            <button onClick={() => onClick("left")}>&larr;</button>
-            <span>{page}</span>
-            <button onClick={() => onClick("right")}>&rarr;</button>
+          <div className="select-none space-x-2">
+            <button onClick={() => onClick("left")}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+            <span className="text-2xl">{page}</span>
+            <button onClick={() => onClick("right")}>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
           </div>
         </div>
       )}
