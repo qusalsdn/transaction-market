@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import Loading from "@components/loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useUser from "@libs/client/useUser";
 import Button from "@components/button";
 
@@ -60,6 +60,8 @@ const CommunityPostDetail: NextPage = () => {
   const [sendAnswer, { data: answerData, loading: answerLoading }] =
     useMutation<AnswerResponse>(`/api/posts/${router.query.id}/answers`);
   const { register, handleSubmit, reset } = useForm<AnswerForm>();
+  const [popUpId, setPopUpId] = useState(0);
+  const [popUpShow, setPopUpShow] = useState(false);
 
   useEffect(() => {
     if (data && !data?.ok) {
@@ -262,10 +264,40 @@ const CommunityPostDetail: NextPage = () => {
                   ) : (
                     <div className="h-8 w-8 rounded-full bg-slate-200" />
                   )}
-                  <div>
-                    <span className="block text-sm font-medium text-gray-700">
-                      {answer.user.name}
-                    </span>
+                  <div className="w-full">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-700">
+                        {answer.user.name}
+                      </span>
+                      {answer.user.id === user?.id && (
+                        <div className="relative">
+                          <FontAwesomeIcon
+                            icon={faEllipsisVertical}
+                            className="cursor-pointer text-sm"
+                            onClick={() => {
+                              setPopUpId(answer.id);
+                              setPopUpShow(true);
+                            }}
+                          />
+                          {answer.id === popUpId && popUpShow && (
+                            <div className="absolute right-1 top-5 flex w-20 flex-col rounded-l-md rounded-b-md bg-orange-400 text-sm text-white">
+                              <button className="mx-1 border-b-[1px] border-b-white py-1">
+                                수정
+                              </button>
+                              <button className="mx-1 border-b-[1px] border-b-white py-1">
+                                삭제
+                              </button>
+                              <button
+                                className="mx-1 py-1"
+                                onClick={() => setPopUpShow(false)}
+                              >
+                                닫기
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                     <span className="block text-xs text-gray-500 ">{writeDate}</span>
                     <p className="mt-2 text-gray-700">{answer.answer}</p>
                   </div>
