@@ -66,7 +66,7 @@ export default function Layout({
           </div>
         ) : null}
         {title ? (
-          <span className={cls(canGoBack ? "mx-auto" : "", "")}>{title}</span>
+          <span className={cls(canGoBack ? "mx-auto" : "", "font-bold")}>{title}</span>
         ) : null}
       </div>
 
