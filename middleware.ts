@@ -4,10 +4,8 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
   if (userAgent(req).isBot) {
     return new Response("제발 봇이 아니었으면 좋겠어요...", { status: 403 });
   }
-  if (!req.url.includes("/api")) {
-    if (!req.cookies.has("carrotsession") && !req.url.includes("/enter")) {
-      return NextResponse.redirect(new URL("/enter", req.url));
-    }
+  if (!req.cookies.has("carrotsession") && !req.url.includes("/enter")) {
+    return NextResponse.redirect(new URL("/enter", req.url));
   }
 }
 
