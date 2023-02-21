@@ -216,6 +216,7 @@ model Stream {
   cloudflareId  String
   cloudflareUrl String
   cloudflareKey String
+  completed     Boolean?
 
   @@index([userId])
 }
@@ -227,7 +228,7 @@ model Message {
   message   String   @db.MediumText
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  stream    Stream   @relation(fields: [streamId], references: [id])
+  stream    Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
   streamId  Int
 
   @@index([userId])

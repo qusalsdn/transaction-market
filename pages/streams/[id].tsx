@@ -9,6 +9,13 @@ import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
 import { useEffect } from "react";
 import Loading from "@components/loading";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { cls } from "@libs/client/utils";
+
+interface DeleteStreamResponse {
+  ok: boolean;
+}
 
 interface StreamMessage {
   id: number;
@@ -76,15 +83,41 @@ const SelectStream: NextPage = () => {
     reset();
   };
 
+  const [deleteStream, { data: deleteStreamData }] = useMutation<DeleteStreamResponse>(
+    `/api/streams/${router.query.id}/delete`
+  );
+  useEffect(() => {
+    if (deleteStreamData?.ok) router.push("/streams");
+  }, [deleteStreamData, router]);
+  const onStreamDeleteClick = () => {
+    const result = window.confirm("해당 스트리밍을 삭제하시겠습니까?");
+    if (result) deleteStream({}, "DELETE");
+  };
+
   return (
     <Layout canGoBack seoTitle="라이브 스트림">
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="space-y-4 py-10  px-4">
-          {data?.stream.cloudflareId ? (
+        <div
+          className={cls(
+            "space-y-4 px-4",
+            data?.stream?.userId === user?.id ? "" : "py-10"
+          )}
+        >
+          {data?.stream?.userId === user?.id && (
+            <div className="mt-5 space-x-4 text-end">
+              <button onClick={() => router.push(`/streams/edit?id=${router.query.id}`)}>
+                <FontAwesomeIcon icon={faPen} className="text-2xl text-orange-400" />
+              </button>
+              <button onClick={onStreamDeleteClick}>
+                <FontAwesomeIcon icon={faTrashCan} className="text-2xl text-orange-400" />
+              </button>
+            </div>
+          )}
+          {data?.stream?.cloudflareId ? (
             <iframe
-              src={`https://iframe.videodelivery.net/${data?.stream.cloudflareId}`}
+              src={`https://iframe.videodelivery.net/${data?.stream?.cloudflareId}`}
               allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
               allowFullScreen={true}
               id="stream-player"
@@ -101,11 +134,11 @@ const SelectStream: NextPage = () => {
               <span className="text-gray-100">스트리밍 키 (Secret)</span>
               <span className="text-gray-100">
                 <p>URL</p>
-                {data?.stream.cloudflareUrl}
+                {data?.stream?.cloudflareUrl}
               </span>
               <span className="text-gray-100">
                 <p>Key</p>
-                {data?.stream.cloudflareKey}
+                {data?.stream?.cloudflareKey}
               </span>
             </div>
           </div>
@@ -113,11 +146,12 @@ const SelectStream: NextPage = () => {
           <div>
             <h2 className="text-2xl font-bold text-gray-900">라이브 채팅</h2>
             <div className="h-[50vh] space-y-4 overflow-y-scroll py-10  px-4 pb-16">
-              {data?.stream.messages.map((message) => (
+              {data?.stream?.messages.map((message) => (
                 <Message
                   key={message.id}
                   message={message.message}
                   reversed={user?.id === message.user.id ? true : false}
+                  avatarUrl={message.user.avatar}
                 />
               ))}
             </div>
