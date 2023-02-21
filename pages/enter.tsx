@@ -145,7 +145,7 @@ const Enter: NextPage = () => {
                 </>
               ) : null}
               {method === "email" ? (
-                <Button text={loading ? "로딩중..." : "로그인 링크 가져오기"} />
+                <Button text={loading ? "로딩중..." : "인증번호 보내기"} />
               ) : null}
               {method === "phone" ? (
                 <Button text={loading ? "로딩중..." : "인증번호 보내기"} />
@@ -154,7 +154,7 @@ const Enter: NextPage = () => {
           </>
         )}
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <div className="relative">
             <div className="absolute w-full border-t border-gray-300" />
             <div className="relative -top-3 text-center ">
@@ -187,7 +187,7 @@ const Enter: NextPage = () => {
               </svg>
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

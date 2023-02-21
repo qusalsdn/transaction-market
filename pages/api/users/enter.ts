@@ -32,30 +32,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
   });
 
   if (phone) {
-    // const message = await twilioClient.messages.create({
-    //   messagingServiceSid: process.env.TWILIO_MSID,
-    //   to: process.env.MY_NUMBER!, // MY_NUMBER라는 환경변수가 존재하지 않을 수도 있기 때문에 !를 붙여준다.
-    //   body: `인증번호 : ${payload}`,
-    // });
-    // console.log(message);
+    const message = await twilioClient.messages.create({
+      messagingServiceSid: process.env.TWILIO_MSID,
+      to: `82${phone}`,
+      // to: process.env.MY_NUMBER!, // MY_NUMBER라는 환경변수가 존재하지 않을 수도 있기 때문에 !를 붙여준다.
+      body: `인증번호 : ${payload}`,
+    });
   } else if (email) {
-    // const mailOptions = {
-    //   from: process.env.MAIL_ID,
-    //   to: email,
-    //   subject: "캐럿마켓 인증 메일",
-    //   text: `인증번호 : ${payload}`,
-    // };
-    // const result = await smtpTransport.sendMail(mailOptions, (error, responses) => {
-    //   if (error) {
-    //     console.log(error);
-    //     return null;
-    //   } else {
-    //     console.log(responses);
-    //     return null;
-    //   }
-    // });
-    // smtpTransport.close();
-    // console.log(result);
+    const mailOptions = {
+      from: process.env.MAIL_ID,
+      to: email,
+      subject: "캐럿마켓 인증 메일",
+      text: `인증번호 : ${payload}`,
+    };
+    const result = await smtpTransport.sendMail(mailOptions, (error, responses) => {
+      if (error) {
+        console.log(error);
+        return null;
+      } else {
+        console.log(responses);
+        return null;
+      }
+    });
+    smtpTransport.close();
   }
 
   // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
