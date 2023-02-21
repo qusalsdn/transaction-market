@@ -48,7 +48,14 @@ const Streams: NextPage = () => {
                   fill
                 />
               </div>
-              <h1 className="mt-2 text-2xl font-bold text-gray-900">{stream.name}</h1>
+              <div className="mt-2 flex items-center justify-between">
+                <h1 className="mr-3 text-2xl font-bold text-gray-900">{stream.name}</h1>
+                {stream.completed && (
+                  <h3 className="rounded-md bg-orange-400 px-2 py-1 text-sm font-bold text-white">
+                    스트리밍 종료됨
+                  </h3>
+                )}
+              </div>
             </Link>
           ))}
 

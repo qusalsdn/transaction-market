@@ -94,6 +94,13 @@ const SelectStream: NextPage = () => {
     if (result) deleteStream({}, "DELETE");
   };
 
+  const onStreamEnd = () => {
+    const result = window.confirm(
+      "스트리밍을 종료하면 해당 스트리밍을 수정 및 삭제를 하지 못합니다. 그래도 종료하시겠습니까?"
+    );
+    if (result) deleteStream({}, "PUT");
+  };
+
   return (
     <Layout canGoBack seoTitle="라이브 스트림">
       {isLoading ? (
@@ -102,19 +109,41 @@ const SelectStream: NextPage = () => {
         <div
           className={cls(
             "space-y-4 px-4",
-            data?.stream?.userId === user?.id ? "" : "py-10"
+            data?.stream?.userId === user?.id || data?.stream.completed ? "" : "py-10"
           )}
         >
-          {data?.stream?.userId === user?.id && (
-            <div className="mt-5 space-x-4 text-end">
-              <button onClick={() => router.push(`/streams/edit?id=${router.query.id}`)}>
-                <FontAwesomeIcon icon={faPen} className="text-2xl text-orange-400" />
-              </button>
-              <button onClick={onStreamDeleteClick}>
-                <FontAwesomeIcon icon={faTrashCan} className="text-2xl text-orange-400" />
-              </button>
+          {data?.stream.completed && (
+            <div className="mt-4 flex">
+              <h1 className="rounded-md bg-orange-400 px-2 py-1 font-bold text-white">
+                스트리밍 종료됨
+              </h1>
             </div>
           )}
+          {data?.stream?.userId === user?.id && !data?.stream.completed ? (
+            <div className="mt-5 flex items-center justify-between">
+              <div>
+                <button
+                  className="rounded-md bg-orange-400 px-2 py-1 font-bold text-white"
+                  onClick={onStreamEnd}
+                >
+                  스트리밍 종료
+                </button>
+              </div>
+              <div className="space-x-4 text-end">
+                <button
+                  onClick={() => router.push(`/streams/edit?id=${router.query.id}`)}
+                >
+                  <FontAwesomeIcon icon={faPen} className="text-2xl text-orange-400" />
+                </button>
+                <button onClick={onStreamDeleteClick}>
+                  <FontAwesomeIcon
+                    icon={faTrashCan}
+                    className="text-2xl text-orange-400"
+                  />
+                </button>
+              </div>
+            </div>
+          ) : null}
           {data?.stream?.cloudflareId ? (
             <iframe
               src={`https://iframe.videodelivery.net/${data?.stream?.cloudflareId}`}
