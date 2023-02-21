@@ -20,6 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         id: Number(id),
       },
       data: {
+        cloudflareId: "",
         completed: true,
       },
     });

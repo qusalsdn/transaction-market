@@ -159,17 +159,19 @@ const SelectStream: NextPage = () => {
               {data?.stream?.price.toLocaleString("ko-KR")}원
             </span>
             <p className=" my-6 text-gray-700">{data?.stream?.description}</p>
-            <div className="flex flex-col space-y-3 overflow-scroll rounded-md bg-orange-400 p-3">
-              <span className="text-gray-100">스트리밍 키 (Secret)</span>
-              <span className="text-gray-100">
-                <p>URL</p>
-                {data?.stream?.cloudflareUrl}
-              </span>
-              <span className="text-gray-100">
-                <p>Key</p>
-                {data?.stream?.cloudflareKey}
-              </span>
-            </div>
+            {data?.stream.userId === user?.id && !data?.stream.completed && (
+              <div className="flex flex-col space-y-3 overflow-scroll rounded-md bg-orange-400 p-3">
+                <span className="text-gray-100">스트리밍 키 (Secret)</span>
+                <span className="text-gray-100">
+                  <p>URL</p>
+                  {data?.stream?.cloudflareUrl}
+                </span>
+                <span className="text-gray-100">
+                  <p>Key</p>
+                  {data?.stream?.cloudflareKey}
+                </span>
+              </div>
+            )}
           </div>
 
           <div>
