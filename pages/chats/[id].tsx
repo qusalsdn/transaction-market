@@ -49,7 +49,8 @@ const ChatDetail: NextPage = () => {
     query: { id, sellerName },
   } = router;
   const { data, mutate, isLoading } = useSWR<ChatRoomResponse>(
-    id ? `/api/chats/${id}` : null
+    id ? `/api/chats/${id}` : null,
+    { refreshInterval: 1000 }
   );
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
