@@ -39,6 +39,39 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       body: `인증번호 : ${payload}`,
     });
   } else if (email) {
+    // const templateParams = {
+    //   message: payload,
+    //   reply_to: email,
+    // };
+    // await emailjs
+    //   .send(
+    //     process.env.SERVICE_ID!,
+    //     process.env.TEMPLATE_ID!,
+    //     templateParams,
+    //     process.env.PUBLIC_KEY!
+    //   )
+    //   .then(
+    //     function (response) {
+    //       console.log("SUCCESS!", response.status, response.text);
+    //     },
+    //     function (error) {
+    //       console.log("FAILED...", error);
+    //     }
+    //   );
+    // const msg = {
+    //   from: "yja05092@gmail.com",
+    //   to: email,
+    //   subject: "캐럿마켓 인증 메일",
+    //   text: `인증번호 : ${payload}`,
+    // };
+    // mail
+    //   .send(msg)
+    //   .then(() => {
+    //     console.log("Email sent");
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
     const mailOptions = {
       from: process.env.MAIL_ID,
       to: email,
