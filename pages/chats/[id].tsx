@@ -50,7 +50,7 @@ const ChatDetail: NextPage = () => {
   } = router;
   const { data, mutate, isLoading } = useSWR<ChatRoomResponse>(
     id ? `/api/chats/${id}` : null,
-    { refreshInterval: 1000 }
+    { refreshInterval: 100 }
   );
   const { register, handleSubmit, reset } = useForm<MessageForm>();
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
