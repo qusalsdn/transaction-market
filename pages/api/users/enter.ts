@@ -42,31 +42,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       body: `인증번호 : ${payload}`,
     });
   } else if (email) {
-    // const msg = {
-    //   to: email,
-    //   from: "yja05092@naver.com",
-    //   subject: "당근마켓 인증 메일",
-    //   text: `인증번호 : ${payload}`,
-    //   html: `<strong>인증번호 : ${payload}</strong>`,
-    // };
-    // mail
-    //   .send(msg)
-    //   .then(() => console.log("done!"))
-    //   .catch((error) => console.log(error));
-    // const sendEmail = await mail.send({
-    //   from: "yja05092@naver.com",
-    //   to: email,
-    //   subject: "당근마켓 인증 메일",
-    //   text: `인증번호 : ${payload}`,
-    // });
-    // console.log(sendEmail);
     const mailOptions = {
-      from: process.env.MAIL_ID,
       to: email,
       subject: "캐럿마켓 인증 메일",
       text: `인증번호 : ${payload}`,
     };
-    const result = await smtpTransport.sendMail(mailOptions, (error, responses) => {
+    await smtpTransport.sendMail(mailOptions, (error, responses) => {
       if (error) {
         console.log(error);
         return null;
