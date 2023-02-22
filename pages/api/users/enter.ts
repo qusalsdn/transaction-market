@@ -3,6 +3,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 import twilio from "twilio";
 import smtpTransport from "@libs/server/email";
+import mail from "@sendgrid/mail";
+
+mail.setApiKey(process.env.SENDGRID_APIKEY!);
 
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
@@ -39,39 +42,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       body: `인증번호 : ${payload}`,
     });
   } else if (email) {
-    // const templateParams = {
-    //   message: payload,
-    //   reply_to: email,
-    // };
-    // await emailjs
-    //   .send(
-    //     process.env.SERVICE_ID!,
-    //     process.env.TEMPLATE_ID!,
-    //     templateParams,
-    //     process.env.PUBLIC_KEY!
-    //   )
-    //   .then(
-    //     function (response) {
-    //       console.log("SUCCESS!", response.status, response.text);
-    //     },
-    //     function (error) {
-    //       console.log("FAILED...", error);
-    //     }
-    //   );
     // const msg = {
-    //   from: "yja05092@gmail.com",
     //   to: email,
-    //   subject: "캐럿마켓 인증 메일",
+    //   from: "yja05092@naver.com",
+    //   subject: "당근마켓 인증 메일",
     //   text: `인증번호 : ${payload}`,
+    //   html: `<strong>인증번호 : ${payload}</strong>`,
     // };
     // mail
     //   .send(msg)
-    //   .then(() => {
-    //     console.log("Email sent");
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    //   .then(() => console.log("done!"))
+    //   .catch((error) => console.log(error));
+    // const sendEmail = await mail.send({
+    //   from: "yja05092@naver.com",
+    //   to: email,
+    //   subject: "당근마켓 인증 메일",
+    //   text: `인증번호 : ${payload}`,
+    // });
+    // console.log(sendEmail);
     const mailOptions = {
       from: process.env.MAIL_ID,
       to: email,
@@ -87,7 +75,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
         return null;
       }
     });
-    smtpTransport.close();
   }
 
   // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
