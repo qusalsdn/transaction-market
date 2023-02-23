@@ -89,7 +89,6 @@ interface ReviewsResponse {
 const Profile: NextPage = () => {
   const { user } = useUser();
   const { data, isLoading } = useSWR<ReviewsResponse>("/api/reviews");
-  console.log(data?.reviews);
 
   return (
     <Layout hasTabBar title="나의 캐럿" seoTitle="프로필">

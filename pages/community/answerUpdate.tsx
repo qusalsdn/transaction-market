@@ -29,7 +29,6 @@ const CommunityAnswerUpdate: NextPage = () => {
   }, [data, router, postId]);
 
   const onValid = (data: AnswerForm) => {
-    console.log(data.answer);
     updateAnswer(data.answer, "PUT");
   };
 

@@ -42,8 +42,21 @@ export default function Input({
     const {
       target: { value },
     } = event;
-    const removeCommaValue: number = Number(value.replaceAll(",", ""));
-    setPrice(removeCommaValue.toLocaleString("ko-KR"));
+    if (
+      value.slice(-1) === "0" ||
+      value.slice(-1) === "1" ||
+      value.slice(-1) === "2" ||
+      value.slice(-1) === "3" ||
+      value.slice(-1) === "4" ||
+      value.slice(-1) === "5" ||
+      value.slice(-1) === "6" ||
+      value.slice(-1) === "7" ||
+      value.slice(-1) === "8" ||
+      value.slice(-1) === "9"
+    ) {
+      const removeCommaValue: number = Number(value.replaceAll(",", ""));
+      setPrice(removeCommaValue.toLocaleString("ko-KR"));
+    }
   };
 
   return (
