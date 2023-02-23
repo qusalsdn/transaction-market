@@ -47,15 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<ResponseType>) 
       subject: "캐럿마켓 인증 메일",
       text: `인증번호 : ${payload}`,
     };
-    await smtpTransport.sendMail(mailOptions, (error, responses) => {
-      if (error) {
-        console.log(error);
-        return null;
-      } else {
-        console.log(responses);
-        return null;
-      }
-    });
+    await smtpTransport.sendMail(mailOptions);
   }
 
   // upsert는 뭔가를 만들 때 사용하지는 않는다. 단지, 생성하거나 수정할 때 사용한다.
