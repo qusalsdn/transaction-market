@@ -18,7 +18,7 @@
 ### 나의 정보
 ![나의 정보 화면](https://user-images.githubusercontent.com/88128323/227759710-9e56d2f7-0acf-4556-aefc-e4806f481122.PNG)
 
-### 상품 상세
+### 제품 상세
 ![상품 상세정보 화면](https://user-images.githubusercontent.com/88128323/227759736-2a4e7ad5-e3e2-43f1-8fc3-5989897df28a.PNG)
 
 본인이 작성한 게시물은 수정, 삭제, 거래완료를 할 수 있다.
